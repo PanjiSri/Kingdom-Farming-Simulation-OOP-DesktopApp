@@ -64,14 +64,10 @@ public class Player {
     }
 
     public void take_card() {
-        for(int i = 0; i < 4; i++) {
-            System.out.println(deck.get(i));
-        }
     }
 
     public void shuffle() {
         Collections.shuffle(deck);
-        take_card();
     }
 
     public String getName() {

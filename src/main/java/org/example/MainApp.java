@@ -19,13 +19,14 @@ public class MainApp extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
         Parent root = loader.load();
         MainController controller = loader.getController();
-        controller.initizialize_click();
+        controller.initialize_click();
         controller.init();
+        controller.add_to_deck_aktif();
 
         // Set Board
         controller.setBoard(board);
 
-        Scene scene = new Scene(root);
+        Scene scene = new Scene(root, 700, 700);
         primaryStage.setScene(scene);
         primaryStage.setTitle("My JavaFX Application");
         primaryStage.show();
