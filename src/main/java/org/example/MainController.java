@@ -22,7 +22,7 @@ public class MainController {
     private Pane pane_ladang, ambil_kartu;
 
     @FXML
-    private Button reset_data, next_turn, shuffle_card;
+    private Button reset_data, next_turn, shuffle_card, close_button;
 
     @FXML
     private StackPane board;
@@ -49,19 +49,20 @@ public class MainController {
 
         // Set drop for the GridPane
         ladang.setOnDragDropped(event -> {
+            Player a = main.getPlayernow();
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasString() && db.getString().equals("pane")) {
                 Pane draggedPane = (Pane) event.getGestureSource();
-                System.out.println(draggedPane.getId());
                 draggedPane.setStyle("-fx-background-color: white");
                 deck_aktif.getChildren().remove(draggedPane);
 
                 // Calculate the new row and column based on the drop position
                 int col = (int) (event.getX() / (ladang.getWidth() / ladang.getColumnCount()));
                 int row = (int) (event.getY() / (ladang.getHeight() / ladang.getRowCount()));
-
+                a.add_in_lahan(col, row, draggedPane.getId());
                 ladang.add(draggedPane, col, row);
+                a.print_lahan();
                 success = true;
             }
             event.setDropCompleted(success);
@@ -76,6 +77,7 @@ public class MainController {
         reset_data.setOnAction(e -> clear_pane());
         next_turn.setOnAction(e -> change_to_shuffle());
         shuffle_card.setOnAction(e -> shuffle_kartu());
+        close_button.setOnAction(e -> change_to_main());
     }
 
     public void clear_pane() {
@@ -91,34 +93,70 @@ public class MainController {
     }
 
     public void add_to_deck_aktif() {
+        Player a = main.getPlayernow();
         for (int i = 0; i < 6; i++) {
-            Pane pane = new Pane();
-            pane.getChildren().add(new Label(Integer.toString(i)));
-            pane.setStyle("-fx-background-color: black; -fx-border-radius: 6; -fx-pref-width: 60; -fx-pref-height: 60;");
-            pane.setId(Integer.toString(i));
-            // Enable dragging for the pane
-            pane.setOnDragDetected(event -> {
-                Dragboard db = pane.startDragAndDrop(TransferMode.MOVE);
-                ClipboardContent content = new ClipboardContent();
-                content.putString("pane");
-                db.setContent(content);
-                event.consume();
-            });
-
-            deck_aktif.add(pane, i, 0);
+            if (!(a.get_card_aktif(i).equals("   "))) {
+                System.out.println(a.get_card_aktif(i));
+                Pane pane = new Pane();
+                pane.setStyle("-fx-pref-height: 90; -fx-pref-width: 70; -fx-background-color: white");
+                pane.getChildren().add(new Label(a.get_card_aktif(i)));
+                pane.setOnDragDetected(event -> {
+                    Dragboard db = pane.startDragAndDrop(TransferMode.MOVE);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putString("pane");
+                    db.setContent(content);
+                    event.consume();
+                });
+                deck_aktif.add(pane, i, 0);
+            }
         }
     }
 
+    public void add_to_ladang() {
+        Player a = main.getPlayernow();
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (!(a.get_card_aktif(i).equals("   "))) {
+                    System.out.println(a.get_card_aktif(i));
+                    Pane pane = new Pane();
+                    pane.setStyle("-fx-pref-height: 90; -fx-pref-width: 70; -fx-background-color: white");
+                    pane.getChildren().add(new Label(a.get_card_aktif(i)));
+                    pane.setOnDragDetected(event -> {
+                        Dragboard db = pane.startDragAndDrop(TransferMode.MOVE);
+                        ClipboardContent content = new ClipboardContent();
+                        content.putString("pane");
+                        db.setContent(content);
+                        event.consume();
+                    });
+                    deck_aktif.add(pane, i, 0);
+                }
+            }
+        }
+    }
+
+
     public void change_to_shuffle() {
+        main.add_turn();
         board.getChildren().clear();
         add_kartu_ke_shuffle_field();
         board.getChildren().setAll(pane_ladang, ambil_kartu);
         System.out.println(board.getChildren().size());
     }
 
+    public void change_to_main() {
+        Player a = main.getPlayernow();
+        init();
+        add_to_deck_aktif();
+        add_to_ladang();
+        board.getChildren().clear();
+        board.getChildren().setAll(ambil_kartu, pane_ladang);
+
+    }
+
     public void add_kartu_ke_shuffle_field() {
         shuffle_panel.getChildren().clear();
         Player a = main.getPlayernow();
+        System.out.println(a.getName());
         int idx = 0;
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
@@ -126,10 +164,24 @@ public class MainController {
                 Pane card_shuffle = new Pane();
                 card_shuffle.getChildren().add(new Label("Kartu " + kata));
                 card_shuffle.setStyle("-fx-background-color: white; -fx-pref-width: 60; -fx-pref-height: 60;");
-                card_shuffle.setId(Integer.toString(idx));
+                card_shuffle.setId(a.get_deck(idx));
+                card_shuffle.setOnMouseClicked(event -> remove_pane(a, card_shuffle));
                 idx += 1;
                 shuffle_panel.add(card_shuffle, i, j);
             }
+        }
+    }
+
+    public void add_kartu_ke_ladang() {
+        Player a = main.getPlayernow();
+    }
+
+    public void remove_pane(Player player, Pane pane) {
+        if (player.getCard_in_one_turn() < 4) {
+            player.add_ciot();
+            player.shuffle_to_deck_aktif(pane.getId());
+            shuffle_panel.getChildren().remove(pane);
+            player.print_deck_aktif();
         }
     }
 

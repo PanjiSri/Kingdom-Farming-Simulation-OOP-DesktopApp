@@ -19,4 +19,18 @@ public class Board {
         }
         return p2;
     }
+
+    public void add_turn() {
+        if (turn == 1) {
+            turn = 2;
+        }
+        else {
+            turn = 1;
+            totalturn += 1;
+        }
+    }
+
+    public int getTurn() {
+        return turn;
+    }
 }

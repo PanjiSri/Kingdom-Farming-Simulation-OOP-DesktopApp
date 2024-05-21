@@ -12,6 +12,8 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         // Add ke Board
         Player p1 = new Player("player1", 0);
+
+
         Player p2 = new Player("player2", 1);
         Board board = new Board(p1, p2);
         System.out.println(p1.getName());
@@ -19,12 +21,13 @@ public class MainApp extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/sample.fxml"));
         Parent root = loader.load();
         MainController controller = loader.getController();
-        controller.initialize_click();
-        controller.init();
-        controller.add_to_deck_aktif();
 
         // Set Board
         controller.setBoard(board);
+        controller.add_kartu_ke_shuffle_field();
+        controller.initialize_click();
+        controller.init();
+        controller.add_to_deck_aktif();
 
         Scene scene = new Scene(root, 700, 700);
         primaryStage.setScene(scene);
