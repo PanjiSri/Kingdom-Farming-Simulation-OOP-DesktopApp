@@ -60,7 +60,10 @@ public class MainController {
                 // Calculate the new row and column based on the drop position
                 int col = (int) (event.getX() / (ladang.getWidth() / ladang.getColumnCount()));
                 int row = (int) (event.getY() / (ladang.getHeight() / ladang.getRowCount()));
-                a.add_in_lahan(col, row, draggedPane.getId());
+                System.out.println(draggedPane.getId());
+                a.add_in_lahan(row, col, draggedPane.getId());
+                a.drop_deck_aktif(draggedPane.getId());
+                System.out.println();
                 ladang.add(draggedPane, col, row);
                 a.print_lahan();
                 success = true;
@@ -99,6 +102,7 @@ public class MainController {
                 System.out.println(a.get_card_aktif(i));
                 Pane pane = new Pane();
                 pane.setStyle("-fx-pref-height: 90; -fx-pref-width: 70; -fx-background-color: white");
+                pane.setId(a.get_card_aktif(i));
                 pane.getChildren().add(new Label(a.get_card_aktif(i)));
                 pane.setOnDragDetected(event -> {
                     Dragboard db = pane.startDragAndDrop(TransferMode.MOVE);
@@ -116,11 +120,12 @@ public class MainController {
         Player a = main.getPlayernow();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
-                if (!(a.get_card_aktif(i).equals("   "))) {
-                    System.out.println(a.get_card_aktif(i));
+                if (!(a.get_card_ladang(i, j).equals(" x "))) {
+                    System.out.println(a.get_card_ladang(i, j));
                     Pane pane = new Pane();
                     pane.setStyle("-fx-pref-height: 90; -fx-pref-width: 70; -fx-background-color: white");
-                    pane.getChildren().add(new Label(a.get_card_aktif(i)));
+                    pane.setId(a.get_card_ladang(i,j ));
+                    pane.getChildren().add(new Label(a.get_card_ladang(i, j)));
                     pane.setOnDragDetected(event -> {
                         Dragboard db = pane.startDragAndDrop(TransferMode.MOVE);
                         ClipboardContent content = new ClipboardContent();
@@ -128,7 +133,7 @@ public class MainController {
                         db.setContent(content);
                         event.consume();
                     });
-                    deck_aktif.add(pane, i, 0);
+                    ladang.add(pane, j, i);
                 }
             }
         }
@@ -148,6 +153,7 @@ public class MainController {
         init();
         add_to_deck_aktif();
         add_to_ladang();
+        a.print_lahan();
         board.getChildren().clear();
         board.getChildren().setAll(ambil_kartu, pane_ladang);
 

@@ -24,9 +24,9 @@ public class Player {
         for (int i = 0; i < 6; i++) {
             deck_aktif.add("   ");
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             ArrayList<String> row_lahan = new ArrayList<String>();
-            for (int j = 0; j < 4; j++) {
+            for (int j = 0; j < 5; j++) {
                 row_lahan.add(" x ");
             }
             lahan.add(row_lahan);
@@ -37,6 +37,15 @@ public class Player {
         card_in_one_turn++;
     }
 
+    public void drop_deck_aktif(String i) {
+        for(int x = 0; x < deck_aktif.size(); x++) {
+            if(deck_aktif.get(x).equals(i)) {
+                deck_aktif.remove(x);
+                print_deck_aktif();
+                break;
+            }
+        }
+    }
     public int getCard_in_one_turn() {
         return card_in_one_turn;
     }
