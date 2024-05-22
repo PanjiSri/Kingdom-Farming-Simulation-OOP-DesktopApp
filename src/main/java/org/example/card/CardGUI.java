@@ -11,26 +11,42 @@ import javafx.scene.control.Label;
 
 public class CardGUI {
     private ImageView imageView;
-    private VBox end;
+    private VBox vBox;
     private Card card;
 
     public CardGUI(Card card) {
         // Load the image
         this.card = card;
+
         Image image = new Image(getClass().getResource(this.card.getImgPath()).toExternalForm());
         imageView = new ImageView(image);
         imageView.setFitWidth(100);
         imageView.setFitHeight(100);
 
         // Add the ImageView to the Pane
-        VBox vBox = new VBox();
-        vBox.getChildren().addAll(new Label("Beruang"), imageView);
-        vBox.setStyle("-fx-pref-width: 70.0; -fx-pref-height: 300.0; -fx-border-color: black; -fx-max-height: 120; -fx-max-width: 120.0");
-        this.end = new VBox();
-        end.getChildren().addAll(vBox);
+        this.vBox = new VBox();
+
+        Label label = new Label(this.card.getName());
+        label.setStyle( "-fx-font-size: 14;" + 
+                        "-fx-font-weight: bold;" + 
+                        "-fx-font-family: 'Comic Sans MS';");
+
+        vBox.getChildren().addAll(label, imageView);
+        vBox.setStyle( "-fx-pref-width: 110.0;" +
+                       "-fx-pref-height: 130.0;" +
+                       "-fx-border-color: black;" + 
+                       "-fx-border-width: 1;" + 
+                       "-fx-background-color: beige;" + 
+                       "-fx-padding: 5;" +
+                       "-fx-spacing: 5;" +
+                       "-fx-alignment: center;" + 
+                       "-fx-border-radius: 10;" +
+                       "-fx-background-radius: 10;");
     }
 
     public VBox getVBox() {
-        return end;
+        return this.vBox;
     }
+
+    
 }

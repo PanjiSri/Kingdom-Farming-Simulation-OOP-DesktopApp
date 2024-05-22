@@ -10,8 +10,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
+import javax.smartcardio.Card;
+
 import org.example.Board.*;
 import org.example.Player.*;
+import org.example.card.CardGUI;
+import org.example.card.Hewan.Beruang;
 
 public class MainController {
 
@@ -208,15 +213,19 @@ public class MainController {
     }
 
     public void add_kartu_ke_shuffle_field() {
+        Beruang beruang = new Beruang("Beruang", "/img/Hewan/bear.png", 100, 10, "Hewan");
+        CardGUI cardGUI = new CardGUI(beruang);
+
         shuffle_panel.getChildren().clear();
         Player a = main.getPlayernow();
         System.out.println(a.getName());
         int idx = 0;
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                String kata = a.get_kartu(idx);
+                Card kata = a.get_kartu(idx);
                 Pane card_shuffle = new Pane();
                 card_shuffle.getChildren().add(new Label("Kartu " + kata));
+                card_shuffle.getChildren().add(cardGUI.getVBox());
                 card_shuffle.setStyle("-fx-background-color: white; -fx-pref-width: 60; -fx-pref-height: 60;");
                 card_shuffle.setId(a.get_deck(idx));
                 card_shuffle.setOnMouseClicked(event -> remove_pane(a, card_shuffle));
