@@ -12,7 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.example.Board.*;
 import org.example.Player.*;
-import org.example.card.CardPane.*;
+import org.example.card.CardGUI.*;
 
 
 public class MainController {
