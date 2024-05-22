@@ -37,6 +37,10 @@ public class Player {
         card_in_one_turn++;
     }
 
+    public void reset_ciot() {
+        card_in_one_turn = 0;
+    }
+
     public void drop_deck_aktif(String i) {
         for(int x = 0; x < deck_aktif.size(); x++) {
             if(deck_aktif.get(x).equals(i)) {
@@ -65,23 +69,17 @@ public class Player {
         }
     }
 
-    public void  cek_ladang_lawan() {
-
-    }
-
-    public void  beli() {
-
-    }
-
-    public void use_kartu() {
-
+    public void remove_deck(String id_kartu) {
+        for(int i = 0; i < deck.size(); i++) {
+            if(deck.get(i).equals(id_kartu)) {
+                deck.remove(i);
+                break;
+            }
+        }
     }
 
     public String get_kartu(int idx) {
         return deck.get(idx);
-    }
-
-    public void take_card() {
     }
 
     public void shuffle() {
@@ -134,6 +132,12 @@ public class Player {
     public void print_deck_aktif() {
         for (int i = 0; i < deck_aktif.size(); i++) {
             System.out.println(deck_aktif.get(i));
+        }
+    }
+
+    public void print_deck() {
+        for (int i = 0; i < deck.size(); i++) {
+            System.out.println(deck.get(i));
         }
     }
 

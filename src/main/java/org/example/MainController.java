@@ -63,6 +63,7 @@ public class MainController {
                 System.out.println(draggedPane.getId());
                 a.add_in_lahan(row, col, draggedPane.getId());
                 a.drop_deck_aktif(draggedPane.getId());
+                System.out.println("Ini kartu: " + draggedPane.getId());
                 System.out.println();
                 ladang.add(draggedPane, col, row);
                 a.print_lahan();
@@ -142,6 +143,8 @@ public class MainController {
 
     public void change_to_shuffle() {
         main.add_turn();
+        Player a = main.getPlayernow();
+        a.reset_ciot();
         board.getChildren().clear();
         add_kartu_ke_shuffle_field();
         board.getChildren().setAll(pane_ladang, ambil_kartu);
@@ -178,16 +181,14 @@ public class MainController {
         }
     }
 
-    public void add_kartu_ke_ladang() {
-        Player a = main.getPlayernow();
-    }
-
     public void remove_pane(Player player, Pane pane) {
         if (player.getCard_in_one_turn() < 4) {
             player.add_ciot();
             player.shuffle_to_deck_aktif(pane.getId());
+            player.remove_deck(pane.getId());
             shuffle_panel.getChildren().remove(pane);
             player.print_deck_aktif();
+            player.print_deck();
         }
     }
 
