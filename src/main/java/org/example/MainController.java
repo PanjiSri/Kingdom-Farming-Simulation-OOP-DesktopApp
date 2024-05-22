@@ -24,7 +24,7 @@ public class MainController {
     private Pane pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini;
 
     @FXML
-    private Button reset_data, next_turn, shuffle_card, close_button, ladang_lawan;
+    private Button next_turn, shuffle_card, close_button, ladang_lawan;
 
     @FXML
     private StackPane board;
@@ -112,7 +112,6 @@ public class MainController {
     }
 
     public void initialize_click() {
-        reset_data.setOnAction(e -> clear_pane());
         next_turn.setOnAction(e -> change_to_shuffle());
         shuffle_card.setOnAction(e -> shuffle_kartu());
         close_button.setOnAction(e -> change_to_main());
