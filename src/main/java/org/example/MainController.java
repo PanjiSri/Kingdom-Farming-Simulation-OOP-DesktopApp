@@ -3,6 +3,8 @@ package org.example;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -35,6 +37,7 @@ public class MainController {
 
     private Board main;
 
+    // Menyediakan ladang kosong
     public void init() {
         // Initialize the grid cells
         for (int i = 0; i < 5; i++) {
@@ -97,6 +100,7 @@ public class MainController {
         initialize_click();
     }
 
+    // Cek ladang lawan
     public void ladang_lawan() {
         ladang.getChildren().clear();
         init();
@@ -107,14 +111,15 @@ public class MainController {
                     System.out.println(a.get_card_ladang(i, j));
                     Pane pane = new Pane();
                     pane.setStyle("-fx-pref-height: 90; -fx-pref-width: 70; -fx-background-color: white");
-                    pane.setId(a.get_card_ladang(i, j).getCard().getName());
-                    pane.getChildren().add(new Label(a.get_card_ladang(i, j).getCard().getName()));
+                    pane.setId(a.get_card_ladang(i, j).getName());
+                    pane.getChildren().add(new Label(a.get_card_ladang(i, j).getName()));
                     ladang.add(pane, j, i);
                 }
             }
         }
     }
 
+    // Set fungsi pda button
     public void initialize_click() {
         next_turn.setOnAction(e -> change_to_shuffle());
         shuffle_card.setOnAction(e -> shuffle_kartu());
@@ -122,18 +127,14 @@ public class MainController {
         ladang_lawan.setOnAction(e -> ladang_lawan());
     }
 
-    public void clear_pane() {
-        System.out.println("Child pane: " + ladang.getChildren().size());
-        ladang.getChildren().clear();
-        System.out.println("Child pane: " + ladang.getChildren().size());
-    }
-
+    // Shuffle kartu
     public void shuffle_kartu() {
         Player a = main.getPlayernow();
         a.shuffle();
         add_kartu_ke_shuffle_field();
     }
 
+    // Tambahkan kartu ke deck aktif
     public void add_to_deck_aktif() {
         Player a = main.getPlayernow();
         for (int i = 0; i < 6; i++) {
@@ -141,8 +142,8 @@ public class MainController {
                 // System.out.println(a.get_card_aktif(i));
                 Pane pane = new Pane();
                 pane.setStyle("-fx-pref-height: 90; -fx-pref-width: 70; -fx-background-color: white");
-                pane.setId(a.get_card_aktif(i).getCard().getName());
-                pane.getChildren().add(new Label(a.get_card_aktif(i).getCard().getName()));
+                pane.setId(a.get_card_aktif(i).getName());
+                pane.getChildren().add(new Label(a.get_card_aktif(i).getName()));
                 pane.setOnDragDetected(event -> {
                     Dragboard db = pane.startDragAndDrop(TransferMode.MOVE);
                     ClipboardContent content = new ClipboardContent();
@@ -155,18 +156,19 @@ public class MainController {
         }
     }
 
+    // Tambahkan kartu ke ladang
     public void add_to_ladang() {
         Player a = main.getPlayernow();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
-                CardGUI card = a.get_card_ladang(i, j);
+                Card card = a.get_card_ladang(i, j);
                 // Pastikan kartu tidak null atau tidak valid
                 if (card != null) {
                     System.out.println(card);
                     Pane pane = new Pane();
                     pane.setStyle("-fx-pref-height: 90; -fx-pref-width: 70; -fx-background-color: white");
-                    pane.setId(a.get_card_ladang(i, j).getCard().getName()); // Menggunakan ID unik berdasarkan posisi
-                    pane.getChildren().add(new Label(card.getCard().getName()));
+                    pane.setId(a.get_card_ladang(i, j).getName()); // Menggunakan ID unik berdasarkan posisi
+                    pane.getChildren().add(new Label(card.getName()));
                     pane.setOnDragDetected(event -> {
                         Dragboard db = pane.startDragAndDrop(TransferMode.MOVE);
                         ClipboardContent content = new ClipboardContent();
@@ -180,7 +182,7 @@ public class MainController {
         }
     }
 
-
+    // Ubah ke pane shuffle
     public void change_to_shuffle() {
         main.add_turn();
         Player a = main.getPlayernow();
@@ -191,6 +193,7 @@ public class MainController {
         System.out.println(board.getChildren().size());
     }
 
+    // Ubah ke pane main
     public void change_to_main() {
         Player a = main.getPlayernow();
         jumlah_turn.getChildren().clear();
@@ -207,22 +210,22 @@ public class MainController {
 
     }
 
+    // Tambahkan kartu ke shuffle field
     public void add_kartu_ke_shuffle_field() {
         Beruang beruang = new Beruang("Beruang", "/img/Hewan/bear.png", 100, 10, "Hewan");
-        CardGUI cardGUI = new CardGUI(beruang);
 
-            shuffle_panel.getChildren().clear();
+        shuffle_panel.getChildren().clear();
         Player a = main.getPlayernow();
         System.out.println(a.getName());
         int idx = 0;
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
-                Card kata = a.get_kartu(idx);
-                Pane card_shuffle = new Pane();
-                card_shuffle.getChildren().add(new Label("Kartu " + kata));
-                card_shuffle.getChildren().add(cardGUI.getVBox());
+                String kata = beruang.getName();
+                VBox card_shuffle = new VBox();
+                Image image = new Image(this.getClass().getResource(beruang.getImgPath()).toExternalForm());
+                card_shuffle.getChildren().add(new Label(kata));
                 card_shuffle.setStyle("-fx-background-color: white; -fx-pref-width: 60; -fx-pref-height: 60;");
-                card_shuffle.setId(a.get_deck(idx).getCard().getName());
+                card_shuffle.setId(Integer.toString(idx));
                 card_shuffle.setOnMouseClicked(event -> remove_pane(a, card_shuffle));
                 idx += 1;
                 shuffle_panel.add(card_shuffle, i, j);
@@ -230,16 +233,24 @@ public class MainController {
         }
     }
 
-    public void remove_pane(Player player, Pane pane) {
+    // Hapus pane
+    public void remove_pane(Player player, VBox vBox) {
         if (player.getCard_in_one_turn() < 4) {
+            Label name = (Label) vBox.getChildren().get(0);
+            String name_str = name.getText();
+            System.out.println("ini nama: " + name);
+            if (name_str.equals("Beruang")) {
+                System.out.println("Sudah masuk");
+                Beruang beruang = new Beruang("Beruang", "/img/Hewan/bear.png", 100, 10, "Hewan");
+                player.shuffle_to_deck_aktif(beruang);
+            }
             player.add_ciot();
-            player.shuffle_to_deck_aktif((CardGUI) pane.getChildren().get(1));
-            player.remove_deck(pane.getId());
-            shuffle_panel.getChildren().remove(pane);
+            player.remove_deck(vBox.getId());
+            shuffle_panel.getChildren().remove(vBox);
             player.print_deck_aktif();
-            player.print_deck();
         }
     }
+
 
     public void set_turn() {
         jumlah_turn.getChildren().addAll(new Label("Turn: " + main.getTotalturn()));
