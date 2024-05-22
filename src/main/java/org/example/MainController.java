@@ -12,6 +12,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.example.Board.*;
 import org.example.Player.*;
+import org.example.card.CardPane.*;
+
 
 public class MainController {
 
@@ -160,7 +162,7 @@ public class MainController {
                     System.out.println(card);
                     Pane pane = new Pane();
                     pane.setStyle("-fx-pref-height: 90; -fx-pref-width: 70; -fx-background-color: white");
-                    pane.setId("ladang_" + i + "_" + j); // Menggunakan ID unik berdasarkan posisi
+                    pane.setId(a.get_card_ladang(i, j)); // Menggunakan ID unik berdasarkan posisi
                     pane.getChildren().add(new Label(card));
                     pane.setOnDragDetected(event -> {
                         Dragboard db = pane.startDragAndDrop(TransferMode.MOVE);
@@ -169,13 +171,7 @@ public class MainController {
                         db.setContent(content);
                         event.consume();
                     });
-                    try {
                         ladang.add(pane, j, i);
-                    } catch (Exception e) {
-                        System.err.println("Error adding pane to grid: " + e.getMessage());
-                    }
-                } else {
-                    System.out.println("Kartu di (" + i + ", " + j + ") tidak valid atau null.");
                 }
             }
         }
@@ -214,6 +210,7 @@ public class MainController {
         int idx = 0;
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
+
                 String kata = a.get_kartu(idx);
                 Pane card_shuffle = new Pane();
                 card_shuffle.getChildren().add(new Label("Kartu " + kata));
@@ -238,7 +235,7 @@ public class MainController {
     }
 
     public void set_turn() {
-        jumlah_turn.getChildren().addAll(new Label("Turn: " + main.getTurn()));
+        jumlah_turn.getChildren().addAll(new Label("Turn: " + main.getTotalturn()));
     }
 
     public void set_player() {
