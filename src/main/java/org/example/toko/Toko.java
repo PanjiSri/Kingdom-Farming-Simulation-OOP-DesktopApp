@@ -1,4 +1,4 @@
-package lorem;
+package org.example.toko;
 
 import java.util.HashMap;
 import java.util.Map;
