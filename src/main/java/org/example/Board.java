@@ -20,6 +20,13 @@ public class Board {
         return p2;
     }
 
+    public Player getEnemyNow() {
+        if (turn == 1) {
+            return p2;
+        }
+        return p1;
+    }
+
     public void add_turn() {
         if (turn == 1) {
             turn = 2;

@@ -24,9 +24,9 @@ public class Player {
         for (int i = 0; i < 6; i++) {
             deck_aktif.add("   ");
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             ArrayList<String> row_lahan = new ArrayList<String>();
-            for (int j = 0; j < 4; j++) {
+            for (int j = 0; j < 5; j++) {
                 row_lahan.add(" x ");
             }
             lahan.add(row_lahan);
@@ -35,6 +35,31 @@ public class Player {
 
     public void add_ciot() {
         card_in_one_turn++;
+    }
+
+    public void reset_ciot() {
+        card_in_one_turn = 0;
+    }
+
+    public void drop_deck_aktif(String i) {
+        for(int x = 0; x < deck_aktif.size(); x++) {
+            if(deck_aktif.get(x).equals(i)) {
+                deck_aktif.remove(x);
+                print_deck_aktif();
+                break;
+            }
+        }
+    }
+
+    public void drop_ladang(String i) {
+        for(int x = 0; x < lahan.size(); x++) {
+            for(int y = 0; y < lahan.get(x).size(); y++) {
+                if(lahan.get(x).get(y).equals(i)) {
+                    lahan.get(x).remove(y);
+                    lahan.get(x).add(" x ");
+                }
+            }
+        }
     }
 
     public int getCard_in_one_turn() {
@@ -56,23 +81,17 @@ public class Player {
         }
     }
 
-    public void  cek_ladang_lawan() {
-
-    }
-
-    public void  beli() {
-
-    }
-
-    public void use_kartu() {
-
+    public void remove_deck(String id_kartu) {
+        for(int i = 0; i < deck.size(); i++) {
+            if(deck.get(i).equals(id_kartu)) {
+                deck.remove(i);
+                break;
+            }
+        }
     }
 
     public String get_kartu(int idx) {
         return deck.get(idx);
-    }
-
-    public void take_card() {
     }
 
     public void shuffle() {
@@ -125,6 +144,12 @@ public class Player {
     public void print_deck_aktif() {
         for (int i = 0; i < deck_aktif.size(); i++) {
             System.out.println(deck_aktif.get(i));
+        }
+    }
+
+    public void print_deck() {
+        for (int i = 0; i < deck.size(); i++) {
+            System.out.println(deck.get(i));
         }
     }
 
