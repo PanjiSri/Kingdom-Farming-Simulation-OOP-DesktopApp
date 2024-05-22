@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="board" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" style="-fx-pref-width: 700; -fx-pref-height: 600;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController">
+<StackPane fx:id="board" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" style="-fx-pref-width: 700; -fx-pref-height: 600;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController">
    <children>
       <Pane fx:id="pane_ladang" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" style="-fx-pref-height: 600; -fx-pref-width: 700; -fx-background-color: pink; -fx-opacity: 1;" stylesheets="styles.css">
          <children>
@@ -96,19 +96,15 @@
             </ButtonBar>
          </children>
       </Pane>
-      <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;">
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="500.0" style="-fx-background-color: #FFFFFF;">
          <children>
-            <Button layoutX="75.0" layoutY="55.0" mnemonicParsing="false" text="Kembali">
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Kembali" />
+            <Label layoutX="231.0" layoutY="10.0" text="Toko">
                <font>
-                  <Font size="16.0" />
-               </font>
-            </Button>
-            <Label layoutX="307.0" layoutY="47.0" text="Toko">
-               <font>
-                  <Font name="System Bold" size="36.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
-            <GridPane hgap="20.0" layoutX="50.0" layoutY="120.0" prefHeight="450.0" prefWidth="600.0" vgap="20.0">
+            <GridPane hgap="10.0" layoutX="50.0" layoutY="40.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" vgap="10.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -120,380 +116,272 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;">
+                  <AnchorPane layoutX="285.0" layoutY="284.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;">
                      <children>
-                        <AnchorPane layoutX="10.0" layoutY="11.0" prefHeight="116.0" prefWidth="90.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
+                        <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
-                              <Label alignment="CENTER" layoutX="11.0" layoutY="70.0" prefHeight="40.0" prefWidth="67.0" style="-fx-text-alignment: CENTER;" text="Sirip Hiu" wrapText="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="10.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                              <Label alignment="CENTER" layoutX="5.0" layoutY="61.0" prefHeight="45.0" prefWidth="45.0" style="-fx-text-alignment: CENTER;" text="Sirip Hiu" wrapText="true" />
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/Produk/shark-fin.png" />
                                  </image>
                               </ImageView>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="108.0" layoutY="13.0" prefHeight="100.0" prefWidth="65.0">
+                        <AnchorPane layoutX="69.0" layoutY="6.0" prefHeight="112.0" prefWidth="50.0">
                            <children>
-                              <Label layoutX="9.0" layoutY="5.0" prefWidth="57.0" text="Harga">
+                              <Label layoutX="2.0" layoutY="6.0" text="Harga">
                                  <font>
-                                    <Font name="System Bold" size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="26.0" text="0">
+                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="53.0" text="Jumlah">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="9.0" layoutY="74.0" text="0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
+                              <Label layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="1">
                      <children>
-                        <AnchorPane layoutX="10.0" layoutY="11.0" prefHeight="116.0" prefWidth="90.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
+                        <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
-                              <Label alignment="CENTER" layoutX="11.0" layoutY="70.0" prefHeight="40.0" prefWidth="67.0" style="-fx-text-alignment: CENTER;" text="Susu" wrapText="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="10.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                              <Label alignment="CENTER" layoutX="5.0" layoutY="61.0" prefHeight="45.0" prefWidth="45.0" style="-fx-text-alignment: CENTER;" text="Susu" wrapText="true" />
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/Produk/susu.png" />
                                  </image>
                               </ImageView>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="108.0" layoutY="13.0" prefHeight="100.0" prefWidth="65.0">
+                        <AnchorPane layoutX="69.0" layoutY="6.0" prefHeight="112.0" prefWidth="50.0">
                            <children>
-                              <Label layoutX="9.0" layoutY="5.0" prefWidth="57.0" text="Harga">
+                              <Label layoutX="2.0" layoutY="6.0" text="Harga">
                                  <font>
-                                    <Font name="System Bold" size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="26.0" text="0">
+                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="53.0" text="Jumlah">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="9.0" layoutY="74.0" text="0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
+                              <Label layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="217.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="2">
+                  <AnchorPane layoutX="148.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="2">
                      <children>
-                        <AnchorPane layoutX="10.0" layoutY="11.0" prefHeight="116.0" prefWidth="90.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
+                        <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
-                              <Label alignment="CENTER" layoutX="11.0" layoutY="70.0" prefHeight="40.0" prefWidth="67.0" style="-fx-text-alignment: CENTER;" text="Daging Domba" wrapText="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="10.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                              <Label alignment="CENTER" layoutX="5.0" layoutY="61.0" prefHeight="45.0" prefWidth="45.0" style="-fx-text-alignment: CENTER;" text="Daging Domba" wrapText="true" />
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/Produk/Daging%20Domba.png" />
                                  </image>
                               </ImageView>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="108.0" layoutY="13.0" prefHeight="100.0" prefWidth="65.0">
+                        <AnchorPane layoutX="69.0" layoutY="6.0" prefHeight="112.0" prefWidth="50.0">
                            <children>
-                              <Label layoutX="9.0" layoutY="5.0" prefWidth="57.0" text="Harga">
+                              <Label layoutX="2.0" layoutY="6.0" text="Harga">
                                  <font>
-                                    <Font name="System Bold" size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="26.0" text="0">
+                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="53.0" text="Jumlah">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="9.0" layoutY="74.0" text="0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
+                              <Label layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="424.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.rowIndex="1">
+                  <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.rowIndex="1">
                      <children>
-                        <AnchorPane layoutX="10.0" layoutY="11.0" prefHeight="116.0" prefWidth="90.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
+                        <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
-                              <Label alignment="CENTER" layoutX="11.0" layoutY="70.0" prefHeight="40.0" prefWidth="67.0" style="-fx-text-alignment: CENTER;" text="Daging Kuda" wrapText="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="10.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                              <Label alignment="CENTER" layoutX="5.0" layoutY="61.0" prefHeight="45.0" prefWidth="45.0" style="-fx-text-alignment: CENTER;" text="Daging Kuda" wrapText="true" />
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/Produk/Daging%20Kuda.png" />
                                  </image>
                               </ImageView>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="108.0" layoutY="13.0" prefHeight="100.0" prefWidth="65.0">
+                        <AnchorPane layoutX="69.0" layoutY="6.0" prefHeight="112.0" prefWidth="50.0">
                            <children>
-                              <Label layoutX="9.0" layoutY="5.0" prefWidth="57.0" text="Harga">
+                              <Label layoutX="2.0" layoutY="6.0" text="Harga">
                                  <font>
-                                    <Font name="System Bold" size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="26.0" text="0">
+                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="53.0" text="Jumlah">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="9.0" layoutY="74.0" text="0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
+                              <Label layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
-                        <AnchorPane layoutX="10.0" layoutY="11.0" prefHeight="116.0" prefWidth="90.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
+                        <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
-                              <Label alignment="CENTER" layoutX="11.0" layoutY="70.0" prefHeight="40.0" prefWidth="67.0" style="-fx-text-alignment: CENTER;" text="Telur" wrapText="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="10.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                              <Label alignment="CENTER" layoutX="5.0" layoutY="61.0" prefHeight="45.0" prefWidth="45.0" style="-fx-text-alignment: CENTER;" text="Telur" wrapText="true" />
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/Produk/telur.png" />
                                  </image>
                               </ImageView>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="108.0" layoutY="13.0" prefHeight="100.0" prefWidth="65.0">
+                        <AnchorPane layoutX="69.0" layoutY="6.0" prefHeight="112.0" prefWidth="50.0">
                            <children>
-                              <Label layoutX="9.0" layoutY="5.0" prefWidth="57.0" text="Harga">
+                              <Label layoutX="2.0" layoutY="6.0" text="Harga">
                                  <font>
-                                    <Font name="System Bold" size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="26.0" text="0">
+                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="53.0" text="Jumlah">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="9.0" layoutY="74.0" text="0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
+                              <Label layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <children>
-                        <AnchorPane layoutX="10.0" layoutY="11.0" prefHeight="116.0" prefWidth="90.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
+                        <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
-                              <Label alignment="CENTER" layoutX="11.0" layoutY="70.0" prefHeight="40.0" prefWidth="67.0" style="-fx-text-alignment: CENTER;" text="Daging Beruang" wrapText="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="10.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                              <Label alignment="CENTER" layoutX="5.0" layoutY="61.0" prefHeight="45.0" prefWidth="45.0" style="-fx-text-alignment: CENTER;" text="Daging Beruang" wrapText="true" />
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/Produk/Daging%20Beruang.png" />
                                  </image>
                               </ImageView>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="108.0" layoutY="13.0" prefHeight="100.0" prefWidth="65.0">
+                        <AnchorPane layoutX="69.0" layoutY="6.0" prefHeight="112.0" prefWidth="50.0">
                            <children>
-                              <Label layoutX="9.0" layoutY="5.0" prefWidth="57.0" text="Harga">
+                              <Label layoutX="2.0" layoutY="6.0" text="Harga">
                                  <font>
-                                    <Font name="System Bold" size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="26.0" text="0">
+                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="53.0" text="Jumlah">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="9.0" layoutY="74.0" text="0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
+                              <Label layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.rowIndex="2">
                      <children>
-                        <AnchorPane layoutX="10.0" layoutY="11.0" prefHeight="116.0" prefWidth="90.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
+                        <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
-                              <Label alignment="CENTER" layoutX="11.0" layoutY="70.0" prefHeight="40.0" prefWidth="67.0" style="-fx-text-alignment: CENTER;" text="Jagung" wrapText="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="10.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                              <Label alignment="CENTER" layoutX="5.0" layoutY="61.0" prefHeight="45.0" prefWidth="45.0" style="-fx-text-alignment: CENTER;" text="Jagung" wrapText="true" />
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/Produk/corn.png" />
                                  </image>
                               </ImageView>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="108.0" layoutY="13.0" prefHeight="100.0" prefWidth="65.0">
+                        <AnchorPane layoutX="69.0" layoutY="6.0" prefHeight="112.0" prefWidth="50.0">
                            <children>
-                              <Label layoutX="9.0" layoutY="5.0" prefWidth="57.0" text="Harga">
+                              <Label layoutX="2.0" layoutY="6.0" text="Harga">
                                  <font>
-                                    <Font name="System Bold" size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="26.0" text="0">
+                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="53.0" text="Jumlah">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="9.0" layoutY="74.0" text="0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
+                              <Label layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
                   <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
-                        <AnchorPane layoutX="10.0" layoutY="11.0" prefHeight="116.0" prefWidth="90.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
+                        <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
-                              <Label alignment="CENTER" layoutX="11.0" layoutY="70.0" prefHeight="40.0" prefWidth="67.0" style="-fx-text-alignment: CENTER;" text="Labu" wrapText="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="10.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                              <Label alignment="CENTER" layoutX="5.0" layoutY="61.0" prefHeight="45.0" prefWidth="45.0" style="-fx-text-alignment: CENTER;" text="Labu" wrapText="true" />
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/Produk/pumpkin.png" />
                                  </image>
                               </ImageView>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="108.0" layoutY="13.0" prefHeight="100.0" prefWidth="65.0">
+                        <AnchorPane layoutX="69.0" layoutY="6.0" prefHeight="112.0" prefWidth="50.0">
                            <children>
-                              <Label layoutX="9.0" layoutY="5.0" prefWidth="57.0" text="Harga">
+                              <Label layoutX="2.0" layoutY="6.0" text="Harga">
                                  <font>
-                                    <Font name="System Bold" size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="26.0" text="0">
+                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="53.0" text="Jumlah">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="9.0" layoutY="74.0" text="0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
+                              <Label layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <children>
-                        <AnchorPane layoutX="10.0" layoutY="11.0" prefHeight="116.0" prefWidth="90.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
+                        <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
-                              <Label alignment="CENTER" layoutX="11.0" layoutY="70.0" prefHeight="40.0" prefWidth="67.0" style="-fx-text-alignment: CENTER;" text="Stroberi" wrapText="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
-                              <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="10.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+                              <Label alignment="CENTER" layoutX="5.0" layoutY="61.0" prefHeight="45.0" prefWidth="45.0" style="-fx-text-alignment: CENTER;" text="Stroberi" wrapText="true" />
+                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="2.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@img/Produk/strawberry.png" />
                                  </image>
                               </ImageView>
                            </children>
                         </AnchorPane>
-                        <AnchorPane layoutX="108.0" layoutY="13.0" prefHeight="100.0" prefWidth="65.0">
+                        <AnchorPane layoutX="69.0" layoutY="6.0" prefHeight="112.0" prefWidth="50.0">
                            <children>
-                              <Label layoutX="9.0" layoutY="5.0" prefWidth="57.0" text="Harga">
+                              <Label layoutX="2.0" layoutY="6.0" text="Harga">
                                  <font>
-                                    <Font name="System Bold" size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="26.0" text="0">
+                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="9.0" layoutY="53.0" text="Jumlah">
-                                 <font>
-                                    <Font name="System Bold" size="14.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="9.0" layoutY="74.0" text="0">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Label>
+                              <Label layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
