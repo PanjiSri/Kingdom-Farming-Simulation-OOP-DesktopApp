@@ -37,6 +37,10 @@ public class Board {
         }
     }
 
+    public int getTotalturn() {
+        return totalturn;
+    }
+
     public int getTurn() {
         return turn;
     }

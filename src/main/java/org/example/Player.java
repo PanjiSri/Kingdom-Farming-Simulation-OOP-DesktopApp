@@ -11,18 +11,30 @@ public class Player {
     private String name;
     private int coin;
     private int card_in_one_turn;
-    ArrayList<Card> deck;
-    ArrayList<Card> deck_aktif;
-    ArrayList<ArrayList<Card>> lahan;
+    ArrayList<CardGUI> deck;
+    ArrayList<CardGUI> deck_aktif;
+    ArrayList<ArrayList<CardGUI>> lahan;
 
     public Player(String _name, int _coin) {
         name = _name;
         coin = _coin;
-        deck = new ArrayList<Card>();
-        deck_aktif = new ArrayList<Card>();
-        lahan = new ArrayList<ArrayList<Card>>();
+        deck = new ArrayList<CardGUI>();
+        deck_aktif = new ArrayList<CardGUI>();
+        lahan = new ArrayList<ArrayList<CardGUI>>();
         for (int i = 0; i < 40; i++) {
-            deck.add(new Beruang("Beruang", "/img/Hewan/bear.png", 100, 10, "Hewan"));
+            Beruang temp = new Beruang("Beruang", "/img/Hewan/bear.png", 100, 10, "Hewan");
+            CardGUI card = new CardGUI(temp);
+            deck.add(card);
+        }
+        for (int i = 0; i < 6; i++) {
+            deck_aktif.add(null);
+        }
+        for (int i = 0; i < 4; i++) {
+            ArrayList<CardGUI> temp = new ArrayList<CardGUI>();
+            for (int j = 0; j < 5; j++) {
+                temp.add(null);
+            }
+            lahan.add(temp);
         }
     }
 
@@ -34,9 +46,9 @@ public class Player {
         card_in_one_turn = 0;
     }
 
-    public void drop_deck_aktif(String i) {
+    public void drop_deck_aktif(CardGUI i) {
         for(int x = 0; x < deck_aktif.size(); x++) {
-            if(deck_aktif.get(x).equals(i)) {
+            if(deck_aktif.get(x).getCard().getName().equals(i.getCard().getName())) {
                 deck_aktif.remove(x);
                 print_deck_aktif();
                 break;
@@ -47,10 +59,10 @@ public class Player {
     public void drop_ladang(String i) {
         for(int x = 0; x < lahan.size(); x++) {
             for(int y = 0; y < lahan.get(x).size(); y++) {
-                // if(lahan.get(x).get(y).equals(i)) {
+                if(lahan.get(x).get(y).getCard().getName().equals("Beruang")) {
                     lahan.get(x).remove(y);
                     lahan.get(x).add(this.deck_aktif.get(0));
-                // }
+                }
             }
         }
     }
@@ -59,24 +71,9 @@ public class Player {
         return card_in_one_turn;
     }
 
-    private void kartuToLahan (Card _kartu) {
-        int card_on_deck = 0;
-        for(int i = 0; i < deck_aktif.size(); i++) {
-            if(deck_aktif.get(i).equals("   ")) {
-                deck_aktif.add(i, _kartu);
-            }
-            else {
-                card_on_deck += 1;
-            }
-        }
-        if (card_on_deck == 6) {
-            System.out.println("Kartu penuh");
-        }
-    }
-
     public void remove_deck(String id_kartu) {
         for(int i = 0; i < deck.size(); i++) {
-            if(deck.get(i).equals(id_kartu)) {
+            if(deck.get(i).getCard().getName().equals("Beruang")) {
                 deck.remove(i);
                 break;
             }
@@ -84,32 +81,32 @@ public class Player {
     }
 
     public Card get_kartu(int idx) {
-        return deck.get(idx);
+        return deck.get(idx).getCard();
     }
 
     public void shuffle() {
         Collections.shuffle(deck);
     }
 
-    public void shuffle_to_deck_aktif(Card id_kartu) {
+    public void shuffle_to_deck_aktif(CardGUI card) {
         for(int i = 0; i < deck_aktif.size(); i++) {
-            if(deck_aktif.get(i).equals("   ")) {
-                deck_aktif.add(i, id_kartu);
-                System.out.println(id_kartu);
+            if(deck_aktif.get(i) == null) {
+                deck_aktif.add(i, card);
+                // System.out.println(id_kartu);
                 break;
             }
         }
     }
 
-    public Card get_deck (int idx) {
+    public CardGUI get_deck (int idx) {
         return deck.get(idx);
     }
 
-    public Card get_card_aktif (int idx) {
+    public CardGUI get_card_aktif (int idx) {
         return deck_aktif.get(idx);
     }
 
-    public Card get_card_ladang (int i, int j) {
+    public CardGUI get_card_ladang (int i, int j) {
         return lahan.get(i).get(j);
     }
 
@@ -121,7 +118,7 @@ public class Player {
         return coin;
     }
 
-    public void add_in_lahan(int x, int y, Card value) {
+    public void add_in_lahan(int x, int y, CardGUI value) {
         lahan.get(x).set(y, value);
     }
 
@@ -136,7 +133,12 @@ public class Player {
 
     public void print_deck_aktif() {
         for (int i = 0; i < deck_aktif.size(); i++) {
-            System.out.println(deck_aktif.get(i));
+            if (deck_aktif.get(i) == null) {
+                System.out.println("null");
+                continue;
+            } else {
+                System.out.println(deck_aktif.get(i).getCard().getName());
+            }
         }
     }
 

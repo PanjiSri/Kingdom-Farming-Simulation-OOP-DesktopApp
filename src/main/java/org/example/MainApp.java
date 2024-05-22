@@ -27,9 +27,9 @@ public class MainApp extends Application {
         controller.add_kartu_ke_shuffle_field();
         controller.initialize_click();
         controller.init();
-        controller.add_to_deck_aktif();
+//        controller.add_to_deck_aktif();
 
-        Scene scene = new Scene(root, 700, 700);
+        Scene scene = new Scene(root, 1000, 800);
         primaryStage.setScene(scene);
         primaryStage.setTitle("My JavaFX Application");
         primaryStage.show();
