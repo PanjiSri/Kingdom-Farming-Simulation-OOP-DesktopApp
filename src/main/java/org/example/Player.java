@@ -50,6 +50,18 @@ public class Player {
             }
         }
     }
+
+    public void drop_ladang(String i) {
+        for(int x = 0; x < lahan.size(); x++) {
+            for(int y = 0; y < lahan.get(x).size(); y++) {
+                if(lahan.get(x).get(y).equals(i)) {
+                    lahan.get(x).remove(y);
+                    lahan.get(x).add(" x ");
+                }
+            }
+        }
+    }
+
     public int getCard_in_one_turn() {
         return card_in_one_turn;
     }
