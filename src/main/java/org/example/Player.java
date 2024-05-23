@@ -1,11 +1,11 @@
 package org.example;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import org.example.card.CardGUI;
 import org.example.card.Card;
-import org.example.card.Hewan.Beruang;
+import org.example.card.StaticCard;
+
+
 
 public class Player {
     private String name;
@@ -21,13 +21,26 @@ public class Player {
         deck = new ArrayList<Card>();
         deck_aktif = new ArrayList<Card>();
         lahan = new ArrayList<ArrayList<Card>>();
+
         for (int i = 0; i < 40; i++) {
-            Beruang temp = new Beruang("Beruang", "/img/Hewan/bear.png", 100, 10, "Hewan");
-            deck.add(temp);
+            try {
+                Class<?> clazz = Class.forName(StaticCard.getRandomCardName());
+                Card temp = (Card) clazz.getDeclaredConstructor().newInstance();
+                deck.add(temp);
+            } catch (Exception e) {
+                System.out.println("kelas tidak ditemukan");
+                e.printStackTrace();
+            }
         }
+
+        System.out.println("===============================");
+        print_deck();
+        System.out.println("===============================");
+        
         for (int i = 0; i < 6; i++) {
             deck_aktif.add(null);
         }
+        
         for (int i = 0; i < 4; i++) {
             ArrayList<Card> temp = new ArrayList<Card>();
             for (int j = 0; j < 5; j++) {
@@ -91,9 +104,7 @@ public class Player {
         System.out.println("Ini hewan: " + card.getName());
         for(int i = 0; i < deck_aktif.size(); i++) {
             if(deck_aktif.get(i) == null) {
-                System.out.println("Imam nunggu gojek");
-                deck_aktif.add(i, card);
-                // System.out.println(id_kartu);
+                deck_aktif.set(i, card);
                 break;
             }
         }
@@ -126,7 +137,11 @@ public class Player {
     public void print_lahan() {
         for (int i = 0; i < lahan.size(); i++) {
             for (int j = 0; j < lahan.get(i).size(); j++) {
-                System.out.print(lahan.get(i).get(j));
+                if (lahan.get(i).get(j) == null) {
+                    System.out.print("null");
+                } else {
+                    System.out.print(lahan.get(i).get(j).getName());
+                }
             }
             System.out.println();
         }
@@ -136,7 +151,6 @@ public class Player {
         for (int i = 0; i < deck_aktif.size(); i++) {
             if (deck_aktif.get(i) == null) {
                 System.out.println("null");
-                continue;
             } else {
                 System.out.println(deck_aktif.get(i).getName());
             }
@@ -145,7 +159,7 @@ public class Player {
 
     public void print_deck() {
         for (int i = 0; i < deck.size(); i++) {
-            System.out.println(deck.get(i));
+            System.out.println(deck.get(i).getId() + " " + deck.get(i).getName());
         }
     }
 

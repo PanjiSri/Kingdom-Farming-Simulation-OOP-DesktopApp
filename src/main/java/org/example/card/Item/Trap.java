@@ -3,8 +3,8 @@ package org.example.card.Item;
 import org.example.card.BisaPanen;
 
 public class Trap extends Item {
-    public Trap(String name, String imgPath) {
-        super(name, imgPath);
+    public Trap() {
+        super("Trap", "/img/Hewan/bear trap.png");
     }
 
     @Override

@@ -36,14 +36,27 @@ public class MainController {
     private StackPane board;
 
     private Board main;
-
+    private String style = ("-fx-pref-width: 70.0;" +
+                            "-fx-pref-height: 90.0;" +
+                            "-fx-border-color: black;" +
+                            "-fx-border-width: 1;" +
+                            "-fx-background-color: beige;" +
+                            "-fx-padding: 5;" +
+                            "-fx-spacing: 5;" +
+                            "-fx-alignment: center;" +
+                            "-fx-border-radius: 10;" +
+                            "-fx-background-radius: 10;");
+    private String font = ("-fx-font-size: 14;" + 
+                           "-fx-font-weight: bold;" + 
+                           "-fx-font-family: 'Comic Sans MS';");
+    private int width = 90, height = 90;
     // Menyediakan ladang kosong
     public void init() {
         // Initialize the grid cells
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 4; j++) {
                 Pane pane = new Pane();
-                pane.setStyle("-fx-background-color: black; -fx-border-color: white; -fx-pref-width: 60; -fx-pref-height: 60;");
+                pane.setStyle(style);
                 ladang.add(pane, i, j);
             }
         }
@@ -63,7 +76,7 @@ public class MainController {
             boolean success = false;
             if (db.hasString() && db.getString().equals("pane")) {
                 Pane draggedPane = (Pane) event.getGestureSource();
-                draggedPane.setStyle("-fx-background-color: white");
+                draggedPane.setStyle(style);
 
                 // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
                 if (deck_aktif.getChildren().contains(draggedPane)) {
@@ -110,7 +123,7 @@ public class MainController {
                 if (a.get_card_ladang(i, j) != null) {
                     System.out.println(a.get_card_ladang(i, j));
                     Pane pane = new Pane();
-                    pane.setStyle("-fx-pref-height: 90; -fx-pref-width: 70; -fx-background-color: white");
+                    pane.setStyle(style);
                     pane.setId(a.get_card_ladang(i, j).getName());
                     pane.getChildren().add(new Label(a.get_card_ladang(i, j).getName()));
                     ladang.add(pane, j, i);
@@ -139,19 +152,25 @@ public class MainController {
         Player a = main.getPlayernow();
         for (int i = 0; i < 6; i++) {
             if (a.get_card_aktif(i) != null) {
-                // System.out.println(a.get_card_aktif(i));
-                Pane pane = new Pane();
-                pane.setStyle("-fx-pref-height: 90; -fx-pref-width: 70; -fx-background-color: white");
-                pane.setId(a.get_card_aktif(i).getName());
-                pane.getChildren().add(new Label(a.get_card_aktif(i).getName()));
-                pane.setOnDragDetected(event -> {
-                    Dragboard db = pane.startDragAndDrop(TransferMode.MOVE);
+                Image image = new Image(this.getClass().getResource(a.get_card_aktif(i).getImgPath()).toExternalForm());
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(width);
+                imageView.setFitHeight(height);
+                
+                VBox card = new VBox();
+                Label label = new Label(a.get_card_aktif(i).getName());
+                label.setStyle(font);
+                card.getChildren().add(label);
+                card.getChildren().add(imageView);
+                card.setStyle(style);
+                card.setOnDragDetected(event -> {
+                    Dragboard db = card.startDragAndDrop(TransferMode.MOVE);
                     ClipboardContent content = new ClipboardContent();
                     content.putString("pane");
                     db.setContent(content);
                     event.consume();
                 });
-                deck_aktif.add(pane, i, 0);
+                deck_aktif.add(card, i, 0);
             }
         }
     }
@@ -166,9 +185,11 @@ public class MainController {
                 if (card != null) {
                     System.out.println(card);
                     Pane pane = new Pane();
-                    pane.setStyle("-fx-pref-height: 90; -fx-pref-width: 70; -fx-background-color: white");
+                    pane.setStyle(style);
                     pane.setId(a.get_card_ladang(i, j).getName()); // Menggunakan ID unik berdasarkan posisi
-                    pane.getChildren().add(new Label(card.getName()));
+                    Label label = new Label(card.getName());
+                    label.setStyle(font);
+                    pane.getChildren().add(label);
                     pane.setOnDragDetected(event -> {
                         Dragboard db = pane.startDragAndDrop(TransferMode.MOVE);
                         ClipboardContent content = new ClipboardContent();
@@ -212,7 +233,7 @@ public class MainController {
 
     // Tambahkan kartu ke shuffle field
     public void add_kartu_ke_shuffle_field() {
-        Beruang beruang = new Beruang("Beruang", "/img/Hewan/bear.png", 100, 10, "Hewan");
+        Beruang beruang = new Beruang(0);
 
         shuffle_panel.getChildren().clear();
         Player a = main.getPlayernow();
@@ -223,8 +244,16 @@ public class MainController {
                 String kata = beruang.getName();
                 VBox card_shuffle = new VBox();
                 Image image = new Image(this.getClass().getResource(beruang.getImgPath()).toExternalForm());
-                card_shuffle.getChildren().add(new Label(kata));
-                card_shuffle.setStyle("-fx-background-color: white; -fx-pref-width: 60; -fx-pref-height: 60;");
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(width);
+                imageView.setFitHeight(height);
+                
+                Label label = new Label(kata);
+                label.setStyle(font);
+
+                card_shuffle.getChildren().add(label);
+                card_shuffle.getChildren().add(imageView);
+                card_shuffle.setStyle(style);
                 card_shuffle.setId(Integer.toString(idx));
                 card_shuffle.setOnMouseClicked(event -> remove_pane(a, card_shuffle));
                 idx += 1;
@@ -241,7 +270,7 @@ public class MainController {
             System.out.println("ini nama: " + name);
             if (name_str.equals("Beruang")) {
                 System.out.println("Sudah masuk");
-                Beruang beruang = new Beruang("Beruang", "/img/Hewan/bear.png", 100, 10, "Hewan");
+                Beruang beruang = new Beruang(0);
                 player.shuffle_to_deck_aktif(beruang);
             }
             player.add_ciot();

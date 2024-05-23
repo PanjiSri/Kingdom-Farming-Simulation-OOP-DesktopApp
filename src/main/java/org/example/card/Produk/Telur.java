@@ -4,8 +4,8 @@ import org.example.card.BisaPanen;
 import org.example.card.Hewan.Hewan;
 
 public class Telur extends Produk {
-    public Telur(String name, String imgPath, int harga, int tambahanBerat) {
-        super(name, imgPath, harga, tambahanBerat);
+    public Telur() {
+        super("Telur", "/img/Hewan/telur.png", 50, 2);
     }
 
     @Override

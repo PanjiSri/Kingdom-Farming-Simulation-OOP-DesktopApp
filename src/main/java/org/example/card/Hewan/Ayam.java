@@ -4,15 +4,19 @@ import org.example.card.Produk.Produk;
 import org.example.card.Produk.Telur;
 
 public class Ayam extends Hewan {
-    public Ayam(String name, String imgPath, int harga, int standarBeratPanen, String tipe) {
-        super(name, imgPath, harga, standarBeratPanen, tipe);
+    public Ayam() {
+        super("Ayam", "/img/chicken/bear.png", 0, 5, "Omnivora");
+    }
+
+    public Ayam(int berat) {
+        super("Ayam", "/img/chicken/bear.png", berat, 5, "Omnivora");
     }
 
     @Override
     public Produk panen() {
         if (isSiapPanen()) {
             this.berat = 0;
-            return new Telur("Telur", "img/Produk/telur.png", 50, 2);
+            return new Telur();
         } else {
             return null;
         }

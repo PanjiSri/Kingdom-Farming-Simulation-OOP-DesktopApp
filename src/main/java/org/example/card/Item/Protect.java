@@ -3,8 +3,8 @@ package org.example.card.Item;
 import org.example.card.BisaPanen;
 
 public class Protect extends Item {
-    public Protect(String name, String imgPath) {
-        super(name, imgPath);
+    public Protect() {
+        super("Protect", "/img/Hewan/Protect.png");
     }
 
     @Override

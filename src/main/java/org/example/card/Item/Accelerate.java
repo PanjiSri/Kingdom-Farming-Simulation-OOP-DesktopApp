@@ -5,8 +5,8 @@ import org.example.card.Hewan.Hewan;
 import org.example.card.Tumbuhan.Tumbuhan;
 
 public class Accelerate extends Item {
-    public Accelerate(String name, String imgPath) {
-        super(name, imgPath);
+    public Accelerate() {
+        super("Accelerate", "/img/Hewan/Accelerate.png");
     }
 
     @Override

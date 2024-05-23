@@ -5,15 +5,19 @@ import org.example.card.Produk.Susu;
 
 
 public class Sapi extends Hewan {
-    public Sapi(String name, String imgPath, int harga, int standarBeratPanen, String tipe) {
-        super(name, imgPath, harga, standarBeratPanen, tipe);
+    public Sapi() {
+        super("Sapi", "/img/Hewan/cow.png", 0, 10, "Herbivora");
+    }
+    
+    public Sapi(int berat)  {
+        super("Sapi", "/img/Hewan/cow.png", berat, 10, "Herbivora");
     }
 
     @Override
     public Produk panen() {
         if (isSiapPanen()) {
             this.berat = 0;
-            return new Susu("Susu Sapi", "img/Produk/susu.png", 100, 4);
+            return new Susu();
         } else {
             return null;
         }
