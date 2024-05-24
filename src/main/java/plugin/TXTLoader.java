@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class TXTLoader{
@@ -24,5 +25,14 @@ public class TXTLoader{
             e.printStackTrace();
         }
         return lines;
+    }
+
+    public List<String> tokenizeLines(List<String> lines) {
+        List<String> tokens = new ArrayList<>();
+        for (String line : lines) {
+            String[] lineTokens = line.split("\\s+");
+            tokens.addAll(Arrays.asList(lineTokens));
+        }
+        return tokens;
     }
 }
