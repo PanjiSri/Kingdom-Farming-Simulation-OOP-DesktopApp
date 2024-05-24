@@ -153,6 +153,8 @@ public class MainController {
             event.consume();
         });
 
+        // toko
+        board.getChildren().remove(toko);
 
         // Initialize the action buttons
         initialize_click();
@@ -487,12 +489,17 @@ public class MainController {
                     a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
                     a.jual(main.getToko(), "SIRIP_HIU");
                     updateJumlah("SIRIP_HIU");
+                    System.out.println("uang player: " + Integer.toString(main.getPlayernow().getCoin()));
                     success = true;
                 }
             }
             event.setDropCompleted(success);
             event.consume();
-            System.out.println("uang player: " + Integer.toString(main.getPlayernow().getCoin()));
+        });
+        sirip_hiu.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                System.out.println("double clicked");
+            }
         });
         susu.setOnDragOver(event -> {
             if (event.getGestureSource() != susu && event.getDragboard().hasString()) {
