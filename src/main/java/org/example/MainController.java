@@ -8,10 +8,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.*;
-
-// import javax.smartcardio.Card;
-
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import org.example.Board.*;
 import org.example.Player.*;
 import org.example.card.BisaPanen;
@@ -65,6 +66,12 @@ public class MainController {
                 ladang.add(pane, i, j);
             }
         }
+
+        Circle circle = new Circle(50, 50, 50);
+        circle.setCenterX(20);
+
+        Button button = new Button("Click me!");
+        button.setOnAction(e -> System.out.println("Hello, World!"));
 
         // Set drag over for the GridPane
         ladang.setOnDragOver(event -> {
