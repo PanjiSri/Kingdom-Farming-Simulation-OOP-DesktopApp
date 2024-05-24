@@ -10,14 +10,17 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
+import javafx.scene.layout.AnchorPane;
 import org.example.Board.*;
 import org.example.Player.*;
 import org.example.card.BisaPanen;
-import org.example.card.CardGUI;
 import org.example.card.Card;
 import org.example.card.Hewan.Beruang;
 import org.example.card.Hewan.Hewan;
 import org.example.card.Item.Item;
+import org.example.card.Tumbuhan.Tumbuhan;
+import org.example.card.Produk.Produk;
+import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
 
@@ -30,13 +33,16 @@ public class MainController {
     private AnchorPane info_pane;
 
     @FXML
-    private Pane pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini, info_hewan, halo;
+    private Pane pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini, halo;
 
     @FXML
     private Button next_turn, shuffle_card, close_button, ladang_lawan, ladang_sendiri, panen, tutup_info, save;
 
     @FXML
     private StackPane board;
+
+    @FXML
+    private VBox info_hewan;
 
     // Toko
     @FXML
@@ -49,6 +55,7 @@ public class MainController {
     private Label jumlah_sirip_hiu, jumlah_susu, jumlah_daging_domba, jumlah_daging_kuda, jumlah_telur, jumlah_daging_beruang, jumlah_jagung, jumlah_labu, jumlah_stroberi;
 
     private Board main;
+
     private String style = ("-fx-pref-width: 70.0;" +
                             "-fx-pref-height: 90.0;" +
                             "-fx-border-color: black;" +
@@ -59,10 +66,13 @@ public class MainController {
                             "-fx-alignment: center;" +
                             "-fx-border-radius: 10;" +
                             "-fx-background-radius: 10;");
-    private String font = ("-fx-font-size: 14;" + 
+
+    private String font = ("-fx-font-size: 14;" +
                            "-fx-font-weight: bold;" + 
                            "-fx-font-family: 'Comic Sans MS';");
+
     private int width = 90, height = 90;
+
     // Menyediakan ladang kosong
     public void init() {
         // Initialize the grid cells
@@ -143,8 +153,6 @@ public class MainController {
             event.consume();
         });
 
-        // toko
-        board.getChildren().remove(toko); // supaya panel toko tidak muncul di awal
 
         // Initialize the action buttons
         initialize_click();
@@ -181,11 +189,20 @@ public class MainController {
 
     // Set fungsi pda button
     public void initialize_click() {
-        next_turn.setOnAction(e -> change_to_shuffle());
+        next_turn.setOnAction(e -> {
+            Player a = main.getPlayernow();
+            a.add_umur_tumbuhan();
+            change_to_shuffle();
+        });
         shuffle_card.setOnAction(e -> shuffle_kartu());
         close_button.setOnAction(e -> change_to_main());
         ladang_lawan.setOnAction(e -> ladang_lawan());
         ladang_sendiri.setOnAction(e -> change_to_main());
+        // panen.setOnAction(e -> panen());
+        tutup_info.setOnAction(e -> {
+            info_hewan.getChildren().clear();
+            board.getChildren().addAll(ambil_kartu, pane_ladang);
+        });
         toko_buka.setOnAction(e -> main_to_toko());
         toko_kembali.setOnAction(e -> toko_to_main());
     }
@@ -230,8 +247,6 @@ public class MainController {
 
     // Tambahkan kartu ke ladang
     public void add_to_ladang() {
-//        ladang.getChildren().clear();
-//        init();
         Player a = main.getPlayernow();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
@@ -295,8 +310,11 @@ public class MainController {
                         event.setDropCompleted(success);
                         event.consume();
                     });
+
+                    final int x = i;
+                    final int y = j;
                     pane.setOnMouseClicked(event -> {
-                        show_info(card);
+                        show_info(card, x, y);
                     });
                         ladang.add(pane, j, i);
                 }
@@ -304,15 +322,116 @@ public class MainController {
         }
     }
 
-    public void show_info(Card card) {
+    public void show_info(Card card, int x, int y) {
         board.getChildren().clear();
+        Player player = main.getPlayernow();
         if (card instanceof Hewan) {
             Hewan hewan = (Hewan) card;
-            System.out.println(hewan.getName());
-            info_hewan.getChildren().addAll(new Label(hewan.getName()));
+
+            VBox nama_hewan = new VBox();
+
+            Image image = new Image(this.getClass().getResource(hewan.getImgPath()).toExternalForm());
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
+
+            Label label = new Label(hewan.getName());
+            label.setStyle(font);
+            nama_hewan.getChildren().addAll(label, imageView);
+            nama_hewan.setStyle("-fx-alignment: center; -fx-padding: 10; -fx-spacing: 10; -fx-font-size: 20; -fx-font-weight: bold; -fx-font-family: 'Comic Sans MS';");
+            info_hewan.getChildren().addAll(nama_hewan);
+
+            label = new Label("Berat : " + hewan.getBerat());
+            info_hewan.getChildren().addAll(label);
+
+            label = new Label("Standar Berat Panen : " + hewan.getStandarBeratPanen());
+            info_hewan.getChildren().addAll(label);
+
+            StringBuilder item = new StringBuilder("Item Aktif : ");
+            for (String key : hewan.getItem().keySet()) {
+                if (hewan.getItem().get(key) > 0) {
+                    item.append(key).append(" (").append(hewan.getItem().get(key)).append("), ");
+                }
+            }
+            label = new Label(item.toString());
+            info_hewan.getChildren().addAll(label);
+
+            if (hewan.isSiapPanen()) {
+                if (player.get_deck_aktif_size() < 6) {
+                    panen.setDisable(false);
+                    panen.setOnMouseClicked(e -> {
+                        Produk produk = hewan.panen();
+                        player.add_into_deck_aktiv(produk);
+                        player.delete_from_ladang(x, y);
+                        info_hewan.getChildren().clear();
+                        board.getChildren().addAll(ambil_kartu, pane_ladang);
+                        change_to_main();
+                    });
+                } else {
+                    panen.setDisable(true);
+                }
+            } else {
+                panen.setDisable(true);
+            }
         }
-        board.getChildren().addAll(ladang, info_pane);
+        else if (card instanceof Tumbuhan) {
+            Tumbuhan tumbuhan = (Tumbuhan) card;
+
+            VBox nama_tumbuhan = new VBox();
+
+            Image image = new Image(this.getClass().getResource(tumbuhan.getImgPath()).toExternalForm());
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(100);
+
+            Label label = new Label(tumbuhan.getName());
+            label.setStyle(font);
+            nama_tumbuhan.getChildren().addAll(label, imageView);
+            nama_tumbuhan.setStyle("-fx-alignment: center; -fx-padding: 10; -fx-spacing: 10; -fx-font-size: 20; -fx-font-weight: bold; -fx-font-family: 'Comic Sans MS';");
+            info_hewan.getChildren().addAll(nama_tumbuhan);
+
+            label = new Label("Umur : " + tumbuhan.getUmur());
+            info_hewan.getChildren().addAll(label);
+
+            label = new Label("Standar Umur Panen : " + tumbuhan.getStandarUmurPanen());
+            info_hewan.getChildren().addAll(label);
+
+            StringBuilder item = new StringBuilder("Item Aktif : ");
+            for (String key : tumbuhan.getItem().keySet()) {
+                if (tumbuhan.getItem().get(key) > 0) {
+                    item.append(key).append(" (").append(tumbuhan.getItem().get(key)).append("), ");
+                }
+            }
+            label = new Label(item.toString());
+            info_hewan.getChildren().addAll(label);
+
+            if (tumbuhan.isSiapPanen()) {
+                if (player.get_deck_aktif_size() < 6) {
+                    panen.setDisable(false);
+                    panen.setOnMouseClicked(e -> {
+                        Produk produk = tumbuhan.panen();
+                        player.add_into_deck_aktiv(produk);
+                        player.delete_from_ladang(x, y);
+                        info_hewan.getChildren().clear();
+                        board.getChildren().addAll(ambil_kartu, pane_ladang);
+                        change_to_main();
+                    });
+                } else {
+                    panen.setDisable(true);
+                }
+            } else {
+                panen.setDisable(true);
+            }
+        }
+        board.getChildren().addAll(info_pane);
     }
+
+    // Panen
+//    public void panen() {
+//        Player a = main.getPlayernow();
+//        a.panen();
+//        change_to_main();
+    // }
 
     // Ubah ke pane shuffle
     public void change_to_shuffle() {
@@ -487,7 +606,7 @@ public class MainController {
             String kata = player.getName();
             System.out.println("ini nama: " + kata);
             int id = card.getId();
-            player.shuffle_to_deck_aktif(card);
+            player.add_into_deck_aktiv(card);
             player.add_ciot();
             player.remove_deck(Integer.toString(id));
             shuffle_panel.getChildren().remove(vBox);

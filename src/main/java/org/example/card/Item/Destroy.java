@@ -9,7 +9,7 @@ public class Destroy extends Item {
 
     @Override
     public void aksi(BisaPanen bisaPanen) {
-        if (!bisaPanen.isTerlindungi()) {
+        if (bisaPanen.getItem().get("Protect") != 0) {
             // Destroy the card
         }
     }
