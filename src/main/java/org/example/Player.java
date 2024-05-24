@@ -55,6 +55,15 @@ public class Player {
         card_in_one_turn++;
     }
 
+    public void add_into_deck(Card i) {
+        deck.add(i);
+    }
+
+    public void delete_from_ladang (int i, int j) {
+        lahan.get(i).remove(j);
+        lahan.get(i).add(j, null);
+    }
+
     public void reset_ciot() {
         card_in_one_turn = 0;
     }
@@ -71,6 +80,7 @@ public class Player {
                 break;
             }
         }
+        
     }
 
     public void drop_ladang(String i) {
@@ -105,7 +115,7 @@ public class Player {
         Collections.shuffle(deck);
     }
 
-    public void shuffle_to_deck_aktif(Card card) {
+    public void add_into_deck_aktiv(Card card) {
         System.out.println("Ini hewan: " + card.getName());
         for(int i = 0; i < deck_aktif.size(); i++) {
             if(deck_aktif.get(i) == null) {
@@ -120,6 +130,11 @@ public class Player {
     }
 
     public Card get_card_aktif (int idx) {
+        System.out.println("Ini idx: " + idx);
+        if (deck_aktif.get(idx) != null) {
+            System.out.println("Ini nama: " + deck_aktif.get(idx).getName());
+            System.out.println("Ini id: " + deck_aktif.get(idx).getId());
+        }
         return deck_aktif.get(idx);
     }
 
@@ -194,6 +209,10 @@ public class Player {
             }
         }
         return size;
+    }
+
+    public void panen(int x, int y) {
+
     }
 
 //    public ArrayList<int> get_idx_lahan(String id) {
