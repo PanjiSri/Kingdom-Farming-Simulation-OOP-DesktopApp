@@ -1,5 +1,6 @@
 package org.example;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,6 +19,7 @@ import org.example.card.Card;
 import org.example.card.Hewan.Beruang;
 import org.example.card.Hewan.Hewan;
 import org.example.card.Item.Item;
+import org.example.card.Produk.SiripHiu;
 import org.example.card.Tumbuhan.Tumbuhan;
 import org.example.card.Produk.Produk;
 import javafx.scene.layout.AnchorPane;
@@ -53,6 +55,9 @@ public class MainController {
     private AnchorPane sirip_hiu, susu, daging_domba, daging_kuda, telur, daging_beruang, jagung, labu, stroberi;
     @FXML
     private Label jumlah_sirip_hiu, jumlah_susu, jumlah_daging_domba, jumlah_daging_kuda, jumlah_telur, jumlah_daging_beruang, jumlah_jagung, jumlah_labu, jumlah_stroberi;
+
+    @FXML
+    private Label uang_player1, uang_player2;
 
     private Board main;
 
@@ -473,7 +478,7 @@ public class MainController {
             event.consume();
         });
         sirip_hiu.setOnDragDropped(event -> {
-            Player a = main.getPlayernow();
+            Player currentPlayer = main.getPlayernow();
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasString() && db.getString().equals("pane")) {
@@ -485,11 +490,11 @@ public class MainController {
                     deck_aktif.getChildren().remove(draggedPane);
                     String id = draggedPane.getId();
                     System.out.println("Ini kartu: " + id);
-                    int idx_card_deck_aktif = a.get_card_aktif_idx(id);
-                    a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
-                    a.jual(main.getToko(), "SIRIP_HIU");
+                    int idx_card_deck_aktif = currentPlayer.get_card_aktif_idx(id);
+                    currentPlayer.drop_deck_aktif(currentPlayer.get_card_aktif(idx_card_deck_aktif));
+                    currentPlayer.jual(main.getToko(), "SIRIP_HIU");
                     updateJumlah("SIRIP_HIU");
-                    System.out.println("uang player: " + Integer.toString(main.getPlayernow().getCoin()));
+                    updateUangPlayer();
                     success = true;
                 }
             }
@@ -498,7 +503,12 @@ public class MainController {
         });
         sirip_hiu.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
-                System.out.println("double clicked");
+                Player currentPlayer = main.getPlayernow();
+                currentPlayer.beli(main.getToko(), "SIRIP_HIU");
+                updateJumlah("SIRIP_HIU");
+                SiripHiu siripHiu = new SiripHiu();
+                currentPlayer.add_into_deck_aktiv(siripHiu);
+                updateUangPlayer();
             }
         });
         susu.setOnDragOver(event -> {
@@ -665,6 +675,14 @@ public class MainController {
             case "STROBERI":
                 jumlah_stroberi.setText(Integer.toString(main.getToko().ambilStokProduk("STROBERI")));
                 break;
+        }
+    }
+
+    public void updateUangPlayer() {
+        if (main.getTurn() == 1) {
+            uang_player1.setText(Integer.toString(main.getPlayernow().getCoin()));
+        } else {
+            uang_player2.setText(Integer.toString(main.getPlayernow().getCoin()));
         }
     }
 }

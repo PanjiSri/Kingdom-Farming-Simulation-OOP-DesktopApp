@@ -12,7 +12,7 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         // Add ke Board
         Player p1 = new Player("player1", 0);
-        Player p2 = new Player("player2", 1);
+        Player p2 = new Player("player2", 0);
         Toko toko = new Toko();
         Board board = new Board(p1, p2, toko);
         System.out.println(p1.getName());
