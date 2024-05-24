@@ -1,5 +1,7 @@
 package org.example.card.Tumbuhan;
 
+import java.util.Map;
+
 import org.example.card.BisaPanen;
 import org.example.card.Card;
 import org.example.card.Produk.Produk;
@@ -7,13 +9,20 @@ import org.example.card.Produk.Produk;
 public abstract class Tumbuhan extends Card implements BisaPanen {
     protected int umur;
     protected int standarUmurPanen;
-    protected boolean isTerlindungi = false;
-    protected boolean isTrapActivated = false;
+    protected Map<String, Integer> item;
     
     public Tumbuhan(String name, String imgPath, int umur, int standarUmurPanen) {
         super(name, imgPath);
         this.umur = umur;
         this.standarUmurPanen = standarUmurPanen;
+        item = Map.of(
+            "Accelerate", 0,
+            "Delay", 0,
+            "Destroy", 0,
+            "InstantHarvest", 0,
+            "Protect", 0,
+            "Trap", 0
+        );
     }
 
     public int getUmur() {
@@ -34,23 +43,8 @@ public abstract class Tumbuhan extends Card implements BisaPanen {
     }
 
     @Override
-    public boolean isTerlindungi() {
-        return this.isTerlindungi;
-    }
-
-    @Override
-    public void setTerlindungi(boolean state) {
-        this.isTerlindungi = state;
-    }
-
-    @Override
-    public boolean isTrapActivated() {
-        return this.isTrapActivated;
-    }
-
-    @Override
-    public void setTrapActivated(boolean state) {
-        this.isTrapActivated = state;
+    public Map<String, Integer> getItem() {
+        return item;
     }
 
     @Override

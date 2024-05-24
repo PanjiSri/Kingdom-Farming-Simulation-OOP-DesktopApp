@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import org.example.card.Card;
 import org.example.card.Hewan.*;
+import org.example.card.Item.*;
 import org.example.card.StaticCard;
 import org.example.card.Tumbuhan.BijiJagung;
 import org.example.card.Tumbuhan.BijiLabu;
 import org.example.card.Tumbuhan.BijiStroberi;
+import org.example.card.Tumbuhan.Tumbuhan;
 
 
 public class Player {
@@ -58,6 +60,15 @@ public class Player {
         card_in_one_turn++;
     }
 
+    public void add_into_deck(Card i) {
+        deck.add(i);
+    }
+
+    public void delete_from_ladang (int i, int j) {
+        lahan.get(i).remove(j);
+        lahan.get(i).add(j, null);
+    }
+
     public void reset_ciot() {
         card_in_one_turn = 0;
     }
@@ -66,7 +77,10 @@ public class Player {
         System.out.println("Belum error");
         String id_card = Integer.toString(i.getId());
         for(int x = 0; x < deck_aktif.size(); x++) {
-            String id_card_aktif = Integer.toString(deck_aktif.get(x).getId());
+            String id_card_aktif = " ";
+            if (deck_aktif.get(x) != null) {
+                id_card_aktif = Integer.toString(deck_aktif.get(x).getId());
+            }
             if(deck_aktif.get(x) != null && id_card_aktif.equals(id_card)) {
                 deck_aktif.remove(x);
                 deck_aktif.add(x, null);
@@ -74,6 +88,7 @@ public class Player {
                 break;
             }
         }
+        
     }
 
     public void drop_ladang(String id) {
@@ -113,7 +128,7 @@ public class Player {
         Collections.shuffle(deck);
     }
 
-    public void shuffle_to_deck_aktif(Card card) {
+    public void add_into_deck_aktiv(Card card) {
         System.out.println("Ini hewan: " + card.getName());
         for(int i = 0; i < deck_aktif.size(); i++) {
             if(deck_aktif.get(i) == null) {
@@ -128,6 +143,11 @@ public class Player {
     }
 
     public Card get_card_aktif (int idx) {
+        System.out.println("Ini idx: " + idx);
+        if (deck_aktif.get(idx) != null) {
+            System.out.println("Ini nama: " + deck_aktif.get(idx).getName());
+            System.out.println("Ini id: " + deck_aktif.get(idx).getId());
+        }
         return deck_aktif.get(idx);
     }
 
@@ -275,6 +295,14 @@ public class Player {
             Card card = get_card_with_berat(mahkluk, berat);
             lahan.get(idx.get(0)).remove(idx.get(1));
             lahan.get(idx.get(0)).add(idx.get(1), card);
+            a += 1;
+            int item = Integer.valueOf(data.get(a));
+            a += 1;
+            for (int j = 0; j < item; j++) {
+                String power = data.get(a);
+                a += 1;
+                add_power(card, power);
+            }
         }
     }
 
@@ -395,6 +423,77 @@ public class Player {
         return null;
     }
 
+    public void add_power(Card card, String power) {
+        if (power.equals("ACCELERATE")) {
+            Accelerate a = new Accelerate();
+            if (card instanceof Hewan) {
+                Hewan hewan = (Hewan) card;
+                System.out.println("Berat: "+hewan.getBerat());
+                a.aksi(hewan);
+
+            }
+            else {
+                Tumbuhan tumbuhan = (Tumbuhan) card;
+                a.aksi(tumbuhan);
+            }
+        }
+        else if(power.equals("DELAY")) {
+            Delay a = new Delay();
+            if (card instanceof Hewan) {
+                Hewan hewan = (Hewan) card;
+                a.aksi(hewan);
+            }
+            else {
+                Tumbuhan tumbuhan = (Tumbuhan) card;
+                a.aksi(tumbuhan);
+            }
+        }
+        else if(power.equals("DESTROY")) {
+            Destroy a = new Destroy();
+            if (card instanceof Hewan) {
+                Hewan hewan = (Hewan) card;
+                a.aksi(hewan);
+            }
+            else {
+                Tumbuhan tumbuhan = (Tumbuhan) card;
+                a.aksi(tumbuhan);
+            }
+        } else if (power.equals("INSTANT_HARVEST")) {
+            InstantHarvest a = new InstantHarvest();
+            if (card instanceof Hewan) {
+                Hewan hewan = (Hewan) card;
+                a.aksi(hewan);
+            }
+            else {
+                Tumbuhan tumbuhan = (Tumbuhan) card;
+                a.aksi(tumbuhan);
+            }
+        }
+        else if(power.equals("PROTECT")) {
+            Protect a = new Protect();
+            if (card instanceof Hewan) {
+                Hewan hewan = (Hewan) card;
+                a.aksi(hewan);
+            }
+            else {
+                Tumbuhan tumbuhan = (Tumbuhan) card;
+                a.aksi(tumbuhan);
+            }
+        }
+
+        else if(power.equals("TRAP")) {
+            Trap a = new Trap();
+            if (card instanceof Hewan) {
+                Hewan hewan = (Hewan) card;
+                a.aksi(hewan);
+            }
+            else {
+                Tumbuhan tumbuhan = (Tumbuhan) card;
+                a.aksi(tumbuhan);
+            }
+        }
+    }
+
     public Card get_card_with_berat(String mahkluk, int berat) {
         if(mahkluk.equals("AYAM")) {
             Ayam a = new Ayam(berat);
@@ -444,5 +543,16 @@ public class Player {
         }
         return size;
     }
+    public void panen(int x, int y) {
+
+    }
+
+//    public ArrayList<int> get_idx_lahan(String id) {
+//        for(int i = 0; i < 4; i++) {
+//            for(int j = 0; j < 5; j++) {
+//
+//            }
+//        }
+//    }
 
 }
