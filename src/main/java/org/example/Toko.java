@@ -50,13 +50,17 @@ public class Toko {
     public Map<String, Integer> getStok() {
         return stok;
     }
-    public Map<String, Integer> getHarga() {return harga;}
+    public Map<String, Integer> getHarga() {
+        return harga;
+    }
 
     // ambil stok dan harga produk
     public int ambilStokProduk(String namaProduk) {
         return stok.get(namaProduk);
     }
-    public int ambilHargaProduk(String namaProduk) {return harga.get(namaProduk);}
+    public int ambilHargaProduk(String namaProduk) {
+        return harga.get(namaProduk);
+    }
 
     // stok produk tambah 1
     public void tambahStokProduk(String namaProduk) {
@@ -69,5 +73,10 @@ public class Toko {
             throw new IllegalStateException("Stok " + namaProduk + " kosong");
         }
         stok.put(namaProduk, ambilStokProduk(namaProduk) - 1);
+    }
+
+    // set stok produk
+    public void setStokProduk(String namaProduk, int stokProduk) {
+        stok.put(namaProduk, stokProduk);
     }
 }
