@@ -9,6 +9,6 @@ public class Trap extends Item {
 
     @Override
     public void aksi(BisaPanen bisaPanen) {
-        bisaPanen.getItem().put("Trap", bisaPanen.getItem().get("Trap") + 1);
+        bisaPanen.setItem("Trap", 1);
     }
 }

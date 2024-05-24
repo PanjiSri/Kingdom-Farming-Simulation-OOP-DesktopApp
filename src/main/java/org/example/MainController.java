@@ -103,12 +103,6 @@ public class MainController {
             }
         }
 
-        Circle circle = new Circle(50, 50, 50);
-        circle.setCenterX(20);
-
-        Button button = new Button("Click me!");
-        button.setOnAction(e -> System.out.println("Hello, World!"));
-
         // Set drag over for the GridPane
         ladang.setOnDragOver(event -> {
             if (event.getGestureSource() != ladang && event.getDragboard().hasString()) {
@@ -130,16 +124,11 @@ public class MainController {
                 int row = (int) (event.getY() / (ladang.getHeight() / ladang.getRowCount()));
                 // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
                 if (deck_aktif.getChildren().contains(draggedPane)) {
-                    System.out.println("Masalah");
                     deck_aktif.getChildren().remove(draggedPane);
-                    System.out.println(draggedPane.getId());
                     String id = draggedPane.getId();
                     int idx_card_deck_aktif = a.get_card_aktif_idx(id);
-                    System.out.println("Dallas");
                     a.add_in_lahan(row, col, a.get_card_aktif(idx_card_deck_aktif));
                     a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
-                    System.out.println("Ini kartu: " + draggedPane.getId());
-                    System.out.println();
 
                     // Tambahkan ke ladang
                     ladang.add(draggedPane, col, row);
@@ -152,21 +141,14 @@ public class MainController {
                     System.out.println(draggedPane.getId());
                     String id = draggedPane.getId();
                     ArrayList<Integer>  idx_lahan = a.get_idx_lahan(id);
-                    System.out.println("Dallas");
                     a.add_in_lahan(row, col, a.get_card_ladang(idx_lahan.get(0), idx_lahan.get(1)));
                     a.drop_ladang(idx_lahan.get(0), idx_lahan.get(1));
-                    System.out.println("Ini kartu: " + draggedPane.getId());
-                    System.out.println();
                     // Tambahkan ke ladang
                     a.print_lahan();
                     success = true;
                     ladang.getChildren().remove(draggedPane);
                     ladang.add(draggedPane, col, row);
                 }
-
-                // Hitung baris dan kolom baru berdasarkan posisi drop
-
-                // Pastikan tidak ada elemen pada posisi tersebut
             }
             event.setDropCompleted(success);
             event.consume();
@@ -187,20 +169,24 @@ public class MainController {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
                 if (a.get_card_ladang(i, j) != null) {
-                    System.out.println(a.get_card_ladang(i, j));
                     Card card = a.get_card_ladang(i, j);
+
                     VBox pane = new VBox();
                     pane.setStyle(style);
+
                     Image image = new Image(this.getClass().getResource(card.getImgPath()).toExternalForm());
                     ImageView imageView = new ImageView(image);
                     imageView.setFitWidth(width);
                     imageView.setFitHeight(height);
                     pane.setId(a.get_card_ladang(i, j).getName()); // Menggunakan ID unik berdasarkan posisi
+
                     Label label = new Label(card.getName());
                     label.setStyle(font);
                     pane.getChildren().add(label);
                     pane.getChildren().add(imageView);
+
                     int id = a.get_card_ladang(i, j).getId();
+
                     pane.setId(Integer.toString(id));pane.setOnDragOver(event -> {
                         if (event.getGestureSource() != ladang && event.getDragboard().hasString()) {
                             event.acceptTransferModes(TransferMode.MOVE);
@@ -218,10 +204,6 @@ public class MainController {
                             if (deck_aktif.getChildren().contains(draggedPane)) {
                                 deck_aktif.getChildren().remove(draggedPane);
 
-                                // Hitung baris dan kolom baru berdasarkan posisi drop
-                                int col = (int) (event.getX() / (ladang.getWidth() / ladang.getColumnCount()));
-                                int row = (int) (event.getY() / (ladang.getHeight() / ladang.getRowCount()));
-
                                 // Pastikan tidak ada elemen pada posisi tersebut
                                 System.out.println(draggedPane.getId());
                                 String id_dragged = draggedPane.getId();
@@ -235,11 +217,8 @@ public class MainController {
                                 }
                                 a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
                             }
-
-                            // Tambahkan ke ladang
                             success = true;
                         }
-
                         event.setDropCompleted(success);
                         event.consume();
                     });
@@ -257,8 +236,35 @@ public class MainController {
     // Set fungsi pda button
     public void initialize_click() {
         next_turn.setOnAction(e -> {
+            if (main.getTotalturn() > 20) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                Player player_1 = main.getP1();
+                Player player_2 = main.getP2();
+
+                if (player_1.getCoin() > player_2.getCoin()) {
+                    int koin = player_1.getCoin();
+                    alert.setTitle("Player 1 Win");
+                    alert.setHeaderText("Player 1 Win");
+                    alert.setContentText("Player 1 Menang dengan " + koin + " koin");
+                    alert.showAndWait();
+                } else if (player_1.getCoin() < player_2.getCoin()) {
+                    int koin = player_2.getCoin();
+                    alert.setTitle("Player 2 Win");
+                    alert.setHeaderText("Player 2 Win");
+                    alert.setContentText("Player 2 Menang dengan " + koin + " koin");
+                    alert.showAndWait();
+                } else {
+                    int koin = player_1.getCoin();
+                    alert.setTitle("Draw");
+                    alert.setHeaderText("Draw");
+                    alert.setContentText("Draw dengan kedua player memiliki " + koin + " koin");
+                    alert.showAndWait();
+                }
+                System.exit(0);
+            }
             Player a = main.getPlayernow();
             a.add_umur_tumbuhan();
+            a.delete_item_aktiv();
             change_to_shuffle();
         });
         shuffle_card.setOnAction(e -> shuffle_kartu());
@@ -362,6 +368,7 @@ public class MainController {
                 VBox card = new VBox();
                 Label label = new Label(a.get_card_aktif(i).getName());
                 String id = Integer.toString(a.get_card_aktif(i).getId());
+
                 card.setId(id);
                 label.setStyle(font);
                 card.getChildren().add(label);
@@ -387,18 +394,18 @@ public class MainController {
                 Card card = a.get_card_ladang(i, j);
                 // Pastikan kartu tidak null atau tidak valid
                 if (card != null) {
-                    System.out.println("Mahal");
                     VBox pane = new VBox();
                     pane.setStyle(style);
-                    System.out.println(card.getImgPath());
 
                     Image image = new Image(this.getClass().getResource(card.getImgPath()).toExternalForm());
                     ImageView imageView = new ImageView(image);
                     imageView.setFitWidth(width);
                     imageView.setFitHeight(height);
                     pane.setId(a.get_card_ladang(i, j).getName()); // Menggunakan ID unik berdasarkan posisi
+
                     Label label = new Label(card.getName());
                     label.setStyle(font);
+
                     String id = Integer.toString(card.getId());
                     pane.setId(id);
                     pane.getChildren().add(label);
@@ -427,10 +434,6 @@ public class MainController {
                             if (deck_aktif.getChildren().contains(draggedPane)) {
                                 deck_aktif.getChildren().remove(draggedPane);
 
-                                // Hitung baris dan kolom baru berdasarkan posisi drop
-                                int col = (int) (event.getX() / (ladang.getWidth() / ladang.getColumnCount()));
-                                int row = (int) (event.getY() / (ladang.getHeight() / ladang.getRowCount()));
-
                                 // Pastikan tidak ada elemen pada posisi tersebut
                                 System.out.println(draggedPane.getId());
                                 String id_dragged = draggedPane.getId();
@@ -444,15 +447,11 @@ public class MainController {
                                 }
                                 a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
                             }
-
-                            // Tambahkan ke ladang
                             success = true;
                         }
-
                         event.setDropCompleted(success);
                         event.consume();
                     });
-
                     final int x = i;
                     final int y = j;
                     pane.setOnMouseClicked(event -> {
@@ -568,13 +567,6 @@ public class MainController {
         board.getChildren().addAll(info_pane);
     }
 
-    // Panen
-//    public void panen() {
-//        Player a = main.getPlayernow();
-//        a.panen();
-//        change_to_main();
-    // }
-
     // Ubah ke pane shuffle
     public void change_to_shuffle() {
         main.add_turn();
@@ -583,7 +575,6 @@ public class MainController {
         board.getChildren().clear();
         add_kartu_ke_shuffle_field();
         board.getChildren().setAll(pane_ladang, ambil_kartu);
-//        System.out.println(board.getChildren().size());
     }
 
     // Ubah ke pane main

@@ -13,9 +13,10 @@ public class Accelerate extends Item {
     public void aksi(BisaPanen bisaPanen) {
         if (bisaPanen instanceof Hewan) {
             ((Hewan) bisaPanen).addBerat(8);
+            bisaPanen.setItem("Accelerate", 1);
         } else if (bisaPanen instanceof Tumbuhan) {
             ((Tumbuhan) bisaPanen).addUmur(2);
+            bisaPanen.setItem("Accelerate", 1);
         }
-        System.out.println("Horas");
     }
 }

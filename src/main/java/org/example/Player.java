@@ -2,6 +2,9 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
+
+import org.example.card.BisaPanen;
 import org.example.card.Card;
 import org.example.card.Hewan.*;
 import org.example.card.Item.*;
@@ -10,8 +13,6 @@ import org.example.card.Tumbuhan.BijiJagung;
 import org.example.card.Tumbuhan.BijiLabu;
 import org.example.card.Tumbuhan.BijiStroberi;
 import org.example.card.Tumbuhan.Tumbuhan;
-import org.example.card.Tumbuhan.Tumbuhan;
-
 
 public class Player {
     private String name;
@@ -32,7 +33,6 @@ public class Player {
             try {
                 Class<?> clazz = Class.forName(StaticCard.getRandomCardName());
                 Card temp = (Card) clazz.getDeclaredConstructor().newInstance();
-//                System.out.println(temp.getImgPath());
                 deck.add(temp);
             } catch (Exception e) {
                 System.out.println("kelas tidak ditemukan");
@@ -40,10 +40,6 @@ public class Player {
             }
         }
 
-//        System.out.println("===============================");
-//        print_deck();
-//        System.out.println("===============================");
-        
         for (int i = 0; i < 6; i++) {
             deck_aktif.add(null);
         }
@@ -75,9 +71,7 @@ public class Player {
     }
 
     public void drop_deck_aktif(Card i) {
-        System.out.println("Belum error");
         String id_card = Integer.toString(i.getId());
-        System.out.println("Sudah error");
         for(int x = 0; x < deck_aktif.size(); x++) {
             String id_card_aktif = " ";
             if (deck_aktif.get(x) != null) {
@@ -90,7 +84,6 @@ public class Player {
                 break;
             }
         }
-        System.out.println("Yang ini gimana");
     }
 
     public void add_umur_tumbuhan() {
@@ -103,6 +96,34 @@ public class Player {
                     if (lahan.get(i).get(j) instanceof Tumbuhan) {
                         Tumbuhan tumbuhan = (Tumbuhan) lahan.get(i).get(j);
                         tumbuhan.addUmur(2);
+                        if (tumbuhan.isSiapPanen()) {
+                            tumbuhan.setImgPathToProduct();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void delete_item_aktiv() {
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 5; j++) {
+                if (lahan.get(i).get(j) == null) {
+                    continue;
+                }
+                else {
+                    if (lahan.get(i).get(j) instanceof Tumbuhan) {
+                        Tumbuhan tumbuhan = (Tumbuhan) lahan.get(i).get(j);
+                        tumbuhan.setItem("Accelerate", -1);
+                        tumbuhan.setItem("Delay", -1);
+                        tumbuhan.setItem("Protect", -1);
+                        tumbuhan.setItem("Trap", -1);
+                    } else {
+                        Hewan hewan = (Hewan) lahan.get(i).get(j);
+                        hewan.setItem("Accelerate", -1);
+                        hewan.setItem("Delay", -1);
+                        hewan.setItem("Protect", -1);
+                        hewan.setItem("Trap", -1);
                     }
                 }
             }
@@ -161,11 +182,6 @@ public class Player {
     }
 
     public Card get_card_aktif (int idx) {
-        System.out.println("Ini idx: " + idx);
-        if (deck_aktif.get(idx) != null) {
-            System.out.println("Ini nama: " + deck_aktif.get(idx).getName());
-            System.out.println("Ini id: " + deck_aktif.get(idx).getId());
-        }
         return deck_aktif.get(idx);
     }
 
@@ -195,7 +211,6 @@ public class Player {
 
     public void add_in_lahan(int x, int y, Card value) {
         lahan.get(x).set(y, value);
-        System.out.println(value);
     }
 
     public void drop_ladang(int x, int y) {
@@ -206,9 +221,9 @@ public class Player {
         for (int i = 0; i < lahan.size(); i++) {
             for (int j = 0; j < lahan.get(i).size(); j++) {
                 if (lahan.get(i).get(j) == null) {
-                    System.out.print("null");
+                    System.out.print("null ");
                 } else {
-                    System.out.print(lahan.get(i).get(j).getId());
+                    System.out.print(lahan.get(i).get(j).getId() + " ");
                 }
             }
             System.out.println();
@@ -219,9 +234,9 @@ public class Player {
     public void print_deck_aktif() {
         for (int i = 0; i < deck_aktif.size(); i++) {
             if (deck_aktif.get(i) == null) {
-                System.out.println("null");
+                System.out.println("null ");
             } else {
-                System.out.println(deck_aktif.get(i).getId());
+                System.out.println(deck_aktif.get(i).getId() + " ");
             }
         }
         System.out.println();
@@ -230,7 +245,7 @@ public class Player {
     public void print_deck() {
         for (int i = 0; i < deck.size(); i++) {
             if (deck.get(i) == null) {
-                System.out.println("null");
+                System.out.println("null ");
             } else {
                 System.out.println(deck.get(i).getId() + " " + deck.get(i).getName());
             }
@@ -292,12 +307,9 @@ public class Player {
             }
         }
         System.out.println(deck_size());
-        System.out.println("Fak, tubes berat bos");
         int deck_aktif_size = Integer.valueOf(data.get(a));
         a += 1;
-        System.out.println("Halo");
         for(int i = 0; i < deck_aktif_size; i++) {
-            System.out.println("I love you so");
             ArrayList<Integer> idx = get_indeks(data.get(a));
             System.out.println(data.get(a));
             System.out.println(idx);
@@ -310,7 +322,6 @@ public class Player {
             deck_aktif.set(idx.get(1), card);
             System.out.println(deck_aktif);
         }
-        System.out.println("Halo semua");
         int ladang_size = Integer.valueOf(data.get(a));
         System.out.println(ladang_size);
         a += 1;
@@ -690,11 +701,6 @@ public class Player {
         }
         return size;
     }
-    public void panen(int x, int y) {
-
-    }
-
-
 
     public ArrayList<String> get_save() {
         ArrayList<String> data = new ArrayList<>();
@@ -730,16 +736,7 @@ public class Player {
         System.out.println(data);
         return data;
     }
-
-//    public ArrayList<int> get_idx_lahan(String id) {
-//        for(int i = 0; i < 4; i++) {
-//            for(int j = 0; j < 5; j++) {
-//
-//            }
-//        }
-//    }
-
-
+    
     // format namaProduk = SIRIP_HIU
     public void beli(Toko toko, String namaProduk) {
         if (toko.ambilStokProduk(namaProduk) <= 0) {

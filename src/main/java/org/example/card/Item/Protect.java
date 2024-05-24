@@ -9,6 +9,6 @@ public class Protect extends Item {
 
     @Override
     public void aksi(BisaPanen bisaPanen) {
-//        bisaPanen.getItem().put("Protect", bisaPanen.getItem().get("Protect") + 1);
+       bisaPanen.setItem("Protect", 1);
     }
 }
