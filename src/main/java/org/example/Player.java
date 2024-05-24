@@ -29,7 +29,7 @@ public class Player {
             try {
                 Class<?> clazz = Class.forName(StaticCard.getRandomCardName());
                 Card temp = (Card) clazz.getDeclaredConstructor().newInstance();
-                System.out.println(temp.getImgPath());
+//                System.out.println(temp.getImgPath());
                 deck.add(temp);
             } catch (Exception e) {
                 System.out.println("kelas tidak ditemukan");
@@ -37,9 +37,9 @@ public class Player {
             }
         }
 
-        System.out.println("===============================");
-        print_deck();
-        System.out.println("===============================");
+//        System.out.println("===============================");
+//        print_deck();
+//        System.out.println("===============================");
         
         for (int i = 0; i < 6; i++) {
             deck_aktif.add(null);
@@ -240,23 +240,30 @@ public class Player {
             try {
                 Class<?> clazz = Class.forName(StaticCard.getRandomCardName());
                 Card temp = (Card) clazz.getDeclaredConstructor().newInstance();
-                System.out.println(temp.getImgPath());
-                deck.add(temp);
+                deck.remove(i);
+                deck.add(i,temp);
             } catch (Exception e) {
                 System.out.println("kelas tidak ditemukan");
                 e.printStackTrace();
             }
         }
+        System.out.println("Fak, tubes berat bos");
         int deck_aktif_size = Integer.valueOf(data.get(a));
         a += 1;
+        System.out.println("Halo");
         for(int i = 0; i < deck_aktif_size; i++) {
+            System.out.println("I love you so");
             ArrayList<Integer> idx = get_indeks(data.get(a));
+            System.out.println(data.get(a));
+            System.out.println(idx);
             a += 1;
             Card card = get_card(data.get(a));
             a += 1;
+            System.out.println("index" + idx.get(1));
             deck_aktif.remove(idx.get(1));
             deck_aktif.add(idx.get(1), card);
         }
+        System.out.println("Halo semua");
         int ladang_size = Integer.valueOf(data.get(a));
         a += 1;
         for (int i = 0; i < ladang_size; i++) {
