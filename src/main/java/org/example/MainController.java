@@ -645,7 +645,7 @@ public class MainController {
             case "DAGING_BERUANG" -> droppedCard instanceof DagingBeruang;
             case "JAGUNG" -> droppedCard instanceof Jagung;
             case "LABU" -> droppedCard instanceof Labu;
-            case "Stroberi" -> droppedCard instanceof Stroberi;
+            case "STROBERI" -> droppedCard instanceof Stroberi;
             default -> false;
         };
 
@@ -675,7 +675,19 @@ public class MainController {
         if (event.getClickCount() != 2) {
             return;
         }
+
         Player currentPlayer = main.getPlayernow();
+
+        if (currentPlayer.get_deck_aktif_size() >= 6) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Woy!");
+            alert.setHeaderText("Baca Nih!!!");
+            alert.setContentText("Deck aktif penuh");
+            // Show the alert and wait for the user to close it
+            alert.showAndWait();
+            return;
+        }
+
         try {
             currentPlayer.beli(main.getToko(), namaProduk);
         } catch (IllegalStateException e) {
@@ -686,6 +698,7 @@ public class MainController {
             // Show the alert and wait for the user to close it
             alert.showAndWait();
         }
+
         updateJumlah(namaProduk);
         Card newCard = switch (namaProduk) {
             case "SIRIP_HIU" -> new SiripHiu();
@@ -699,7 +712,9 @@ public class MainController {
             case "STROBERI" -> new Stroberi();
             default -> null;
         };
+
         currentPlayer.add_into_deck_aktiv(Objects.requireNonNull(newCard));
         updateUangPlayer();
+        add_to_deck_aktif();
     }
 }
