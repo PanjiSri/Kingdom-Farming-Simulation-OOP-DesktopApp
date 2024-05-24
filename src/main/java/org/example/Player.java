@@ -227,4 +227,27 @@ public class Player {
         return null;
     }
 
+    public void player_load(ArrayList<String> data) {
+        coin = Integer.valueOf(data.get(0));
+        int deck_size = Integer.valueOf(data.get(1));
+        for(int i = 0; i < deck_size; i++) {
+            try {
+                Class<?> clazz = Class.forName(StaticCard.getRandomCardName());
+                Card temp = (Card) clazz.getDeclaredConstructor().newInstance();
+                System.out.println(temp.getImgPath());
+                deck.add(temp);
+            } catch (Exception e) {
+                System.out.println("kelas tidak ditemukan");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public int deck_size() {
+        int size = 0;
+        for(int i = 0; i < deck.size(); i++) {
+
+        }
+    }
+
 }

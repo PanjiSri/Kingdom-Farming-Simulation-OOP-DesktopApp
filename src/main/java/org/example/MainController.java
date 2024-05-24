@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import javafx.scene.layout.AnchorPane;
 import org.example.Board.*;
 import org.example.Player.*;
 import org.example.card.BisaPanen;

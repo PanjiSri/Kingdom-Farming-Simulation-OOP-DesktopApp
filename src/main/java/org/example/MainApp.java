@@ -18,9 +18,12 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+
         // Add ke Board
         Player p1 = new Player("player1", 0);
         Player p2 = new Player("player2", 1);
+
         Board board = new Board(p1, p2);
         System.out.println(p1.getName());
         // Load the main FXML file
@@ -69,6 +72,7 @@ public class MainApp extends Application {
         // launch(args);
         MainApp m = new MainApp();
         m.loadTXT();
+        launch(args);
     }
     
 }
