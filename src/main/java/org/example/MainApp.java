@@ -28,6 +28,7 @@ public class MainApp extends Application {
         ArrayList<String> a = (ArrayList<String>) player1;
         System.out.println(a);
         p1.player_load(a);
+        p1.get_save();
         Board board = new Board(p1, p2);
         System.out.println(p1.getName());
         // Load the main FXML file

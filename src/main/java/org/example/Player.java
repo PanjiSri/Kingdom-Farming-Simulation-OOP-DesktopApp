@@ -251,22 +251,29 @@ public class Player {
     }
 
     public void player_load(ArrayList<String> data) {
+        for(int i = 0; i < 40; i++) {
+            deck.remove(i);
+            deck.add(i,null);
+        }
+        System.out.println(deck_size());
         int a = 0;
         coin = Integer.valueOf(data.get(a));
         a += 1;
         int deck_size = Integer.valueOf(data.get(a));
+        System.out.println(deck_size);
         a += 1;
         for(int i = 0; i < deck_size; i++) {
             try {
                 Class<?> clazz = Class.forName(StaticCard.getRandomCardName());
                 Card temp = (Card) clazz.getDeclaredConstructor().newInstance();
                 deck.remove(i);
-                deck.add(i,temp);
+                deck.add(i, temp);
             } catch (Exception e) {
                 System.out.println("kelas tidak ditemukan");
                 e.printStackTrace();
             }
         }
+        System.out.println(deck_size());
         System.out.println("Fak, tubes berat bos");
         int deck_aktif_size = Integer.valueOf(data.get(a));
         a += 1;
@@ -285,6 +292,7 @@ public class Player {
         }
         System.out.println("Halo semua");
         int ladang_size = Integer.valueOf(data.get(a));
+        System.out.println(ladang_size);
         a += 1;
         for (int i = 0; i < ladang_size; i++) {
             ArrayList<Integer> idx = get_indeks(data.get(a));
@@ -381,6 +389,113 @@ public class Player {
             indeks.add(5);
         }
         return indeks;
+    }
+
+    public String get_idx (int x, int y) {
+        if (x == 0 && y == 0) {
+            return "A01";
+        }
+        else if (x == 1 && y == 0) {
+            return "A02";
+        }
+        else if (x == 2 && y == 0) {
+            return "A03";
+        }
+        else if (x == 3 && y == 0) {
+            return "A04";
+        }
+        else if (x == 0 && y == 1) {
+            return "B01";
+        }
+        else if (x == 1 && y == 1) {
+            return "B02";
+        }
+        else if (x == 2 && y == 1) {
+            return "B03";
+        }
+        else if (x == 3 && y == 1) {
+            return "B04";
+        }
+        else if (x == 0 && y == 2) {
+            return "C01";
+        }
+        else if (x == 1 && y == 2) {
+            return "C02";
+        }
+        else if (x == 2 && y == 2) {
+            return "C03";
+        }
+        else if (x == 3 && y == 2) {
+            return "C04";
+        }
+        else if (x == 0 && y == 3) {
+            return "D01";
+        }
+        else if (x == 1 && y == 3) {
+            return "D02";
+        }
+        else if (x == 2 && y == 3) {
+            return "D03";
+        }
+        else if (x == 3 && y == 3) {
+            return "D04";
+        }
+        else if (x == 0 && y == 4) {
+            return "E01";
+        }
+        else if (x == 0 && y == 5) {
+            return "F01";
+        }
+        return null;
+    }
+
+    public String get_mahkluk (Card card) {
+        if(card instanceof Ayam) {
+            return "AYAM";
+        }
+        else if(card instanceof Beruang) {
+            return "BERUANG";
+        }
+        else if(card instanceof Domba) {
+            return "DOMBA";
+        }
+        else if(card instanceof HiuDarat) {
+            return "HIU_DARAT";
+        }
+        else if(card instanceof Kuda) {
+            return "KUDA";
+        }
+        else if(card instanceof Sapi) {
+            return "SAPI";
+        }
+        else if(card instanceof Accelerate) {
+            return "ACCELERATE";
+        }
+        else if(card instanceof Delay) {
+            return "DELAY";
+        }
+        else if(card instanceof Destroy) {
+            return "DESTROY";
+        }
+        else if (card instanceof InstantHarvest) {
+            return "INSTANT_HARVEST";
+        }
+        else if(card instanceof Protect) {
+            return "PROTECT";
+        }
+        else if (card instanceof Trap) {
+            return "TRAP";
+        }
+        else if(card instanceof BijiStroberi) {
+            return "BIJI_STROBERI";
+        }
+        else if(card instanceof BijiJagung) {
+            return "BIJI_JAGUNG";
+        }
+        else if(card instanceof BijiLabu) {
+            return "BIJI_LABU";
+        }
+        return "LABU";
     }
 
     public Card get_card(String mahkluk) {
@@ -534,6 +649,18 @@ public class Player {
         return null;
     }
 
+    public int get_ladang () {
+        int size = 0;
+        for (int i = 0; i < 4; i++) {
+            for(int j = 0; j < 5; j++) {
+                if (lahan.get(i).get(j) != null) {
+                    size += 1;
+                }
+            }
+        }
+        return size;
+    }
+
     public int deck_size() {
         int size = 0;
         for(int i = 0; i < deck.size(); i++) {
@@ -545,6 +672,43 @@ public class Player {
     }
     public void panen(int x, int y) {
 
+    }
+
+
+
+    public ArrayList<String> get_save() {
+        ArrayList<String> data = new ArrayList<>();
+        data.add(Integer.toString(coin));
+        data.add(Integer.toString(deck_size()));
+        data.add(Integer.toString(get_deck_aktif_size()));
+        for(int i = 0; i < 6; i++) {
+            if(deck_aktif.get(i) != null) {
+                String indeks = get_idx(0, i);
+                String mahkluk = get_mahkluk(deck_aktif.get(i));
+                data.add(indeks+ " " + mahkluk);
+            }
+        }
+        data.add(Integer.toString(get_ladang()));
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 5; j++) {
+                if(lahan.get(i).get(j) != null) {
+                    String umur = "";
+                    String indeks = get_idx(i, j);
+                    String mahkluk = get_mahkluk(lahan.get(i).get(j));
+                    if(lahan.get(i).get(j) instanceof Hewan) {
+                        Hewan hewan = (Hewan) lahan.get(i).get(j);
+                        umur =Integer.toString(hewan.getBerat());
+                    }
+                    if(lahan.get(i).get(j) instanceof Tumbuhan) {
+                        Tumbuhan tumbuhan = (Tumbuhan) lahan.get(i).get(j);
+                        umur = Integer.toString(tumbuhan.getUmur());
+                    }
+                    data.add(indeks +" "+ mahkluk+" "+umur+" "+Integer.toString(0));
+                }
+            }
+        }
+        System.out.println(data);
+        return data;
     }
 
 //    public ArrayList<int> get_idx_lahan(String id) {
