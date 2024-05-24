@@ -305,8 +305,10 @@ public class Player {
             Card card = get_card(data.get(a));
             a += 1;
             System.out.println("index" + idx.get(1));
-            deck_aktif.remove(idx.get(1));
-            deck_aktif.add(idx.get(1), card);
+            System.out.println(deck_aktif);
+            System.out.println(deck_aktif);
+            deck_aktif.set(idx.get(1), card);
+            System.out.println(deck_aktif);
         }
         System.out.println("Halo semua");
         int ladang_size = Integer.valueOf(data.get(a));
@@ -750,5 +752,9 @@ public class Player {
     public void jual(Toko toko, String namaProduk) {
         toko.tambahStokProduk(namaProduk);
         coin += toko.ambilHargaProduk(namaProduk);
+    }
+
+    public void deck_catat() {
+        System.out.println(deck);
     }
 }

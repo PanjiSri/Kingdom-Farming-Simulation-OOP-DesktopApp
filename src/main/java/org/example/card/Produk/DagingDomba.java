@@ -14,6 +14,7 @@ public class DagingDomba extends Produk {
             if (((Hewan) bisaPanen).getTipe().equals("Omnivora") || ((Hewan) bisaPanen).getTipe().equals("Karnivora")) {
                 ((Hewan) bisaPanen).addBerat(getTambahanBerat());
             }
+            System.out.println("Nice");
         }
     }
 }

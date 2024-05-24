@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import plugin.TXTSaver;
 
 public class MainApp extends Application {
 
@@ -15,7 +16,7 @@ public class MainApp extends Application {
         TXTSaver saver = new TXTSaver();
         // Add ke Board
         Player p1 = new Player("player1", 0);
-        Player p2 = new Player("player2", 1);
+        Player p2 = new Player("player2", 0);
         Toko toko = new Toko();
         Board board = new Board(p1, p2, toko);
         System.out.println(p1.getName());

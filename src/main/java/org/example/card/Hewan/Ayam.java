@@ -9,7 +9,7 @@ public class Ayam extends Hewan {
     }
 
     public Ayam(int berat) {
-        super("Ayam", "/img/chicken/bear.png", berat, 5, "Omnivora");
+        super("Ayam", "/img/Hewan/chicken.png", berat, 5, "Omnivora");
     }
 
     @Override

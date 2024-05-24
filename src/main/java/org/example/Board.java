@@ -11,7 +11,7 @@ public class Board {
         p1 = _p1;
         p2 = _p2;
         turn = 1;
-        totalturn = 0;
+        totalturn = 1;
         this.toko = toko;
     }
 
@@ -49,6 +49,10 @@ public class Board {
 
     public Player getP2() {
         return p2;
+    }
+
+    public void set_totalturn(int totalturn) {
+        this.totalturn = totalturn;
     }
 
     public int getTurn() {

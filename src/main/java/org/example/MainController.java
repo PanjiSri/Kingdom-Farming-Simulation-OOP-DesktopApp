@@ -1,5 +1,6 @@
 package org.example;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,6 +20,8 @@ import org.example.card.Card;
 import org.example.card.Hewan.Beruang;
 import org.example.card.Hewan.Hewan;
 import org.example.card.Item.Item;
+import org.example.card.Item.Protect;
+import org.example.card.Produk.SiripHiu;
 import org.example.card.Tumbuhan.Tumbuhan;
 import org.example.card.Produk.Produk;
 import javafx.scene.layout.AnchorPane;
@@ -37,16 +40,19 @@ public class MainController {
     private AnchorPane info_pane;
 
     @FXML
-    private Pane pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini;
+    private Pane pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini, save_load;
 
     @FXML
-    private Button next_turn, shuffle_card, close_button, ladang_lawan, ladang_sendiri, panen, tutup_info, save;
+    private Button next_turn, shuffle_card, close_button, ladang_lawan, ladang_sendiri, panen, tutup_info, save, load_progress, save_to_main, save_progress;
 
     @FXML
     private StackPane board;
 
     @FXML
     private VBox info_hewan;
+
+    @FXML
+    private TextField folder_load;
 
     // Toko
     @FXML
@@ -57,6 +63,9 @@ public class MainController {
     private AnchorPane sirip_hiu, susu, daging_domba, daging_kuda, telur, daging_beruang, jagung, labu, stroberi;
     @FXML
     private Label jumlah_sirip_hiu, jumlah_susu, jumlah_daging_domba, jumlah_daging_kuda, jumlah_telur, jumlah_daging_beruang, jumlah_jagung, jumlah_labu, jumlah_stroberi;
+
+    @FXML
+    private Label uang_player1, uang_player2;
 
     private Board main;
     List<String> gameState;
@@ -193,11 +202,57 @@ public class MainController {
                     pane.getChildren().add(label);
                     pane.getChildren().add(imageView);
                     int id = a.get_card_ladang(i, j).getId();
-                    pane.setId(Integer.toString(id));
+                    pane.setId(Integer.toString(id));pane.setOnDragOver(event -> {
+                        if (event.getGestureSource() != ladang && event.getDragboard().hasString()) {
+                            event.acceptTransferModes(TransferMode.MOVE);
+                        }
+                        event.consume();
+                    });
+                    pane.setOnDragDropped(event -> {
+                        Dragboard db = event.getDragboard();
+                        boolean success = false;
+                        if (db.hasString() && db.getString().equals("pane")) {
+                            Pane draggedPane = (Pane) event.getGestureSource();
+                            draggedPane.setStyle(style);
+
+                            // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
+                            if (deck_aktif.getChildren().contains(draggedPane)) {
+                                deck_aktif.getChildren().remove(draggedPane);
+
+                                // Hitung baris dan kolom baru berdasarkan posisi drop
+                                int col = (int) (event.getX() / (ladang.getWidth() / ladang.getColumnCount()));
+                                int row = (int) (event.getY() / (ladang.getHeight() / ladang.getRowCount()));
+
+                                // Pastikan tidak ada elemen pada posisi tersebut
+                                System.out.println(draggedPane.getId());
+                                String id_dragged = draggedPane.getId();
+                                int idx_card_deck_aktif = a.get_card_aktif_idx(id_dragged);
+                                Card card_dragged = a.get_card_aktif(idx_card_deck_aktif);
+                                if (card_dragged instanceof Item) {
+                                    ((Item) card_dragged).aksi((BisaPanen) card);
+                                }
+                                if (card_dragged instanceof Produk) {
+                                    ((Produk) card_dragged).aksi((BisaPanen) card);
+                                }
+                                a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
+                            }
+
+                            // Tambahkan ke ladang
+                            success = true;
+                        }
+
+                        event.setDropCompleted(success);
+                        event.consume();
+                    });
                     ladang.add(pane, j, i);
                 }
             }
         }
+    }
+
+    public void show_save() {
+        board.getChildren().clear();
+        board.getChildren().add(save_load);
     }
 
     // Set fungsi pda button
@@ -218,9 +273,19 @@ public class MainController {
         });
         toko_buka.setOnAction(e -> main_to_toko());
         toko_kembali.setOnAction(e -> toko_to_main());
-//        folder_load.setOnAction(e -> {
-//
-//        });
+        save.setOnAction(e -> show_save());
+        load_progress.setOnAction(e -> {
+            String path = folder_load.getText();
+            loadTXT(path);
+        });
+        save_to_main.setOnAction(e -> change_to_main());
+        save_progress.setOnAction(e -> {
+            Player p1 = main.getP1();
+            Player p2 = main.getP2();
+            player1save = p1.get_save();
+            player2save = p2.get_save();
+            saveTXT(player1save, player2save);
+        });
     }
 
     // Shuffle kartu
@@ -269,8 +334,11 @@ public class MainController {
                 Card card = a.get_card_ladang(i, j);
                 // Pastikan kartu tidak null atau tidak valid
                 if (card != null) {
+                    System.out.println("Mahal");
                     VBox pane = new VBox();
                     pane.setStyle(style);
+                    System.out.println(card.getImgPath());
+
                     Image image = new Image(this.getClass().getResource(card.getImgPath()).toExternalForm());
                     ImageView imageView = new ImageView(image);
                     imageView.setFitWidth(width);
@@ -305,18 +373,23 @@ public class MainController {
                             // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
                             if (deck_aktif.getChildren().contains(draggedPane)) {
                                 deck_aktif.getChildren().remove(draggedPane);
-                            }
-                            // Hitung baris dan kolom baru berdasarkan posisi drop
-                            int col = (int) (event.getX() / (ladang.getWidth() / ladang.getColumnCount()));
-                            int row = (int) (event.getY() / (ladang.getHeight() / ladang.getRowCount()));
 
-                            // Pastikan tidak ada elemen pada posisi tersebut
-                            System.out.println(draggedPane.getId());
-                            String id_dragged = draggedPane.getId();
-                            int idx_card_deck_aktif = a.get_card_aktif_idx(id_dragged);
-                            Card card_dragged = a.get_card_aktif(idx_card_deck_aktif);
-                            if (card_dragged instanceof Item) {
-                                ((Item) card_dragged).aksi((BisaPanen) card);
+                                // Hitung baris dan kolom baru berdasarkan posisi drop
+                                int col = (int) (event.getX() / (ladang.getWidth() / ladang.getColumnCount()));
+                                int row = (int) (event.getY() / (ladang.getHeight() / ladang.getRowCount()));
+
+                                // Pastikan tidak ada elemen pada posisi tersebut
+                                System.out.println(draggedPane.getId());
+                                String id_dragged = draggedPane.getId();
+                                int idx_card_deck_aktif = a.get_card_aktif_idx(id_dragged);
+                                Card card_dragged = a.get_card_aktif(idx_card_deck_aktif);
+                                if (card_dragged instanceof Item) {
+                                    ((Item) card_dragged).aksi((BisaPanen) card);
+                                }
+                                if (card_dragged instanceof Produk) {
+                                    ((Produk) card_dragged).aksi((BisaPanen) card);
+                                }
+                                a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
                             }
 
                             // Tambahkan ke ladang
@@ -487,7 +560,7 @@ public class MainController {
             event.consume();
         });
         sirip_hiu.setOnDragDropped(event -> {
-            Player a = main.getPlayernow();
+            Player currentPlayer = main.getPlayernow();
             Dragboard db = event.getDragboard();
             boolean success = false;
             if (db.hasString() && db.getString().equals("pane")) {
@@ -499,11 +572,11 @@ public class MainController {
                     deck_aktif.getChildren().remove(draggedPane);
                     String id = draggedPane.getId();
                     System.out.println("Ini kartu: " + id);
-                    int idx_card_deck_aktif = a.get_card_aktif_idx(id);
-                    a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
-                    a.jual(main.getToko(), "SIRIP_HIU");
+                    int idx_card_deck_aktif = currentPlayer.get_card_aktif_idx(id);
+                    currentPlayer.drop_deck_aktif(currentPlayer.get_card_aktif(idx_card_deck_aktif));
+                    currentPlayer.jual(main.getToko(), "SIRIP_HIU");
                     updateJumlah("SIRIP_HIU");
-                    System.out.println("uang player: " + Integer.toString(main.getPlayernow().getCoin()));
+                    updateUangPlayer();
                     success = true;
                 }
             }
@@ -512,7 +585,12 @@ public class MainController {
         });
         sirip_hiu.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
-                System.out.println("double clicked");
+                Player currentPlayer = main.getPlayernow();
+                currentPlayer.beli(main.getToko(), "SIRIP_HIU");
+                updateJumlah("SIRIP_HIU");
+                SiripHiu siripHiu = new SiripHiu();
+                currentPlayer.add_into_deck_aktiv(siripHiu);
+                updateUangPlayer();
             }
         });
         susu.setOnDragOver(event -> {
@@ -595,6 +673,7 @@ public class MainController {
         shuffle_panel.getChildren().clear();
         Player a = main.getPlayernow();
         System.out.println(a.getName());
+        a.deck_catat();
         int idx = 0;
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
@@ -645,11 +724,11 @@ public class MainController {
         player_saat_ini.getChildren().addAll(new Label("Player saat ini: " + a.getName()));
     }
 
-    public void saveTXT(ArrayList<String> player1, ArrayList<String> player2){
+    public void saveTXT(ArrayList<String> player1, ArrayList<String> player2, String directory){
         TXTSaver saver = new TXTSaver();
 
-        saver.saveFormattedData("tes", "player1.txt", player1);
-        saver.saveFormattedData("tes", "player2.txt", player2);
+        saver.saveFormattedData(directory, "player1.txt", player1);
+        saver.saveFormattedData(directory, "player2.txt", player2);
 
         System.out.println("aman");
     }
@@ -705,6 +784,14 @@ public class MainController {
             case "STROBERI":
                 jumlah_stroberi.setText(Integer.toString(main.getToko().ambilStokProduk("STROBERI")));
                 break;
+        }
+    }
+
+    public void updateUangPlayer() {
+        if (main.getTurn() == 1) {
+            uang_player1.setText(Integer.toString(main.getPlayernow().getCoin()));
+        } else {
+            uang_player2.setText(Integer.toString(main.getPlayernow().getCoin()));
         }
     }
 }
