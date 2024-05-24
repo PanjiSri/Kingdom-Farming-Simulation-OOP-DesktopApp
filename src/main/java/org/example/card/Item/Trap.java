@@ -9,8 +9,6 @@ public class Trap extends Item {
 
     @Override
     public void aksi(BisaPanen bisaPanen) {
-        if (!bisaPanen.isTrapActivated()) {
-            bisaPanen.setTrapActivated(false);
-        }
+        bisaPanen.getItem().put("Trap", bisaPanen.getItem().get("Trap") + 1);
     }
 }
