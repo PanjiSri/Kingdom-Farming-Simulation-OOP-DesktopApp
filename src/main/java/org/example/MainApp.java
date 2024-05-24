@@ -7,6 +7,7 @@ package org.example;
 // import javafx.stage.Stage;
 
 import plugin.TXTLoader;
+import plugin.TXTSaver;
 import java.util.Scanner;
 import java.util.List;
 
@@ -48,19 +49,19 @@ public class MainApp{
         String folderName = scanner.nextLine();
 
         TXTLoader loader = new TXTLoader(folderName);
+        TXTSaver saver = new TXTSaver();
 
         this.gameState = loader.tokenizeLines(loader.readFromFile("game_state.txt"));
         this.player1 = loader.tokenizeLines(loader.readFromFile("player1.txt"));
         this.player2 = loader.tokenizeLines(loader.readFromFile("player2.txt"));
 
-        System.out.println("Game State:");
-        gameState.forEach(System.out::println);
+        System.out.println(gameState);
 
-        System.out.println("\nPlayer 1 Data:");
-        player1.forEach(System.out::println);
+        List<String> formatted = loader.repairFormat(gameState);
 
-        System.out.println("\nPlayer 2 Data:");
-        player2.forEach(System.out::println);
+        System.out.println(formatted);
+
+        saver.saveFormattedData("data_game", "ngopi.txt", formatted);
 
         scanner.close();
     }
