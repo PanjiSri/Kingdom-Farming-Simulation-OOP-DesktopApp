@@ -3,7 +3,7 @@ package org.example.card;
 public class StaticCard {
     static public String[] cardNames = {
         "org.example.card.Hewan.Ayam",
-        "org.example.card.Hewan.Beruang",
+        // "org.example.card.Hewan.Beruang",
         "org.example.card.Hewan.Domba",
         "org.example.card.Hewan.HiuDarat",
         "org.example.card.Hewan.Kuda",

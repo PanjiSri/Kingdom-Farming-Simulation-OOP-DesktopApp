@@ -14,12 +14,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.layout.VBox?>
 
 <StackPane fx:id="board" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController">
 <!-- <StackPane fx:id="board" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" style="-fx-pref-width: 700; -fx-pref-height: 600;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController"> -->
    <children>
-       <AnchorPane fx:id="info_pane" opacity="0.5" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21">
+       <AnchorPane fx:id="info_pane" opacity="1" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21">
            <children>
                <ButtonBar layoutX="257.0" layoutY="276.0" prefHeight="40.0" prefWidth="80.0">
                    <buttons>
@@ -31,7 +30,7 @@
                        <Button fx:id="tutup_info" mnemonicParsing="false" text="Close" />
                    </buttons>
                </ButtonBar>
-               <VBox fx:id="info_hewan" layoutX="186.0" layoutY="55.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="226.0" />
+               <VBox fx:id="info_hewan" layoutX="186.0" layoutY="55.0" prefHeight="200.0" prefWidth="226.0" />
            </children>
        </AnchorPane>
       <Pane fx:id="save_load" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: green; -fx-opacity: 1;">
@@ -58,9 +57,9 @@
             <Button fx:id="load_progress" layoutX="664.0" layoutY="401.0" mnemonicParsing="false" text="Load" />
          </children>
       </Pane>
-      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="500.0" style="-fx-background-color: #FFFFFF;">
+      <Pane fx:id="toko" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="500.0" style="-fx-background-color: #FFFFFF;">
          <children>
-            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Kembali" />
+            <Button fx:id="toko_kembali" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Kembali" />
             <Label layoutX="231.0" layoutY="10.0" text="Toko">
                <font>
                   <Font name="System Bold" size="16.0" />
@@ -78,7 +77,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <AnchorPane layoutX="285.0" layoutY="284.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;">
+                  <AnchorPane fx:id="sirip_hiu" layoutX="285.0" layoutY="284.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;">
                      <children>
                         <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
@@ -97,18 +96,18 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="26.0" text="500" />
                               <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="74.0" text="0" />
+                              <Label fx:id="jumlah_sirip_hiu" layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="1">
+                  <AnchorPane fx:id="susu" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="1">
                      <children>
                         <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
@@ -127,18 +126,18 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="26.0" text="100" />
                               <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="74.0" text="0" />
+                              <Label fx:id="jumlah_susu" layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="148.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="2">
+                  <AnchorPane fx:id="daging_domba" layoutX="148.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="2">
                      <children>
                         <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
@@ -157,18 +156,18 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="26.0" text="120" />
                               <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="74.0" text="0" />
+                              <Label fx:id="jumlah_daging_domba" layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.rowIndex="1">
+                  <AnchorPane fx:id="daging_kuda" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.rowIndex="1">
                      <children>
                         <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
@@ -187,18 +186,18 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="26.0" text="150" />
                               <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="74.0" text="0" />
+                              <Label fx:id="jumlah_daging_kuda" layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <AnchorPane fx:id="telur" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
@@ -217,18 +216,18 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="26.0" text="50" />
                               <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="74.0" text="0" />
+                              <Label fx:id="jumlah_telur" layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <AnchorPane fx:id="daging_beruang" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <children>
                         <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
@@ -247,18 +246,18 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="26.0" text="500" />
                               <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="74.0" text="0" />
+                              <Label fx:id="jumlah_daging_beruang" layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.rowIndex="2">
+                  <AnchorPane fx:id="jagung" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.rowIndex="2">
                      <children>
                         <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
@@ -277,18 +276,18 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="26.0" text="150" />
                               <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="74.0" text="0" />
+                              <Label fx:id="jumlah_jagung" layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <AnchorPane fx:id="labu" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
                         <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
@@ -307,18 +306,18 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="26.0" text="500" />
                               <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="74.0" text="0" />
+                              <Label fx:id="jumlah_labu" layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <AnchorPane fx:id="stroberi" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #AAAAAA; -fx-border-width: 1; -fx-border-color: #000000;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <children>
                         <AnchorPane layoutX="6.0" layoutY="7.0" prefHeight="112.0" prefWidth="55.0" style="-fx-background-color: #CCCCCC; -fx-border-width: 1; -fx-border-color: #000000;">
                            <children>
@@ -337,19 +336,43 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="26.0" text="0" />
+                              <Label layoutX="2.0" layoutY="26.0" text="350" />
                               <Label layoutX="2.0" layoutY="53.0" text="Jumlah">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="2.0" layoutY="74.0" text="0" />
+                              <Label fx:id="jumlah_stroberi" layoutX="2.0" layoutY="74.0" text="0" />
                            </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
                </children>
             </GridPane>
+         </children>
+      </Pane>
+      <Pane fx:id="ambil_kartu" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #7FFF7F;">
+         <children>
+            <GridPane fx:id="shuffle_panel" layoutX="384.0" layoutY="239.0" style="-fx-vgap: 10; -fx-hgap: 10;">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="110.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="110.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="130.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="130.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+            <ButtonBar layoutX="457.0" layoutY="565.0" prefHeight="40.0" prefWidth="80.0">
+              <buttons>
+                <Button fx:id="shuffle_card" mnemonicParsing="false" text="Shuffle" />
+              </buttons>
+            </ButtonBar>
+            <ButtonBar layoutX="457.0" layoutY="525.0" maxWidth="-Infinity" prefHeight="40.0" prefWidth="80.0">
+              <buttons>
+                <Button fx:id="close_button" mnemonicParsing="false" text="Close" />
+              </buttons>
+            </ButtonBar>
          </children>
       </Pane>
       <Pane fx:id="pane_ladang" prefHeight="750.0" prefWidth="1000.0" style="-fx-background-color: pink;">
@@ -382,12 +405,12 @@
                 <RowConstraints maxHeight="-Infinity" minHeight="0.0" prefHeight="130.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <ButtonBar layoutX="702.0" layoutY="307.0" prefHeight="40.0" prefWidth="200.0">
+            <ButtonBar layoutX="702.0" layoutY="307.0" prefHeight="50.0" prefWidth="250.0">
               <buttons>
                 <Button fx:id="save" mnemonicParsing="false" text="Save" />
               </buttons>
             </ButtonBar>
-            <ButtonBar layoutX="702.0" layoutY="347.0" prefHeight="40.0" prefWidth="200.0">
+            <ButtonBar layoutX="702.0" layoutY="347.0" prefHeight="50.0" prefWidth="250.0">
               <buttons>
                 <Button fx:id="ladang_sendiri" mnemonicParsing="false" text="Ladang Sendiri">
                      <font>
@@ -396,46 +419,23 @@
                   </Button>
               </buttons>
             </ButtonBar>
-            <ButtonBar layoutX="702.0" layoutY="387.0" prefHeight="40.0" prefWidth="200.0">
+            <ButtonBar layoutX="702.0" layoutY="387.0" prefHeight="50.0" prefWidth="250.0">
               <buttons>
-                <Button fx:id="ladang_lawan" mnemonicParsing="false" text="Ladang Lawan">
+                <Button fx:id="ladang_lawan" mnemonicParsing="false" prefHeight="22.0" prefWidth="77.0" text="Ladang Lawan">
                      <font>
                         <Font size="10.0" />
                      </font>
                   </Button>
               </buttons>
             </ButtonBar>
-            <ButtonBar layoutX="702.0" layoutY="427.0" prefHeight="40.0" prefWidth="200.0">
+            <ButtonBar layoutX="702.0" layoutY="427.0" prefHeight="50.0" prefWidth="250.0">
               <buttons>
-                <Button fx:id="next_turn" mnemonicParsing="false" text="Next" />
+                <Button fx:id="next_turn" mnemonicParsing="false" prefHeight="26.0" prefWidth="77.0" text="Next" />
               </buttons>
             </ButtonBar>
             <Pane fx:id="jumlah_turn" layoutX="702.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="130.0" prefWidth="200.0" />
             <Pane fx:id="player_saat_ini" layoutX="702.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" />
-         </children>
-      </Pane>
-      <Pane fx:id="ambil_kartu" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #7FFF7F;">
-         <children>
-            <GridPane fx:id="shuffle_panel" layoutX="384.0" layoutY="239.0" style="-fx-vgap: 10; -fx-hgap: 10;">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="110.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="110.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="130.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="130.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-            <ButtonBar layoutX="457.0" layoutY="565.0" prefHeight="40.0" prefWidth="80.0">
-              <buttons>
-                <Button fx:id="shuffle_card" mnemonicParsing="false" text="Shuffle" />
-              </buttons>
-            </ButtonBar>
-            <ButtonBar layoutX="457.0" layoutY="525.0" maxWidth="-Infinity" prefHeight="40.0" prefWidth="80.0">
-              <buttons>
-                <Button fx:id="close_button" mnemonicParsing="false" text="Close" />
-              </buttons>
-            </ButtonBar>
+            <Button fx:id="toko_buka" layoutX="876.0" layoutY="272.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="75.0" text="Toko" />
          </children>
       </Pane>
    </children>

@@ -10,6 +10,7 @@ import org.example.card.Tumbuhan.BijiJagung;
 import org.example.card.Tumbuhan.BijiLabu;
 import org.example.card.Tumbuhan.BijiStroberi;
 import org.example.card.Tumbuhan.Tumbuhan;
+import org.example.card.Tumbuhan.Tumbuhan;
 
 
 public class Player {
@@ -76,6 +77,7 @@ public class Player {
     public void drop_deck_aktif(Card i) {
         System.out.println("Belum error");
         String id_card = Integer.toString(i.getId());
+        System.out.println("Sudah error");
         for(int x = 0; x < deck_aktif.size(); x++) {
             String id_card_aktif = " ";
             if (deck_aktif.get(x) != null) {
@@ -88,7 +90,23 @@ public class Player {
                 break;
             }
         }
-        
+        System.out.println("Yang ini gimana");
+    }
+
+    public void add_umur_tumbuhan() {
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 5; j++) {
+                if (lahan.get(i).get(j) == null) {
+                    continue;
+                }
+                else {
+                    if (lahan.get(i).get(j) instanceof Tumbuhan) {
+                        Tumbuhan tumbuhan = (Tumbuhan) lahan.get(i).get(j);
+                        tumbuhan.addUmur(2);
+                    }
+                }
+            }
+        }
     }
 
     public void drop_ladang(String id) {
@@ -719,4 +737,18 @@ public class Player {
 //        }
 //    }
 
+
+    // format namaProduk = SIRIP_HIU
+    public void beli(Toko toko, String namaProduk) {
+        if (toko.ambilStokProduk(namaProduk) > 0 && coin >= toko.ambilHargaProduk(namaProduk)) {
+            toko.kurangiStokProduk(namaProduk);
+            coin -= toko.ambilHargaProduk(namaProduk);
+        }
+    }
+
+    // format namaProduk = SIRIP_HIU
+    public void jual(Toko toko, String namaProduk) {
+        toko.tambahStokProduk(namaProduk);
+        coin += toko.ambilHargaProduk(namaProduk);
+    }
 }

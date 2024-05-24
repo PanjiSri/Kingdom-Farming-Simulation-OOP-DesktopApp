@@ -5,12 +5,14 @@ public class Board {
     private  Player p2;
     int turn;
     int totalturn;
+    private Toko toko;
 
-    public Board(Player _p1, Player _p2) {
+    public Board(Player _p1, Player _p2, Toko toko) {
         p1 = _p1;
         p2 = _p2;
         turn = 1;
         totalturn = 0;
+        this.toko = toko;
     }
 
     public Player getPlayernow() {
@@ -51,5 +53,9 @@ public class Board {
 
     public int getTurn() {
         return turn;
+    }
+
+    public Toko getToko() {
+        return toko;
     }
 }

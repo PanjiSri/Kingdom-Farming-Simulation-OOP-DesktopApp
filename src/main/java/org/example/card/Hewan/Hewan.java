@@ -3,7 +3,6 @@ package org.example.card.Hewan;
 import org.example.card.BisaPanen;
 import org.example.card.Card;
 import org.example.card.Produk.Produk;
-import java.util.ArrayList;
 import java.util.Map;
 
 public abstract class Hewan extends Card implements BisaPanen {
