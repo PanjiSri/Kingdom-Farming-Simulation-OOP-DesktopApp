@@ -33,26 +33,24 @@ public class TXTSaver {
         return formatted_list;
     }
 
-     public void saveFormattedData(String directoryName, String fileName, List<String> data) {
+    public void saveFormattedData(String directoryName, String fileName, List<String> data) {
         Path directoryPath = Paths.get(directoryName);
         Path filePath = directoryPath.resolve(fileName);
 
         try {
-            Files.createDirectories(directoryPath);
+            Files.createDirectories(directoryPath); // Ensure directory exists
 
             StringBuilder contentBuilder = new StringBuilder();
-            
             for (String line : data) {
                 contentBuilder.append(line).append("\n");
             }
 
-            Files.write(filePath, contentBuilder.toString().getBytes(), StandardOpenOption.CREATE);
+            // Ensure the file is truncated before writing new content
+            Files.write(filePath, contentBuilder.toString().getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
             System.out.println("Data successfully saved to: " + filePath);
         } catch (IOException e) {
             System.err.println("Error writing to file: " + filePath);
             e.printStackTrace();
         }
-
     }
-
 }

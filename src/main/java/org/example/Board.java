@@ -41,6 +41,14 @@ public class Board {
         return totalturn;
     }
 
+    public Player getP1() {
+        return p1;
+    }
+
+    public Player getP2() {
+        return p2;
+    }
+
     public int getTurn() {
         return turn;
     }

@@ -15,20 +15,14 @@ import java.util.List;
 
 public class MainApp extends Application {
 
-    List<String> gameState;
-    List<String> player1;
-    List<String> player2;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        loadTXT();
+        TXTSaver saver = new TXTSaver();
         // Add ke Board
         Player p1 = new Player("player1", 0);
         Player p2 = new Player("player2", 1);
-        ArrayList<String> a = (ArrayList<String>) player1;
-        System.out.println(a);
-        p1.player_load(a);
-        p1.get_save();
         Board board = new Board(p1, p2);
         System.out.println(p1.getName());
         // Load the main FXML file
@@ -49,32 +43,7 @@ public class MainApp extends Application {
         primaryStage.show();
     }
 
-    public void loadTXT(){
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter the name of the folder containing the text files:");
-        String folderName = scanner.nextLine();
-
-        TXTLoader loader = new TXTLoader(folderName);
-        TXTSaver saver = new TXTSaver();
-
-        this.gameState = loader.tokenizeLines(loader.readFromFile("game_state.txt"));
-        this.player1 = loader.tokenizeLines(loader.readFromFile("player1.txt"));
-        this.player2 = loader.tokenizeLines(loader.readFromFile("player2.txt"));
-
-//        System.out.println(gameState);
-//
-//        List<String> formatted = loader.repairFormat(gameState);
-//
-//        System.out.println(formatted);
-//
-//        saver.saveFormattedData("data_game", "ngopi.txt", formatted);
-
-        scanner.close();
-    }
-
     public static void main(String[] args) {
-        // launch(args)
         launch(args);
     }
     

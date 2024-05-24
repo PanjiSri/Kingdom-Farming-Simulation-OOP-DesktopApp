@@ -3,6 +3,7 @@ package org.example;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -24,8 +25,11 @@ import org.example.card.Item.Item;
 import org.example.card.Tumbuhan.Tumbuhan;
 import org.example.card.Produk.Produk;
 import javafx.scene.layout.AnchorPane;
+import plugin.TXTLoader;
+import plugin.TXTSaver;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainController {
 
@@ -36,10 +40,10 @@ public class MainController {
     private AnchorPane info_pane;
 
     @FXML
-    private Pane pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini, halo;
+    private Pane pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini;
 
     @FXML
-    private Button next_turn, shuffle_card, close_button, ladang_lawan, ladang_sendiri, panen, tutup_info;
+    private Button next_turn, shuffle_card, close_button, ladang_lawan, ladang_sendiri, panen, tutup_info, load_progress;
 
     @FXML
     private StackPane board;
@@ -47,7 +51,17 @@ public class MainController {
     @FXML
     private VBox info_hewan;
 
+    @FXML
+    private TextField folder_load;
+
     private Board main;
+    List<String> gameState;
+    List<String> player1;
+    List<String> player2;
+
+    ArrayList<String> gameStatesave;
+    ArrayList<String> player1save;
+    ArrayList<String> player2save;
 
     private String style = ("-fx-pref-width: 70.0;" +
                             "-fx-pref-height: 90.0;" +
@@ -191,6 +205,9 @@ public class MainController {
         tutup_info.setOnAction(e -> {
             info_hewan.getChildren().clear();
             board.getChildren().addAll(ambil_kartu, pane_ladang);
+        });
+        folder_load.setOnAction(e -> {
+            
         });
     }
 
@@ -504,6 +521,32 @@ public class MainController {
     public void set_player() {
         Player a = main.getPlayernow();
         player_saat_ini.getChildren().addAll(new Label("Player saat ini: " + a.getName()));
+    }
+
+    public void saveTXT(ArrayList<String> player1, ArrayList<String> player2){
+        TXTSaver saver = new TXTSaver();
+
+        saver.saveFormattedData("tes", "player1.txt", player1);
+        saver.saveFormattedData("tes", "player2.txt", player2);
+
+        System.out.println("aman");
+    }
+
+    public void loadTXT(String folder) {
+        TXTLoader loader = new TXTLoader(folder);
+
+        this.gameState = loader.tokenizeLines(loader.readFromFile("gamestate.txt"));
+        this.player1 = loader.tokenizeLines(loader.readFromFile("player1.txt"));
+        this.player2 = loader.tokenizeLines(loader.readFromFile("player2.txt"));
+
+        Player p1 = main.getP1();
+        Player p2 = main.getP2();
+
+        ArrayList<String> a = (ArrayList<String>) player1;
+        ArrayList<String> b = (ArrayList<String>) player2;
+
+        p1.player_load(a);
+        p2.player_load(b);
     }
 
     public void setBoard(Board board) {

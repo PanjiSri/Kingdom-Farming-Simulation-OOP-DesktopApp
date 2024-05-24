@@ -5,7 +5,7 @@ import org.example.card.Produk.Produk;
 
 public class Domba extends Hewan {
     public Domba() {
-        super("Domba", "/img/Hewan/sheep.png", 20, 12, "Herbivora");
+        super("Domba", "/img/Hewan/sheep.png", 0, 12, "Herbivora");
     }
     
     public Domba(int berat) {
