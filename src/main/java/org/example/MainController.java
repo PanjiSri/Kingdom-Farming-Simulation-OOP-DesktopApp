@@ -823,23 +823,49 @@ public class MainController {
         Player currentPlayer = main.getPlayernow();
         Dragboard db = event.getDragboard();
         boolean success = false;
-        if (db.hasString() && db.getString().equals("pane")) {
-            Pane draggedPane = (Pane) event.getGestureSource();
-            draggedPane.setStyle(style);
-
-            // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
-            if (deck_aktif.getChildren().contains(draggedPane)) {
-                deck_aktif.getChildren().remove(draggedPane);
-                String id = draggedPane.getId();
-                System.out.println("Ini kartu: " + id);
-                int idx_card_deck_aktif = currentPlayer.get_card_aktif_idx(id);
-                currentPlayer.drop_deck_aktif(currentPlayer.get_card_aktif(idx_card_deck_aktif));
-                currentPlayer.jual(main.getToko(), namaProduk);
-                updateJumlah(namaProduk);
-                updateUangPlayer();
-                success = true;
-            }
+        if (!db.hasString() || !db.getString().equals("pane")) {
+            return;
         }
+        Pane draggedPane = (Pane) event.getGestureSource();
+        draggedPane.setStyle(style);
+
+        // Cek apakah Pane berasal dari deck_aktif
+        if (!deck_aktif.getChildren().contains(draggedPane)) {
+            return;
+        }
+
+        // Cek kartu yang di-drop
+        Card droppedCard = currentPlayer.get_card_aktif(currentPlayer.get_card_aktif_idx(draggedPane.getId()));
+        boolean match = switch (namaProduk) {
+            case "SIRIP_HIU" -> droppedCard instanceof SiripHiu;
+            case "SUSU" -> droppedCard instanceof Susu;
+            case "DAGING_DOMBA" -> droppedCard instanceof DagingDomba;
+            case "DAGING_KUDA" -> droppedCard instanceof DagingKuda;
+            case "TELUR" -> droppedCard instanceof Telur;
+            case "DAGING_BERUANG" -> droppedCard instanceof DagingBeruang;
+            case "JAGUNG" -> droppedCard instanceof Jagung;
+            case "LABU" -> droppedCard instanceof Labu;
+            case "STROBERI" -> droppedCard instanceof Stroberi;
+            default -> false;
+        };
+
+        if (!match) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Woy!");
+            alert.setHeaderText("Baca Nih!!!");
+            alert.setContentText("Kartunya bukan " + namaProduk.toLowerCase().replace("_", " "));
+            // Show the alert and wait for the user to close it
+            alert.showAndWait();
+            return;
+        }
+
+        deck_aktif.getChildren().remove(draggedPane);
+        currentPlayer.drop_deck_aktif(droppedCard);
+        currentPlayer.jual(main.getToko(), namaProduk);
+        updateJumlah(namaProduk);
+        updateUangPlayer();
+        success = true;
+
         event.setDropCompleted(success);
         event.consume();
     }
@@ -849,7 +875,19 @@ public class MainController {
         if (event.getClickCount() != 2) {
             return;
         }
+
         Player currentPlayer = main.getPlayernow();
+
+        if (currentPlayer.get_deck_aktif_size() >= 6) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Woy!");
+            alert.setHeaderText("Baca Nih!!!");
+            alert.setContentText("Deck aktif penuh");
+            // Show the alert and wait for the user to close it
+            alert.showAndWait();
+            return;
+        }
+
         try {
             currentPlayer.beli(main.getToko(), namaProduk);
         } catch (IllegalStateException e) {
@@ -860,6 +898,7 @@ public class MainController {
             // Show the alert and wait for the user to close it
             alert.showAndWait();
         }
+
         updateJumlah(namaProduk);
         Card newCard = switch (namaProduk) {
             case "SIRIP_HIU" -> new SiripHiu();
@@ -873,7 +912,9 @@ public class MainController {
             case "STROBERI" -> new Stroberi();
             default -> null;
         };
+
         currentPlayer.add_into_deck_aktiv(Objects.requireNonNull(newCard));
         updateUangPlayer();
+        add_to_deck_aktif();
     }
 }
