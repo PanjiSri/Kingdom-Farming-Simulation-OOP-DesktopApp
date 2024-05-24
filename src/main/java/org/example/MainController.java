@@ -8,10 +8,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.*;
-
-// import javax.smartcardio.Card;
-
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
+import javafx.scene.layout.AnchorPane;
 import org.example.Board.*;
 import org.example.Player.*;
 import org.example.card.BisaPanen;
@@ -21,6 +23,9 @@ import org.example.card.Hewan.Hewan;
 import org.example.card.Item.Item;
 import org.example.card.Tumbuhan.Tumbuhan;
 import org.example.card.Produk.Produk;
+import javafx.scene.layout.AnchorPane;
+
+import java.util.ArrayList;
 
 public class MainController {
 
@@ -72,6 +77,12 @@ public class MainController {
             }
         }
 
+        Circle circle = new Circle(50, 50, 50);
+        circle.setCenterX(20);
+
+        Button button = new Button("Click me!");
+        button.setOnAction(e -> System.out.println("Hello, World!"));
+
         // Set drag over for the GridPane
         ladang.setOnDragOver(event -> {
             if (event.getGestureSource() != ladang && event.getDragboard().hasString()) {
@@ -89,36 +100,47 @@ public class MainController {
                 Pane draggedPane = (Pane) event.getGestureSource();
                 draggedPane.setStyle(style);
 
+                int col = (int) (event.getX() / (ladang.getWidth() / ladang.getColumnCount()));
+                int row = (int) (event.getY() / (ladang.getHeight() / ladang.getRowCount()));
                 // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
                 if (deck_aktif.getChildren().contains(draggedPane)) {
+                    System.out.println("Masalah");
                     deck_aktif.getChildren().remove(draggedPane);
+                    System.out.println(draggedPane.getId());
+                    String id = draggedPane.getId();
+                    int idx_card_deck_aktif = a.get_card_aktif_idx(id);
+                    System.out.println("Dallas");
+                    a.add_in_lahan(row, col, a.get_card_aktif(idx_card_deck_aktif));
+                    a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
+                    System.out.println("Ini kartu: " + draggedPane.getId());
+                    System.out.println();
+
+                    // Tambahkan ke ladang
+                    ladang.add(draggedPane, col, row);
+                    a.print_lahan();
+                    success = true;
                 }
 
-                if (ladang.getChildren().contains(draggedPane)) {
-                    a.drop_ladang(draggedPane.getId());
+                else if (ladang.getChildren().contains(draggedPane)) {
                     ladang.getChildren().remove(draggedPane);
+                    System.out.println(draggedPane.getId());
+                    String id = draggedPane.getId();
+                    ArrayList<Integer>  idx_lahan = a.get_idx_lahan(id);
+                    System.out.println("Dallas");
+                    a.add_in_lahan(row, col, a.get_card_ladang(idx_lahan.get(0), idx_lahan.get(1)));
+                    a.drop_ladang(idx_lahan.get(0), idx_lahan.get(1));
+                    System.out.println("Ini kartu: " + draggedPane.getId());
+                    System.out.println();
+                    // Tambahkan ke ladang
+                    a.print_lahan();
+                    success = true;
+                    ladang.getChildren().remove(draggedPane);
+                    ladang.add(draggedPane, col, row);
                 }
 
                 // Hitung baris dan kolom baru berdasarkan posisi drop
-                int col = (int) (event.getX() / (ladang.getWidth() / ladang.getColumnCount()));
-                int row = (int) (event.getY() / (ladang.getHeight() / ladang.getRowCount()));
 
                 // Pastikan tidak ada elemen pada posisi tersebut
-                System.out.println(draggedPane.getId());
-                String id = draggedPane.getId();
-                int idx_card_deck_aktif = a.get_card_aktif_idx(id);
-                System.out.println("Dallas");
-                a.add_in_lahan(row, col, a.get_card_aktif(idx_card_deck_aktif));
-                System.out.println("blablabla");
-                a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
-                System.out.println("blablabla");
-                System.out.println("Ini kartu: " + draggedPane.getId());
-                System.out.println();
-
-                    // Tambahkan ke ladang
-                ladang.add(draggedPane, col, row);
-                a.print_lahan();
-                success = true;
             }
             event.setDropCompleted(success);
             event.consume();
@@ -160,7 +182,11 @@ public class MainController {
 
     // Set fungsi pda button
     public void initialize_click() {
-        next_turn.setOnAction(e -> change_to_shuffle());
+        next_turn.setOnAction(e -> {
+            Player a = main.getPlayernow();
+            a.add_umur_tumbuhan();
+            change_to_shuffle();
+        });
         shuffle_card.setOnAction(e -> shuffle_kartu());
         close_button.setOnAction(e -> change_to_main());
         ladang_lawan.setOnAction(e -> ladang_lawan());
