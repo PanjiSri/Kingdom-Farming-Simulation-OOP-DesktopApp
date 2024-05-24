@@ -283,12 +283,58 @@ public class MainController {
             Player p2 = main.getP2();
             player1save = p1.get_save();
             player2save = p2.get_save();
-
-            saveTXT(player1save, player2save, folder_save.getText());
+            gameStatesave = getstatesave();
+            saveTXT(gameStatesave, player1save, player2save, folder_save.getText());
         });
         save11.setOnAction(e -> show_plugin());
-        plugin_to_main.setOnAction(e -> change_to_main());
 
+    }
+
+    public ArrayList<String> getstatesave() {
+        int get = 0;
+        ArrayList<String> list = new ArrayList<>();
+        Toko toko = main.getToko();
+        list.add(Integer.toString(main.getTotalturn()));
+        if (toko.ambilStokProduk("DAGING_DOMBA") > 0) {
+            list.add("DAGING_DOMBA " + Integer.toString(toko.ambilStokProduk("DAGING_DOMBA")));
+            get++;
+        }
+        if (toko.ambilStokProduk("DAGING_KUDA") > 0) {
+            list.add("DAGING_KUDA " + Integer.toString(toko.ambilStokProduk("DAGING_KUDA")));
+            get++;
+        }
+        if (toko.ambilStokProduk("DAGING_BERUANG") > 0) {
+            list.add("DAGING_BERUANG " + Integer.toString(toko.ambilStokProduk("DAGING_BERUANG")));
+            get++;
+        }
+        if (toko.ambilStokProduk("JAGUNG") > 0) {
+            list.add("JAGUNG " + Integer.toString(toko.ambilStokProduk("JAGUNG")));
+            get++;
+        }
+        if (toko.ambilStokProduk("LABU") > 0) {
+            list.add("LABU " + Integer.toString(toko.ambilStokProduk("LABU")));
+            get++;
+        }
+        if (toko.ambilStokProduk("SIRIP_HIU") > 0) {
+            list.add("SIRIP_HIU " + Integer.toString(toko.ambilStokProduk("SIRIP_HIU")));
+            get++;
+        }
+        if (toko.ambilStokProduk("STROBERI") > 0) {
+            list.add("STROBERI " + Integer.toString(toko.ambilStokProduk("STROBERI")));
+            get++;
+        }
+        if (toko.ambilStokProduk("SUSU") > 0) {
+            list.add("SUSU " + Integer.toString(toko.ambilStokProduk("SUSU")));
+            get++;
+        }
+        if (toko.ambilStokProduk("TELUR") > 0) {
+            list.add("TELUR " + Integer.toString(toko.ambilStokProduk("TELUR")));
+            get++;
+        }
+        if(get > 0) {
+            list.add(1, Integer.toString(get));
+        }
+        return list;
     }
 
     public void show_plugin() {
@@ -562,8 +608,17 @@ public class MainController {
 
     // Membuka pane toko
     public void main_to_toko() {
+        Toko toko_board = main.getToko();
         board.getChildren().add(toko);
-
+        jumlah_daging_beruang.setText(Integer.toString(toko_board.ambilStokProduk("DAGING_BERUANG")));
+        jumlah_sirip_hiu.setText(Integer.toString(toko_board.ambilStokProduk("SIRIP_HIU")));
+        jumlah_jagung.setText(Integer.toString(toko_board.ambilStokProduk("JAGUNG")));
+        jumlah_labu.setText(Integer.toString(toko_board.ambilStokProduk("LABU")));
+        jumlah_daging_domba.setText(Integer.toString(toko_board.ambilStokProduk("DAGING_DOMBA")));
+        jumlah_stroberi.setText(Integer.toString(toko_board.ambilStokProduk("STROBERI")));
+        jumlah_telur.setText(Integer.toString(toko_board.ambilStokProduk("TELUR")));
+        jumlah_susu.setText(Integer.toString(toko_board.ambilStokProduk("SUSU")));
+        jumlah_daging_kuda.setText(Integer.toString(toko_board.ambilStokProduk("DAGING_KUDA")));
         sirip_hiu.setOnDragOver(event -> handleSellEventDragOver(event, sirip_hiu));
         sirip_hiu.setOnDragDropped(event -> handleSellEvent(event, "SIRIP_HIU"));
         sirip_hiu.setOnMouseClicked(event -> handleBuyEvent(event, "SIRIP_HIU"));
@@ -666,9 +721,9 @@ public class MainController {
         player_saat_ini.getChildren().addAll(new Label("Player saat ini: " + a.getName()));
     }
 
-    public void saveTXT(ArrayList<String> player1, ArrayList<String> player2, String directory){
+    public void saveTXT(ArrayList<String> gameState, ArrayList<String> player1, ArrayList<String> player2, String directory){
         TXTSaver saver = new TXTSaver();
-
+        saver.saveFormattedData(directory, "gamestate,txt", gameState);
         saver.saveFormattedData(directory, "player1.txt", player1);
         saver.saveFormattedData(directory, "player2.txt", player2);
 
@@ -686,12 +741,29 @@ public class MainController {
         Player p1 = main.getP1();
         Player p2 = main.getP2();
 
+        ArrayList<String> game = (ArrayList<String>) gameState;
         ArrayList<String> a = (ArrayList<String>) player1;
         ArrayList<String> b = (ArrayList<String>) player2;
 
-
+        game_state_load(game);
         p1.player_load(a);
         p2.player_load(b);
+    }
+
+    public void game_state_load(ArrayList<String> game) {
+        int a = 0;
+        main.set_totalturn(Integer.valueOf(game.get(a)));
+        Toko toko_board = main.getToko();
+        a += 1;
+        int toko = Integer.valueOf(game.get(a));
+        a += 1;
+        for(int i = 0; i < toko; i++) {
+            String kata = game.get(a);
+            a += 1;
+            int stok  = Integer.valueOf(game.get(a));
+            a += 1;
+            toko_board.setStokProduk(kata, stok);
+        }
     }
 
     public void setBoard(Board board) {
