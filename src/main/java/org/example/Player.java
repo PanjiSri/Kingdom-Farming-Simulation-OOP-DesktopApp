@@ -118,7 +118,7 @@ public class Player {
                         tumbuhan.setItem("Delay", -1);
                         tumbuhan.setItem("Protect", -1);
                         tumbuhan.setItem("Trap", -1);
-                    } else {
+                    } else if (lahan.get(i).get(j) instanceof Hewan) {
                         Hewan hewan = (Hewan) lahan.get(i).get(j);
                         hewan.setItem("Accelerate", -1);
                         hewan.setItem("Delay", -1);
