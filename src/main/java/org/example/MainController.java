@@ -14,17 +14,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 import javafx.scene.layout.AnchorPane;
-import org.example.Board.*;
-import org.example.Player.*;
 import org.example.card.BisaPanen;
 import org.example.card.Card;
-import org.example.card.Hewan.Beruang;
 import org.example.card.Hewan.Hewan;
 import org.example.card.Item.Item;
 import org.example.card.Tumbuhan.Tumbuhan;
 import org.example.card.Produk.Produk;
-import javafx.scene.layout.AnchorPane;
-
 import java.util.ArrayList;
 
 public class MainController {
@@ -76,12 +71,6 @@ public class MainController {
                 ladang.add(pane, i, j);
             }
         }
-
-        Circle circle = new Circle(50, 50, 50);
-        circle.setCenterX(20);
-
-        Button button = new Button("Click me!");
-        button.setOnAction(e -> System.out.println("Hello, World!"));
 
         // Set drag over for the GridPane
         ladang.setOnDragOver(event -> {
@@ -191,7 +180,6 @@ public class MainController {
         close_button.setOnAction(e -> change_to_main());
         ladang_lawan.setOnAction(e -> ladang_lawan());
         ladang_sendiri.setOnAction(e -> change_to_main());
-        // panen.setOnAction(e -> panen());
         tutup_info.setOnAction(e -> {
             info_hewan.getChildren().clear();
             board.getChildren().addAll(ambil_kartu, pane_ladang);
@@ -243,17 +231,21 @@ public class MainController {
             for (int j = 0; j < 5; j++) {
                 Card card = a.get_card_ladang(i, j);
                 // Pastikan kartu tidak null atau tidak valid
-                if (card != null) {
+                if (card != null && (card instanceof Hewan || card instanceof Tumbuhan)) {
                     VBox pane = new VBox();
                     pane.setStyle(style);
+                    pane.setId(a.get_card_ladang(i, j).getName()); // Menggunakan ID unik berdasarkan posisi
+                    
                     Image image = new Image(this.getClass().getResource(card.getImgPath()).toExternalForm());
                     ImageView imageView = new ImageView(image);
                     imageView.setFitWidth(width);
                     imageView.setFitHeight(height);
-                    pane.setId(a.get_card_ladang(i, j).getName()); // Menggunakan ID unik berdasarkan posisi
+                    
                     Label label = new Label(card.getName());
                     label.setStyle(font);
+                    
                     String id = Integer.toString(card.getId());
+                    
                     pane.setId(id);
                     pane.getChildren().add(label);
                     pane.getChildren().add(imageView);
@@ -310,6 +302,7 @@ public class MainController {
                         show_info(card, x, y);
                     });
                         ladang.add(pane, j, i);
+                } else {
                 }
             }
         }
@@ -419,13 +412,6 @@ public class MainController {
         board.getChildren().addAll(info_pane);
     }
 
-    // Panen
-//    public void panen() {
-//        Player a = main.getPlayernow();
-//        a.panen();
-//        change_to_main();
-    // }
-
     // Ubah ke pane shuffle
     public void change_to_shuffle() {
         main.add_turn();
@@ -434,7 +420,6 @@ public class MainController {
         board.getChildren().clear();
         add_kartu_ke_shuffle_field();
         board.getChildren().setAll(pane_ladang, ambil_kartu);
-//        System.out.println(board.getChildren().size());
     }
 
     // Ubah ke pane main
@@ -456,7 +441,6 @@ public class MainController {
 
     // Tambahkan kartu ke shuffle field
     public void add_kartu_ke_shuffle_field() {
-
         shuffle_panel.getChildren().clear();
         Player a = main.getPlayernow();
         System.out.println(a.getName());

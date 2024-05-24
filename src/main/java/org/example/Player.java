@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import org.example.card.Card;
 import org.example.card.Hewan.*;
+import org.example.card.Item.*;
 import org.example.card.StaticCard;
 import org.example.card.Tumbuhan.BijiJagung;
 import org.example.card.Tumbuhan.BijiLabu;
 import org.example.card.Tumbuhan.BijiStroberi;
+import org.example.card.Tumbuhan.Tumbuhan;
 import org.example.card.Tumbuhan.Tumbuhan;
 
 
@@ -246,10 +248,6 @@ public class Player {
         return size;
     }
 
-    public void panen(int x, int y) {
-
-    }
-
     public ArrayList<Integer> get_idx_lahan(String id) {
         ArrayList<Integer> idx_lahan = new ArrayList<>();
         for(int i = 0; i < 4; i++) {
@@ -316,6 +314,14 @@ public class Player {
             Card card = get_card_with_berat(mahkluk, berat);
             lahan.get(idx.get(0)).remove(idx.get(1));
             lahan.get(idx.get(0)).add(idx.get(1), card);
+            a += 1;
+            int item = Integer.valueOf(data.get(a));
+            a += 1;
+            for (int j = 0; j < item; j++) {
+                String power = data.get(a);
+                a += 1;
+                add_power(card, power);
+            }
         }
     }
 
@@ -436,6 +442,77 @@ public class Player {
         return null;
     }
 
+    public void add_power(Card card, String power) {
+        if (power.equals("ACCELERATE")) {
+            Accelerate a = new Accelerate();
+            if (card instanceof Hewan) {
+                Hewan hewan = (Hewan) card;
+                System.out.println("Berat: "+hewan.getBerat());
+                a.aksi(hewan);
+
+            }
+            else {
+                Tumbuhan tumbuhan = (Tumbuhan) card;
+                a.aksi(tumbuhan);
+            }
+        }
+        else if(power.equals("DELAY")) {
+            Delay a = new Delay();
+            if (card instanceof Hewan) {
+                Hewan hewan = (Hewan) card;
+                a.aksi(hewan);
+            }
+            else {
+                Tumbuhan tumbuhan = (Tumbuhan) card;
+                a.aksi(tumbuhan);
+            }
+        }
+        else if(power.equals("DESTROY")) {
+            Destroy a = new Destroy();
+            if (card instanceof Hewan) {
+                Hewan hewan = (Hewan) card;
+                a.aksi(hewan);
+            }
+            else {
+                Tumbuhan tumbuhan = (Tumbuhan) card;
+                a.aksi(tumbuhan);
+            }
+        } else if (power.equals("INSTANT_HARVEST")) {
+            InstantHarvest a = new InstantHarvest();
+            if (card instanceof Hewan) {
+                Hewan hewan = (Hewan) card;
+                a.aksi(hewan);
+            }
+            else {
+                Tumbuhan tumbuhan = (Tumbuhan) card;
+                a.aksi(tumbuhan);
+            }
+        }
+        else if(power.equals("PROTECT")) {
+            Protect a = new Protect();
+            if (card instanceof Hewan) {
+                Hewan hewan = (Hewan) card;
+                a.aksi(hewan);
+            }
+            else {
+                Tumbuhan tumbuhan = (Tumbuhan) card;
+                a.aksi(tumbuhan);
+            }
+        }
+
+        else if(power.equals("TRAP")) {
+            Trap a = new Trap();
+            if (card instanceof Hewan) {
+                Hewan hewan = (Hewan) card;
+                a.aksi(hewan);
+            }
+            else {
+                Tumbuhan tumbuhan = (Tumbuhan) card;
+                a.aksi(tumbuhan);
+            }
+        }
+    }
+
     public Card get_card_with_berat(String mahkluk, int berat) {
         if(mahkluk.equals("AYAM")) {
             Ayam a = new Ayam(berat);
@@ -485,5 +562,4 @@ public class Player {
         }
         return size;
     }
-
 }

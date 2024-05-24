@@ -39,6 +39,8 @@ public abstract class Hewan extends Card implements BisaPanen {
     }
 
     public void addBerat(int berat) {
+        System.out.println("Test: " + this.berat);
+        System.out.println("Test: " + berat);
         this.berat += berat;
         if (this.berat < 0) this.berat = 0;
     }
