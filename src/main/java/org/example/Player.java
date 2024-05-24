@@ -488,10 +488,14 @@ public class Player {
 
     // format namaProduk = SIRIP_HIU
     public void beli(Toko toko, String namaProduk) {
-        if (toko.ambilStokProduk(namaProduk) > 0 && coin >= toko.ambilHargaProduk(namaProduk)) {
-            toko.kurangiStokProduk(namaProduk);
-            coin -= toko.ambilHargaProduk(namaProduk);
+        if (toko.ambilStokProduk(namaProduk) <= 0) {
+            throw new IllegalStateException("Stok habis");
         }
+        if (coin < toko.ambilHargaProduk(namaProduk)) {
+            throw new IllegalStateException("Uang tidak cukup");
+        }
+        toko.kurangiStokProduk(namaProduk);
+        coin -= toko.ambilHargaProduk(namaProduk);
     }
 
     // format namaProduk = SIRIP_HIU

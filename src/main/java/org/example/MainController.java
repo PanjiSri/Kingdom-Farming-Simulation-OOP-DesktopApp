@@ -1,30 +1,24 @@
 package org.example;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.layout.AnchorPane;
-import org.example.Board.*;
-import org.example.Player.*;
 import org.example.card.BisaPanen;
 import org.example.card.Card;
-import org.example.card.Hewan.Beruang;
 import org.example.card.Hewan.Hewan;
 import org.example.card.Item.Item;
-import org.example.card.Produk.SiripHiu;
+import org.example.card.Produk.*;
 import org.example.card.Tumbuhan.Tumbuhan;
-import org.example.card.Produk.Produk;
-import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MainController {
 
@@ -471,102 +465,33 @@ public class MainController {
     public void main_to_toko() {
         board.getChildren().add(toko);
 
-        sirip_hiu.setOnDragOver(event -> {
-            if (event.getGestureSource() != sirip_hiu && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-        sirip_hiu.setOnDragDropped(event -> {
-            Player currentPlayer = main.getPlayernow();
-            Dragboard db = event.getDragboard();
-            boolean success = false;
-            if (db.hasString() && db.getString().equals("pane")) {
-                Pane draggedPane = (Pane) event.getGestureSource();
-                draggedPane.setStyle(style);
-
-                // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
-                if (deck_aktif.getChildren().contains(draggedPane)) {
-                    deck_aktif.getChildren().remove(draggedPane);
-                    String id = draggedPane.getId();
-                    System.out.println("Ini kartu: " + id);
-                    int idx_card_deck_aktif = currentPlayer.get_card_aktif_idx(id);
-                    currentPlayer.drop_deck_aktif(currentPlayer.get_card_aktif(idx_card_deck_aktif));
-                    currentPlayer.jual(main.getToko(), "SIRIP_HIU");
-                    updateJumlah("SIRIP_HIU");
-                    updateUangPlayer();
-                    success = true;
-                }
-            }
-            event.setDropCompleted(success);
-            event.consume();
-        });
-        sirip_hiu.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
-                Player currentPlayer = main.getPlayernow();
-                currentPlayer.beli(main.getToko(), "SIRIP_HIU");
-                updateJumlah("SIRIP_HIU");
-                SiripHiu siripHiu = new SiripHiu();
-                currentPlayer.add_into_deck_aktiv(siripHiu);
-                updateUangPlayer();
-            }
-        });
-        susu.setOnDragOver(event -> {
-            if (event.getGestureSource() != susu && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-        susu.setOnDragDropped(event -> {});
-        daging_domba.setOnDragOver(event -> {
-            if (event.getGestureSource() != daging_domba && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-        daging_domba.setOnDragDropped(event -> {});
-        daging_kuda.setOnDragOver(event -> {
-            if (event.getGestureSource() != daging_kuda && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-        daging_kuda.setOnDragDropped(event -> {});
-        telur.setOnDragOver(event -> {
-            if (event.getGestureSource() != telur && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-        telur.setOnDragDropped(event -> {});
-        daging_beruang.setOnDragOver(event -> {
-            if (event.getGestureSource() != daging_beruang && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-        daging_beruang.setOnDragDropped(event -> {});
-        jagung.setOnDragOver(event -> {
-            if (event.getGestureSource() != jagung && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-        jagung.setOnDragDropped(event -> {});
-        labu.setOnDragOver(event -> {
-            if (event.getGestureSource() != labu && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-        labu.setOnDragDropped(event -> {});
-        stroberi.setOnDragOver(event -> {
-            if (event.getGestureSource() != stroberi && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-        stroberi.setOnDragDropped(event -> {});
+        sirip_hiu.setOnDragOver(event -> handleSellEventDragOver(event, sirip_hiu));
+        sirip_hiu.setOnDragDropped(event -> handleSellEvent(event, "SIRIP_HIU"));
+        sirip_hiu.setOnMouseClicked(event -> handleBuyEvent(event, "SIRIP_HIU"));
+        susu.setOnDragOver(event -> handleSellEventDragOver(event, susu));
+        susu.setOnDragDropped(event -> handleSellEvent(event, "SUSU"));
+        susu.setOnMouseClicked(event -> handleBuyEvent(event, "SUSU"));
+        daging_domba.setOnDragOver(event -> handleSellEventDragOver(event, daging_domba));
+        daging_domba.setOnDragDropped(event -> handleSellEvent(event, "DAGING_DOMBA"));
+        daging_domba.setOnMouseClicked(event -> handleBuyEvent(event, "DAGING_DOMBA"));
+        daging_kuda.setOnDragOver(event -> handleSellEventDragOver(event, daging_kuda));
+        daging_kuda.setOnDragDropped(event -> handleSellEvent(event, "DAGING_KUDA"));
+        daging_kuda.setOnMouseClicked(event -> handleBuyEvent(event, "DAGING_KUDA"));
+        telur.setOnDragOver(event -> handleSellEventDragOver(event, telur));
+        telur.setOnDragDropped(event -> handleSellEvent(event, "TELUR"));
+        telur.setOnMouseClicked(event -> handleBuyEvent(event, "TELUR"));
+        daging_beruang.setOnDragOver(event -> handleSellEventDragOver(event, daging_beruang));
+        daging_beruang.setOnDragDropped(event -> handleSellEvent(event, "DAGING_BERUANG"));
+        daging_beruang.setOnMouseClicked(event -> handleBuyEvent(event, "DAGING_BERUANG"));
+        jagung.setOnDragOver(event -> handleSellEventDragOver(event, jagung));
+        jagung.setOnDragDropped(event -> handleSellEvent(event, "JAGUNG"));
+        jagung.setOnMouseClicked(event -> handleBuyEvent(event, "JAGUNG"));
+        labu.setOnDragOver(event -> handleSellEventDragOver(event, labu));
+        labu.setOnDragDropped(event -> handleSellEvent(event, "LABU"));
+        labu.setOnMouseClicked(event -> handleBuyEvent(event, "LABU"));
+        stroberi.setOnDragOver(event -> handleSellEventDragOver(event, stroberi));
+        stroberi.setOnDragDropped(event -> handleSellEvent(event, "STROBERI"));
+        stroberi.setOnMouseClicked(event -> handleBuyEvent(event, "STROBERI"));
 
         toko_buka.setDisable(true);
         save.setDisable(true);
@@ -597,7 +522,7 @@ public class MainController {
                 Card beruang = a.get_deck(idx);
                 String kata = beruang.getName();
                 VBox card_shuffle = new VBox();
-//                System.out.println(beruang.getImgPath());
+                // System.out.println(beruang.getImgPath());
                 Image image = new Image(this.getClass().getResource(beruang.getImgPath()).toExternalForm());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(width);
@@ -684,5 +609,71 @@ public class MainController {
         } else {
             uang_player2.setText(Integer.toString(main.getPlayernow().getCoin()));
         }
+    }
+
+    public void handleSellEventDragOver(DragEvent event, AnchorPane anchorPane) {
+        if (event.getGestureSource() != anchorPane && event.getDragboard().hasString()) {
+            event.acceptTransferModes(TransferMode.MOVE);
+        }
+        event.consume();
+    }
+
+    // format nama produk: SIRIP_HIU
+    public void handleSellEvent(DragEvent event, String namaProduk) {
+        Player currentPlayer = main.getPlayernow();
+        Dragboard db = event.getDragboard();
+        boolean success = false;
+        if (db.hasString() && db.getString().equals("pane")) {
+            Pane draggedPane = (Pane) event.getGestureSource();
+            draggedPane.setStyle(style);
+
+            // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
+            if (deck_aktif.getChildren().contains(draggedPane)) {
+                deck_aktif.getChildren().remove(draggedPane);
+                String id = draggedPane.getId();
+                System.out.println("Ini kartu: " + id);
+                int idx_card_deck_aktif = currentPlayer.get_card_aktif_idx(id);
+                currentPlayer.drop_deck_aktif(currentPlayer.get_card_aktif(idx_card_deck_aktif));
+                currentPlayer.jual(main.getToko(), namaProduk);
+                updateJumlah(namaProduk);
+                updateUangPlayer();
+                success = true;
+            }
+        }
+        event.setDropCompleted(success);
+        event.consume();
+    }
+
+    // format nama produk: SIRIP_HIU
+    public void handleBuyEvent(MouseEvent event, String namaProduk) {
+        if (event.getClickCount() != 2) {
+            return;
+        }
+        Player currentPlayer = main.getPlayernow();
+        try {
+            currentPlayer.beli(main.getToko(), namaProduk);
+        } catch (IllegalStateException e) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning Woy!");
+            alert.setHeaderText("Baca Nih!!!");
+            alert.setContentText(e.getMessage());
+            // Show the alert and wait for the user to close it
+            alert.showAndWait();
+        }
+        updateJumlah(namaProduk);
+        Card newCard = switch (namaProduk) {
+            case "SIRIP_HIU" -> new SiripHiu();
+            case "SUSU" -> new Susu();
+            case "DAGING_DOMBA" -> new DagingDomba();
+            case "DAGING_KUDA" -> new DagingKuda();
+            case "TELUR" -> new Telur();
+            case "DAGING_BERUANG" -> new DagingBeruang();
+            case "JAGUNG" -> new Jagung();
+            case "LABU" -> new Labu();
+            case "STROBERI" -> new Stroberi();
+            default -> null;
+        };
+        currentPlayer.add_into_deck_aktiv(Objects.requireNonNull(newCard));
+        updateUangPlayer();
     }
 }
