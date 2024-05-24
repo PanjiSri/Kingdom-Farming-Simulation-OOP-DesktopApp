@@ -2,6 +2,9 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
@@ -9,10 +12,10 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <StackPane fx:id="board" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController">
    <children>
-       <AnchorPane fx:id="info_pane" opacity="0.5" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21">
+       <AnchorPane fx:id="info_pane" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.5" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: black;">
            <children>
                <ButtonBar layoutX="257.0" layoutY="276.0" prefHeight="40.0" prefWidth="80.0">
                    <buttons>
@@ -24,9 +27,33 @@
                        <Button fx:id="tutup_info" mnemonicParsing="false" text="Close" />
                    </buttons>
                </ButtonBar>
-               <Pane fx:id="info_hewan" layoutX="186.0" layoutY="55.0" prefHeight="200.0" prefWidth="226.0" />
+               <VBox fx:id="info_hewan" layoutX="186.0" layoutY="55.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="226.0" />
            </children>
        </AnchorPane>
+      <Pane fx:id="save_load" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: green; -fx-opacity: 1;">
+         <children>
+            <Label layoutX="271.0" layoutY="306.0" text="Format" />
+            <Label layoutX="273.0" layoutY="344.0" text="Folder" />
+            <TextField layoutX="323.0" layoutY="302.0" />
+            <TextField layoutX="323.0" layoutY="340.0" />
+            <Button fx:id="save_progress" layoutX="372.0" layoutY="401.0" mnemonicParsing="false" text="Save" />
+            <Label layoutX="378.0" layoutY="209.0" text="SAVE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="664.0" layoutY="209.0" text="LOAD">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="559.0" layoutY="306.0" text="Format" />
+            <TextField layoutX="611.0" layoutY="302.0" />
+            <TextField layoutX="611.0" layoutY="349.0" />
+            <Label layoutX="561.0" layoutY="353.0" text="Folder" />
+            <Button fx:id="load_progress" layoutX="664.0" layoutY="401.0" mnemonicParsing="false" text="Load" />
+         </children>
+      </Pane>
       <Pane fx:id="pane_ladang" prefHeight="750.0" prefWidth="1000.0" style="-fx-background-color: pink;">
          <children>
             <GridPane fx:id="ladang" layoutX="21.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="600.0" style="-fx-vgap: 10; -fx-hgap: 10;">
@@ -67,7 +94,8 @@
                 <Button fx:id="ladang_sendiri" mnemonicParsing="false" text="Ladang Sendiri">
                      <font>
                         <Font size="10.0" />
-                     </font></Button>
+                     </font>
+                  </Button>
               </buttons>
             </ButtonBar>
             <ButtonBar layoutX="702.0" layoutY="387.0" prefHeight="40.0" prefWidth="200.0">

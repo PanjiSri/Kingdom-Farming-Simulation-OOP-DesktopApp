@@ -21,6 +21,8 @@ import org.example.card.Hewan.Beruang;
 import org.example.card.Hewan.Hewan;
 import org.example.card.Item.Item;
 
+import java.util.ArrayList;
+
 public class MainController {
 
     @FXML
@@ -81,34 +83,47 @@ public class MainController {
                 Pane draggedPane = (Pane) event.getGestureSource();
                 draggedPane.setStyle(style);
 
-                // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
-                if (deck_aktif.getChildren().contains(draggedPane)) {
-                    deck_aktif.getChildren().remove(draggedPane);
-                }
-
-//                if (ladang.getChildren().contains(draggedPane)) {
-//                    a.drop_ladang(draggedPane.getId());
-//                    ladang.getChildren().remove(draggedPane);
-//                }
-
-                // Hitung baris dan kolom baru berdasarkan posisi drop
                 int col = (int) (event.getX() / (ladang.getWidth() / ladang.getColumnCount()));
                 int row = (int) (event.getY() / (ladang.getHeight() / ladang.getRowCount()));
-
-                // Pastikan tidak ada elemen pada posisi tersebut
-                System.out.println(draggedPane.getId());
-                String id = draggedPane.getId();
-                int idx_card_deck_aktif = a.get_card_aktif_idx(id);
-                System.out.println("Dallas");
-                a.add_in_lahan(row, col, a.get_card_aktif(idx_card_deck_aktif));
-                a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
-                System.out.println("Ini kartu: " + draggedPane.getId());
-                System.out.println();
+                // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
+                if (deck_aktif.getChildren().contains(draggedPane)) {
+                    System.out.println("Masalah");
+                    deck_aktif.getChildren().remove(draggedPane);
+                    System.out.println(draggedPane.getId());
+                    String id = draggedPane.getId();
+                    int idx_card_deck_aktif = a.get_card_aktif_idx(id);
+                    System.out.println("Dallas");
+                    a.add_in_lahan(row, col, a.get_card_aktif(idx_card_deck_aktif));
+                    a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
+                    System.out.println("Ini kartu: " + draggedPane.getId());
+                    System.out.println();
 
                     // Tambahkan ke ladang
-                ladang.add(draggedPane, col, row);
-                a.print_lahan();
-                success = true;
+                    ladang.add(draggedPane, col, row);
+                    a.print_lahan();
+                    success = true;
+                }
+
+                else if (ladang.getChildren().contains(draggedPane)) {
+                    ladang.getChildren().remove(draggedPane);
+                    System.out.println(draggedPane.getId());
+                    String id = draggedPane.getId();
+                    ArrayList<Integer>  idx_lahan = a.get_idx_lahan(id);
+                    System.out.println("Dallas");
+                    a.add_in_lahan(row, col, a.get_card_ladang(idx_lahan.get(0), idx_lahan.get(1)));
+                    a.drop_ladang(idx_lahan.get(0), idx_lahan.get(1));
+                    System.out.println("Ini kartu: " + draggedPane.getId());
+                    System.out.println();
+                    // Tambahkan ke ladang
+                    a.print_lahan();
+                    success = true;
+                    ladang.getChildren().remove(draggedPane);
+                    ladang.add(draggedPane, col, row);
+                }
+
+                // Hitung baris dan kolom baru berdasarkan posisi drop
+
+                // Pastikan tidak ada elemen pada posisi tersebut
             }
             event.setDropCompleted(success);
             event.consume();
@@ -276,9 +291,9 @@ public class MainController {
         if (card instanceof Hewan) {
             Hewan hewan = (Hewan) card;
             System.out.println(hewan.getName());
-            halo.getChildren().addAll(new Label(hewan.getName()));
+            info_hewan.getChildren().addAll(new Label(hewan.getName()));
         }
-        board.getChildren().addAll(halo);
+        board.getChildren().addAll(ladang, info_pane);
     }
 
     // Ubah ke pane shuffle

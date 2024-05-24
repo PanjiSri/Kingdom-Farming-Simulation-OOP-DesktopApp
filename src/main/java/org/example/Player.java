@@ -73,12 +73,17 @@ public class Player {
         }
     }
 
-    public void drop_ladang(String i) {
-        for(int x = 0; x < lahan.size(); x++) {
-            for(int y = 0; y < lahan.get(x).size(); y++) {
-                if(lahan.get(x).get(y) != null) {
-                    lahan.get(x).remove(y);
-                    lahan.get(x).add(this.deck_aktif.get(0));
+    public void drop_ladang(String id) {
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 5; j++) {
+                if (lahan.get(i).get(j) == null) {
+                    continue;
+                }
+                else {
+                    String id_kartu = Integer.toString(lahan.get(i).get(j).getId());
+                    if(id_kartu.equals(id)) {
+                        lahan.get(i).set(j, null);
+                    }
                 }
             }
         }
@@ -149,6 +154,11 @@ public class Player {
 
     public void add_in_lahan(int x, int y, Card value) {
         lahan.get(x).set(y, value);
+        System.out.println(value);
+    }
+
+    public void drop_ladang(int x, int y) {
+        lahan.get(x).set(y, null);
     }
 
     public void print_lahan() {
@@ -196,12 +206,25 @@ public class Player {
         return size;
     }
 
-//    public ArrayList<int> get_idx_lahan(String id) {
-//        for(int i = 0; i < 4; i++) {
-//            for(int j = 0; j < 5; j++) {
-//
-//            }
-//        }
-//    }
+    public ArrayList<Integer> get_idx_lahan(String id) {
+        ArrayList<Integer> idx_lahan = new ArrayList<>();
+        for(int i = 0; i < 4; i++) {
+            for(int j = 0; j < 5; j++) {
+                if (lahan.get(i).get(j) == null) {
+                    continue;
+                }
+                else {
+                    String id_kartu = Integer.toString(lahan.get(i).get(j).getId());
+                    if(id_kartu.equals(id)) {
+                        idx_lahan.add(i);
+                        idx_lahan.add(j);
+                    }
+                    System.out.println("Baris: " + idx_lahan.get(0));
+                    return idx_lahan;
+                }
+            }
+        }
+        return null;
+    }
 
 }
