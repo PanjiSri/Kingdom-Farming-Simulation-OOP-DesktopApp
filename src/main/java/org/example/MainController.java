@@ -8,10 +8,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import org.example.Board.*;
 import org.example.Player.*;
@@ -36,10 +33,20 @@ public class MainController {
     private Pane pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini, info_hewan, halo;
 
     @FXML
-    private Button next_turn, shuffle_card, close_button, ladang_lawan, ladang_sendiri, panen, tutup_info;
+    private Button next_turn, shuffle_card, close_button, ladang_lawan, ladang_sendiri, panen, tutup_info, save;
 
     @FXML
     private StackPane board;
+
+    // Toko
+    @FXML
+    private Button toko_kembali, toko_buka;
+    @FXML
+    private Pane toko;
+    @FXML
+    private AnchorPane sirip_hiu, susu, daging_domba, daging_kuda, telur, daging_beruang, jagung, labu, stroberi;
+    @FXML
+    private Label jumlah_sirip_hiu, jumlah_susu, jumlah_daging_domba, jumlah_daging_kuda, jumlah_telur, jumlah_daging_beruang, jumlah_jagung, jumlah_labu, jumlah_stroberi;
 
     private Board main;
     private String style = ("-fx-pref-width: 70.0;" +
@@ -136,6 +143,8 @@ public class MainController {
             event.consume();
         });
 
+        // toko
+        board.getChildren().remove(toko); // supaya panel toko tidak muncul di awal
 
         // Initialize the action buttons
         initialize_click();
@@ -177,6 +186,8 @@ public class MainController {
         close_button.setOnAction(e -> change_to_main());
         ladang_lawan.setOnAction(e -> ladang_lawan());
         ladang_sendiri.setOnAction(e -> change_to_main());
+        toko_buka.setOnAction(e -> main_to_toko());
+        toko_kembali.setOnAction(e -> toko_to_main());
     }
 
     // Shuffle kartu
@@ -328,7 +339,114 @@ public class MainController {
         a.print_lahan();
         board.getChildren().clear();
         board.getChildren().setAll(ambil_kartu, pane_ladang);
+    }
 
+    // Membuka pane toko
+    public void main_to_toko() {
+        board.getChildren().add(toko);
+
+        sirip_hiu.setOnDragOver(event -> {
+            if (event.getGestureSource() != sirip_hiu && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        sirip_hiu.setOnDragDropped(event -> {
+            Player a = main.getPlayernow();
+            Dragboard db = event.getDragboard();
+            boolean success = false;
+            if (db.hasString() && db.getString().equals("pane")) {
+                Pane draggedPane = (Pane) event.getGestureSource();
+                draggedPane.setStyle(style);
+
+                // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
+                if (deck_aktif.getChildren().contains(draggedPane)) {
+                    deck_aktif.getChildren().remove(draggedPane);
+                    String id = draggedPane.getId();
+                    System.out.println("Ini kartu: " + id);
+                    int idx_card_deck_aktif = a.get_card_aktif_idx(id);
+                    a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
+                    a.jual(main.getToko(), "SIRIP_HIU");
+                    updateJumlah("SIRIP_HIU");
+                    success = true;
+                }
+            }
+            event.setDropCompleted(success);
+            event.consume();
+            System.out.println("uang player: " + Integer.toString(main.getPlayernow().getCoin()));
+        });
+        susu.setOnDragOver(event -> {
+            if (event.getGestureSource() != susu && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        susu.setOnDragDropped(event -> {});
+        daging_domba.setOnDragOver(event -> {
+            if (event.getGestureSource() != daging_domba && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        daging_domba.setOnDragDropped(event -> {});
+        daging_kuda.setOnDragOver(event -> {
+            if (event.getGestureSource() != daging_kuda && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        daging_kuda.setOnDragDropped(event -> {});
+        telur.setOnDragOver(event -> {
+            if (event.getGestureSource() != telur && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        telur.setOnDragDropped(event -> {});
+        daging_beruang.setOnDragOver(event -> {
+            if (event.getGestureSource() != daging_beruang && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        daging_beruang.setOnDragDropped(event -> {});
+        jagung.setOnDragOver(event -> {
+            if (event.getGestureSource() != jagung && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        jagung.setOnDragDropped(event -> {});
+        labu.setOnDragOver(event -> {
+            if (event.getGestureSource() != labu && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        labu.setOnDragDropped(event -> {});
+        stroberi.setOnDragOver(event -> {
+            if (event.getGestureSource() != stroberi && event.getDragboard().hasString()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+        stroberi.setOnDragDropped(event -> {});
+
+        toko_buka.setDisable(true);
+        save.setDisable(true);
+        ladang_sendiri.setDisable(true);
+        ladang_lawan.setDisable(true);
+        next_turn.setDisable(true);
+    }
+
+    // Menutup pane toko
+    public void toko_to_main() {
+        board.getChildren().remove(toko);
+        toko_buka.setDisable(false);
+        save.setDisable(false);
+        ladang_sendiri.setDisable(false);
+        ladang_lawan.setDisable(false);
+        next_turn.setDisable(false);
     }
 
     // Tambahkan kartu ke shuffle field
@@ -389,5 +507,38 @@ public class MainController {
 
     public void setBoard(Board board) {
         main = board;
+    }
+
+    // format namaProduk = SIRIP_HIU
+    public void updateJumlah(String namaProduk) {
+        switch (namaProduk) {
+            case "SIRIP_HIU":
+                jumlah_sirip_hiu.setText(Integer.toString(main.getToko().ambilStokProduk("SIRIP_HIU")));
+                break;
+            case "SUSU":
+                jumlah_susu.setText(Integer.toString(main.getToko().ambilStokProduk("SUSU")));
+                break;
+            case "DAGING_DOMBA":
+                jumlah_daging_domba.setText(Integer.toString(main.getToko().ambilStokProduk("DAGING_DOMBA")));
+                break;
+            case "DAGING_KUDA":
+                jumlah_daging_kuda.setText(Integer.toString(main.getToko().ambilStokProduk("DAGING_KUDA")));
+                break;
+            case "TELUR":
+                jumlah_telur.setText(Integer.toString(main.getToko().ambilStokProduk("TELUR")));
+                break;
+            case "DAGING_BERUANG":
+                jumlah_daging_beruang.setText(Integer.toString(main.getToko().ambilStokProduk("DAGING_BERUANG")));
+                break;
+            case "JAGUNG":
+                jumlah_jagung.setText(Integer.toString(main.getToko().ambilStokProduk("JAGUNG")));
+                break;
+            case "LABU":
+                jumlah_labu.setText(Integer.toString(main.getToko().ambilStokProduk("LABU")));
+                break;
+            case "STROBERI":
+                jumlah_stroberi.setText(Integer.toString(main.getToko().ambilStokProduk("STROBERI")));
+                break;
+        }
     }
 }

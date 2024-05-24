@@ -227,4 +227,17 @@ public class Player {
         return null;
     }
 
+    // format namaProduk = SIRIP_HIU
+    public void beli(Toko toko, String namaProduk) {
+        if (toko.ambilStokProduk(namaProduk) > 0 && coin >= toko.ambilHargaProduk(namaProduk)) {
+            toko.kurangiStokProduk(namaProduk);
+            coin -= toko.ambilHargaProduk(namaProduk);
+        }
+    }
+
+    // format namaProduk = SIRIP_HIU
+    public void jual(Toko toko, String namaProduk) {
+        toko.tambahStokProduk(namaProduk);
+        coin += toko.ambilHargaProduk(namaProduk);
+    }
 }
