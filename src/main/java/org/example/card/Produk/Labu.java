@@ -5,7 +5,7 @@ import org.example.card.Hewan.Hewan;
 
 public class Labu extends Produk {
     public Labu() {
-        super("Labu", "/img/Hewan/pumpkin.png", 500, 10);
+        super("Labu", "/img/Produk/pumpkin.png", 500, 10);
     }
 
     @Override

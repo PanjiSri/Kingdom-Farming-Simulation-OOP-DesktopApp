@@ -26,6 +26,7 @@ public class Player {
             try {
                 Class<?> clazz = Class.forName(StaticCard.getRandomCardName());
                 Card temp = (Card) clazz.getDeclaredConstructor().newInstance();
+                System.out.println(temp.getImgPath());
                 deck.add(temp);
             } catch (Exception e) {
                 System.out.println("kelas tidak ditemukan");
@@ -59,9 +60,13 @@ public class Player {
     }
 
     public void drop_deck_aktif(Card i) {
+        System.out.println("Belum error");
+        String id_card = Integer.toString(i.getId());
         for(int x = 0; x < deck_aktif.size(); x++) {
-            if(deck_aktif.get(x) != null) {
+            String id_card_aktif = Integer.toString(deck_aktif.get(x).getId());
+            if(deck_aktif.get(x) != null && id_card_aktif.equals(id_card)) {
                 deck_aktif.remove(x);
+                deck_aktif.add(x, null);
                 print_deck_aktif();
                 break;
             }
@@ -118,6 +123,18 @@ public class Player {
         return deck_aktif.get(idx);
     }
 
+    public int get_card_aktif_idx (String id) {
+        for(int i = 0; i < deck_aktif.size(); i++) {
+            if(deck_aktif.get(i) != null) {
+                int id_card = deck_aktif.get(i).getId();
+                if (Integer.toString(id_card).equals(id)) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
     public Card get_card_ladang (int i, int j) {
         return lahan.get(i).get(j);
     }
@@ -140,11 +157,12 @@ public class Player {
                 if (lahan.get(i).get(j) == null) {
                     System.out.print("null");
                 } else {
-                    System.out.print(lahan.get(i).get(j).getName());
+                    System.out.print(lahan.get(i).get(j).getId());
                 }
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     public void print_deck_aktif() {
@@ -152,15 +170,38 @@ public class Player {
             if (deck_aktif.get(i) == null) {
                 System.out.println("null");
             } else {
-                System.out.println(deck_aktif.get(i).getName());
+                System.out.println(deck_aktif.get(i).getId());
             }
         }
+        System.out.println();
     }
 
     public void print_deck() {
         for (int i = 0; i < deck.size(); i++) {
-            System.out.println(deck.get(i).getId() + " " + deck.get(i).getName());
+            if (deck.get(i) == null) {
+                System.out.println("null");
+            } else {
+                System.out.println(deck.get(i).getId() + " " + deck.get(i).getName());
+            }
         }
     }
+
+    public int get_deck_aktif_size() {
+        int size = 0;
+        for (int i = 0; i < 6; i++) {
+            if (deck_aktif.get(i) != null) {
+                size+=1;
+            }
+        }
+        return size;
+    }
+
+//    public ArrayList<int> get_idx_lahan(String id) {
+//        for(int i = 0; i < 4; i++) {
+//            for(int j = 0; j < 5; j++) {
+//
+//            }
+//        }
+//    }
 
 }

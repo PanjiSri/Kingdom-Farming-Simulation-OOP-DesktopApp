@@ -5,7 +5,7 @@ import org.example.card.Hewan.Hewan;
 
 public class SiripHiu extends Produk {
     public SiripHiu() {
-        super("Sirip Hiu", "/img/Hewan/shark-fin.png", 500, 12);
+        super("Sirip Hiu", "/img/Produk/shark-fin.png", 500, 12);
     }
 
     @Override

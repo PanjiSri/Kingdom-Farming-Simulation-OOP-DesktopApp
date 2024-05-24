@@ -4,7 +4,7 @@ import org.example.card.BisaPanen;
 
 public class Protect extends Item {
     public Protect() {
-        super("Protect", "/img/Hewan/Protect.png");
+        super("Protect", "/img/Item/Protect.png");
     }
 
     @Override

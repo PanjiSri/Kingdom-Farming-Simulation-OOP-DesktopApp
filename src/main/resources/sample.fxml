@@ -9,9 +9,24 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-
+<?import javafx.scene.layout.AnchorPane?>
 <StackPane fx:id="board" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController">
    <children>
+       <AnchorPane fx:id="info_pane" opacity="0.5" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21">
+           <children>
+               <ButtonBar layoutX="257.0" layoutY="276.0" prefHeight="40.0" prefWidth="80.0">
+                   <buttons>
+                       <Button fx:id="panen" mnemonicParsing="false" text="Panen" />
+                   </buttons>
+               </ButtonBar>
+               <ButtonBar layoutX="257.0" layoutY="323.0" prefHeight="40.0" prefWidth="80.0">
+                   <buttons>
+                       <Button fx:id="tutup_info" mnemonicParsing="false" text="Close" />
+                   </buttons>
+               </ButtonBar>
+               <Pane fx:id="info_hewan" layoutX="186.0" layoutY="55.0" prefHeight="200.0" prefWidth="226.0" />
+           </children>
+       </AnchorPane>
       <Pane fx:id="pane_ladang" prefHeight="750.0" prefWidth="1000.0" style="-fx-background-color: pink;">
          <children>
             <GridPane fx:id="ladang" layoutX="21.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="550.0" prefWidth="600.0" style="-fx-vgap: 10; -fx-hgap: 10;">
@@ -44,12 +59,15 @@
             </GridPane>
             <ButtonBar layoutX="702.0" layoutY="307.0" prefHeight="40.0" prefWidth="200.0">
               <buttons>
-                <Button mnemonicParsing="false" text="Button" />
+                <Button fx:id="save" mnemonicParsing="false" text="Save" />
               </buttons>
             </ButtonBar>
             <ButtonBar layoutX="702.0" layoutY="347.0" prefHeight="40.0" prefWidth="200.0">
               <buttons>
-                <Button mnemonicParsing="false" text="Button" />
+                <Button fx:id="ladang_sendiri" mnemonicParsing="false" text="Ladang Sendiri">
+                     <font>
+                        <Font size="10.0" />
+                     </font></Button>
               </buttons>
             </ButtonBar>
             <ButtonBar layoutX="702.0" layoutY="387.0" prefHeight="40.0" prefWidth="200.0">
@@ -66,7 +84,7 @@
                 <Button fx:id="next_turn" mnemonicParsing="false" text="Next" />
               </buttons>
             </ButtonBar>
-            <Pane fx:id="jumlah_turn" layoutX="792.0" layoutY="596.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="130.0" prefWidth="110.0" />
+            <Pane fx:id="jumlah_turn" layoutX="702.0" layoutY="130.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="130.0" prefWidth="200.0" />
             <Pane fx:id="player_saat_ini" layoutX="702.0" layoutY="22.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="200.0" />
          </children>
       </Pane>

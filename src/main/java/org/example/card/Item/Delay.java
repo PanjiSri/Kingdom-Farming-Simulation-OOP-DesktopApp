@@ -6,7 +6,7 @@ import org.example.card.Tumbuhan.Tumbuhan;
 
 public class Delay extends Item {
     public Delay() {
-        super("Delay", "/img/Hewan/Delay.png");
+        super("Delay", "/img/Item/Delay.png");
     }
 
     @Override

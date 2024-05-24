@@ -6,7 +6,7 @@ import org.example.card.Tumbuhan.Tumbuhan;
 
 public class Accelerate extends Item {
     public Accelerate() {
-        super("Accelerate", "/img/Hewan/Accelerate.png");
+        super("Accelerate", "/img/Item/Accelerate.png");
     }
 
     @Override
@@ -16,5 +16,6 @@ public class Accelerate extends Item {
         } else if (bisaPanen instanceof Tumbuhan) {
             ((Tumbuhan) bisaPanen).addUmur(2);
         }
+        System.out.println("Horas");
     }
 }

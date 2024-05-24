@@ -4,7 +4,7 @@ import org.example.card.BisaPanen;
 
 public class Destroy extends Item {
     public Destroy() {
-        super("Destroy", "/img/Hewan/Destroy.png");
+        super("Destroy", "/img/Item/Destroy.png");
     }
 
     @Override

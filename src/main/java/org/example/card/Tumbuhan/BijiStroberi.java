@@ -6,7 +6,7 @@ import org.example.card.Produk.Stroberi;
 
 public class BijiStroberi extends Tumbuhan {
     public BijiStroberi() {
-        super("Biji Stroberi", "/img/Hewan/strawberry seeds.png", 0, 4);
+        super("Biji Stroberi", "/img/Tanaman/strawberry seeds.png", 0, 4);
     }
     public BijiStroberi(int umur) {
         super("Biji Stroberi", "/img/Hewan/strawberry seeds.png", umur, 4);

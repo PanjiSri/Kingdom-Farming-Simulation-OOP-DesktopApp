@@ -4,7 +4,7 @@ import org.example.card.BisaPanen;
 
 public class Trap extends Item {
     public Trap() {
-        super("Trap", "/img/Hewan/bear trap.png");
+        super("Trap", "/img/Item/bear trap.png");
     }
 
     @Override

@@ -4,7 +4,7 @@ import org.example.card.BisaPanen;
 
 public class InstantHarvest extends Item {
     public InstantHarvest() {
-        super("Instant Harvest", "/img/Hewan/Instant Harvest.png");
+        super("Instant Harvest", "/img/Item/Instant Harvest.png");
     }
 
     @Override

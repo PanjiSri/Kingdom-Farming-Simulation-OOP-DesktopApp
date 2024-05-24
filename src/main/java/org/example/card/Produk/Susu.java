@@ -5,7 +5,7 @@ import org.example.card.Hewan.Hewan;
 
 public class Susu extends Produk {
     public Susu() {
-        super("Susu", "/img/Hewan/susu.png", 100, 4);
+        super("Susu", "/img/Produk/susu.png", 100, 4);
     }
 
     @Override

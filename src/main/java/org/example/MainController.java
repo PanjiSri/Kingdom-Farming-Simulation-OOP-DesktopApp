@@ -8,18 +8,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 // import javax.smartcardio.Card;
 
 import org.example.Board.*;
 import org.example.Player.*;
+import org.example.card.BisaPanen;
 import org.example.card.CardGUI;
 import org.example.card.Card;
 import org.example.card.Hewan.Beruang;
+import org.example.card.Hewan.Hewan;
+import org.example.card.Item.Item;
 
 public class MainController {
 
@@ -27,10 +27,13 @@ public class MainController {
     private GridPane ladang, shuffle_panel, deck_aktif;
 
     @FXML
-    private Pane pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini;
+    private AnchorPane info_pane;
 
     @FXML
-    private Button next_turn, shuffle_card, close_button, ladang_lawan;
+    private Pane pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini, info_hewan, halo;
+
+    @FXML
+    private Button next_turn, shuffle_card, close_button, ladang_lawan, ladang_sendiri, panen, tutup_info;
 
     @FXML
     private StackPane board;
@@ -83,10 +86,10 @@ public class MainController {
                     deck_aktif.getChildren().remove(draggedPane);
                 }
 
-                if (ladang.getChildren().contains(draggedPane)) {
-                    a.drop_ladang(draggedPane.getId());
-                    ladang.getChildren().remove(draggedPane);
-                }
+//                if (ladang.getChildren().contains(draggedPane)) {
+//                    a.drop_ladang(draggedPane.getId());
+//                    ladang.getChildren().remove(draggedPane);
+//                }
 
                 // Hitung baris dan kolom baru berdasarkan posisi drop
                 int col = (int) (event.getX() / (ladang.getWidth() / ladang.getColumnCount()));
@@ -94,8 +97,11 @@ public class MainController {
 
                 // Pastikan tidak ada elemen pada posisi tersebut
                 System.out.println(draggedPane.getId());
-                a.add_in_lahan(row, col, a.get_card_aktif(0));
-                a.drop_deck_aktif(a.get_card_aktif(0));
+                String id = draggedPane.getId();
+                int idx_card_deck_aktif = a.get_card_aktif_idx(id);
+                System.out.println("Dallas");
+                a.add_in_lahan(row, col, a.get_card_aktif(idx_card_deck_aktif));
+                a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
                 System.out.println("Ini kartu: " + draggedPane.getId());
                 System.out.println();
 
@@ -122,10 +128,20 @@ public class MainController {
             for (int j = 0; j < 5; j++) {
                 if (a.get_card_ladang(i, j) != null) {
                     System.out.println(a.get_card_ladang(i, j));
-                    Pane pane = new Pane();
+                    Card card = a.get_card_ladang(i, j);
+                    VBox pane = new VBox();
                     pane.setStyle(style);
-                    pane.setId(a.get_card_ladang(i, j).getName());
-                    pane.getChildren().add(new Label(a.get_card_ladang(i, j).getName()));
+                    Image image = new Image(this.getClass().getResource(card.getImgPath()).toExternalForm());
+                    ImageView imageView = new ImageView(image);
+                    imageView.setFitWidth(width);
+                    imageView.setFitHeight(height);
+                    pane.setId(a.get_card_ladang(i, j).getName()); // Menggunakan ID unik berdasarkan posisi
+                    Label label = new Label(card.getName());
+                    label.setStyle(font);
+                    pane.getChildren().add(label);
+                    pane.getChildren().add(imageView);
+                    int id = a.get_card_ladang(i, j).getId();
+                    pane.setId(Integer.toString(id));
                     ladang.add(pane, j, i);
                 }
             }
@@ -138,6 +154,7 @@ public class MainController {
         shuffle_card.setOnAction(e -> shuffle_kartu());
         close_button.setOnAction(e -> change_to_main());
         ladang_lawan.setOnAction(e -> ladang_lawan());
+        ladang_sendiri.setOnAction(e -> change_to_main());
     }
 
     // Shuffle kartu
@@ -149,6 +166,7 @@ public class MainController {
 
     // Tambahkan kartu ke deck aktif
     public void add_to_deck_aktif() {
+        deck_aktif.getChildren().clear();
         Player a = main.getPlayernow();
         for (int i = 0; i < 6; i++) {
             if (a.get_card_aktif(i) != null) {
@@ -159,6 +177,8 @@ public class MainController {
                 
                 VBox card = new VBox();
                 Label label = new Label(a.get_card_aktif(i).getName());
+                String id = Integer.toString(a.get_card_aktif(i).getId());
+                card.setId(id);
                 label.setStyle(font);
                 card.getChildren().add(label);
                 card.getChildren().add(imageView);
@@ -177,19 +197,27 @@ public class MainController {
 
     // Tambahkan kartu ke ladang
     public void add_to_ladang() {
+//        ladang.getChildren().clear();
+//        init();
         Player a = main.getPlayernow();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
                 Card card = a.get_card_ladang(i, j);
                 // Pastikan kartu tidak null atau tidak valid
                 if (card != null) {
-                    System.out.println(card);
-                    Pane pane = new Pane();
+                    VBox pane = new VBox();
                     pane.setStyle(style);
+                    Image image = new Image(this.getClass().getResource(card.getImgPath()).toExternalForm());
+                    ImageView imageView = new ImageView(image);
+                    imageView.setFitWidth(width);
+                    imageView.setFitHeight(height);
                     pane.setId(a.get_card_ladang(i, j).getName()); // Menggunakan ID unik berdasarkan posisi
                     Label label = new Label(card.getName());
                     label.setStyle(font);
+                    String id = Integer.toString(card.getId());
+                    pane.setId(id);
                     pane.getChildren().add(label);
+                    pane.getChildren().add(imageView);
                     pane.setOnDragDetected(event -> {
                         Dragboard db = pane.startDragAndDrop(TransferMode.MOVE);
                         ClipboardContent content = new ClipboardContent();
@@ -197,10 +225,60 @@ public class MainController {
                         db.setContent(content);
                         event.consume();
                     });
+                    pane.setOnDragOver(event -> {
+                        if (event.getGestureSource() != ladang && event.getDragboard().hasString()) {
+                            event.acceptTransferModes(TransferMode.MOVE);
+                        }
+                        event.consume();
+                    });
+                    pane.setOnDragDropped(event -> {
+                        Dragboard db = event.getDragboard();
+                        boolean success = false;
+                        if (db.hasString() && db.getString().equals("pane")) {
+                            Pane draggedPane = (Pane) event.getGestureSource();
+                            draggedPane.setStyle(style);
+
+                            // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
+                            if (deck_aktif.getChildren().contains(draggedPane)) {
+                                deck_aktif.getChildren().remove(draggedPane);
+                            }
+                            // Hitung baris dan kolom baru berdasarkan posisi drop
+                            int col = (int) (event.getX() / (ladang.getWidth() / ladang.getColumnCount()));
+                            int row = (int) (event.getY() / (ladang.getHeight() / ladang.getRowCount()));
+
+                            // Pastikan tidak ada elemen pada posisi tersebut
+                            System.out.println(draggedPane.getId());
+                            String id_dragged = draggedPane.getId();
+                            int idx_card_deck_aktif = a.get_card_aktif_idx(id_dragged);
+                            Card card_dragged = a.get_card_aktif(idx_card_deck_aktif);
+                            if (card_dragged instanceof Item) {
+                                ((Item) card_dragged).aksi((BisaPanen) card);
+                            }
+
+                            // Tambahkan ke ladang
+                            success = true;
+                        }
+
+                        event.setDropCompleted(success);
+                        event.consume();
+                    });
+                    pane.setOnMouseClicked(event -> {
+                        show_info(card);
+                    });
                         ladang.add(pane, j, i);
                 }
             }
         }
+    }
+
+    public void show_info(Card card) {
+        board.getChildren().clear();
+        if (card instanceof Hewan) {
+            Hewan hewan = (Hewan) card;
+            System.out.println(hewan.getName());
+            halo.getChildren().addAll(new Label(hewan.getName()));
+        }
+        board.getChildren().addAll(halo);
     }
 
     // Ubah ke pane shuffle
@@ -211,7 +289,7 @@ public class MainController {
         board.getChildren().clear();
         add_kartu_ke_shuffle_field();
         board.getChildren().setAll(pane_ladang, ambil_kartu);
-        System.out.println(board.getChildren().size());
+//        System.out.println(board.getChildren().size());
     }
 
     // Ubah ke pane main
@@ -233,7 +311,6 @@ public class MainController {
 
     // Tambahkan kartu ke shuffle field
     public void add_kartu_ke_shuffle_field() {
-        Beruang beruang = new Beruang(0);
 
         shuffle_panel.getChildren().clear();
         Player a = main.getPlayernow();
@@ -241,8 +318,10 @@ public class MainController {
         int idx = 0;
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 2; j++) {
+                Card beruang = a.get_deck(idx);
                 String kata = beruang.getName();
                 VBox card_shuffle = new VBox();
+//                System.out.println(beruang.getImgPath());
                 Image image = new Image(this.getClass().getResource(beruang.getImgPath()).toExternalForm());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(width);
@@ -255,7 +334,7 @@ public class MainController {
                 card_shuffle.getChildren().add(imageView);
                 card_shuffle.setStyle(style);
                 card_shuffle.setId(Integer.toString(idx));
-                card_shuffle.setOnMouseClicked(event -> remove_pane(a, card_shuffle));
+                card_shuffle.setOnMouseClicked(event -> remove_pane(a, card_shuffle, beruang));
                 idx += 1;
                 shuffle_panel.add(card_shuffle, i, j);
             }
@@ -263,18 +342,14 @@ public class MainController {
     }
 
     // Hapus pane
-    public void remove_pane(Player player, VBox vBox) {
-        if (player.getCard_in_one_turn() < 4) {
-            Label name = (Label) vBox.getChildren().get(0);
-            String name_str = name.getText();
-            System.out.println("ini nama: " + name);
-            if (name_str.equals("Beruang")) {
-                System.out.println("Sudah masuk");
-                Beruang beruang = new Beruang(0);
-                player.shuffle_to_deck_aktif(beruang);
-            }
+    public void remove_pane(Player player, VBox vBox, Card card) {
+        if (player.getCard_in_one_turn() < 4 && player.get_deck_aktif_size() < 6) {
+            String kata = player.getName();
+            System.out.println("ini nama: " + kata);
+            int id = card.getId();
+            player.shuffle_to_deck_aktif(card);
             player.add_ciot();
-            player.remove_deck(vBox.getId());
+            player.remove_deck(Integer.toString(id));
             shuffle_panel.getChildren().remove(vBox);
             player.print_deck_aktif();
         }
