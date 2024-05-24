@@ -22,6 +22,7 @@ import org.example.card.Card;
 import org.example.card.Hewan.Beruang;
 import org.example.card.Hewan.Hewan;
 import org.example.card.Item.Item;
+import javafx.scene.layout.AnchorPane;
 
 import java.util.ArrayList;
 

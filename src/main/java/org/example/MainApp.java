@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import plugin.TXTLoader;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
 
@@ -23,7 +25,8 @@ public class MainApp extends Application {
         // Add ke Board
         Player p1 = new Player("player1", 0);
         Player p2 = new Player("player2", 1);
-
+        ArrayList<String> a = new ArrayList<String>(player1);
+        p1.player_load();
         Board board = new Board(p1, p2);
         System.out.println(p1.getName());
         // Load the main FXML file
