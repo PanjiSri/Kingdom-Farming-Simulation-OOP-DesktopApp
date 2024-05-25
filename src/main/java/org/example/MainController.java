@@ -171,7 +171,7 @@ public class MainController {
                 }
 
                 // Hapus border, untuk menghilangkan border saat serangan beruang
-                draggedPane.setStyle("-fx-border-color: #000000; -fx-border-width: 0;");
+                draggedPane.setStyle("-fx-border-color: #000000; -fx-border-width: 0; -fx-alignment: center;");
             }
             event.setDropCompleted(success);
             event.consume();
