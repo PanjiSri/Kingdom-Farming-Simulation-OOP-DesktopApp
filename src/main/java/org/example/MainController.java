@@ -1,6 +1,7 @@
 package org.example;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,9 +22,11 @@ import org.example.card.Item.Item;
 import org.example.card.Item.Protect;
 import org.example.card.Produk.*;
 import org.example.card.Tumbuhan.Tumbuhan;
+import plugin.PluginLoader;
 import plugin.TXTLoader;
 import plugin.TXTSaver;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,6 +34,8 @@ import java.util.Objects;
 public class MainController {
 
     private Stage primary;
+    private File nama_file;
+    private boolean isXMLloaded = false;
 
     @FXML
     private GridPane ladang, shuffle_panel, deck_aktif;
@@ -52,6 +57,9 @@ public class MainController {
 
     @FXML
     private TextField folder_load, folder_save;
+
+    @FXML
+    private Button upload_file, submit_file; 
 
     // Toko
     @FXML
@@ -293,7 +301,25 @@ public class MainController {
             saveTXT(gameStatesave, player1save, player2save, folder_save.getText());
         });
         save11.setOnAction(e -> show_plugin());
+        upload_file.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+            nama_file = fileChooser.showOpenDialog(primary);
+            if (nama_file != null) {
+                System.out.println("Selected file: " + nama_file.getAbsolutePath());
+            }
+        });
+        submit_file.setOnAction(e -> {
+            PluginLoader pluginLoader = new PluginLoader();
+            try {
+                pluginLoader.loadPlugin("plugin_jar/XMLPlugin.jar", "plugin.implementasi.XMLPlugin");
+                isXMLloaded = true;
+                System.out.println("Berhasil load plugin");
+            }
+            catch (Exception ex) {
+                System.out.println("Failed load plugin");
+            }
 
+        });
     }
 
     public ArrayList<String> getstatesave() {
@@ -714,7 +740,7 @@ public class MainController {
 
     public void saveTXT(ArrayList<String> gameState, ArrayList<String> player1, ArrayList<String> player2, String directory){
         TXTSaver saver = new TXTSaver();
-        saver.saveFormattedData(directory, "gamestate,txt", gameState);
+        saver.saveFormattedData(directory, "gamestate.txt", gameState);
         saver.saveFormattedData(directory, "player1.txt", player1);
         saver.saveFormattedData(directory, "player2.txt", player2);
 

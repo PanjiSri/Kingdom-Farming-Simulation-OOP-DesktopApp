@@ -284,7 +284,7 @@ public class Player {
     }
 
     public void player_load(ArrayList<String> data) {
-        for(int i = 0; i < 40; i++) {
+        for(int i = 0; i < deck.size(); i++) {
             deck.remove(i);
             deck.add(i,null);
         }
