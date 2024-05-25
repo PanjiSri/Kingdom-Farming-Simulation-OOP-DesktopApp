@@ -17,7 +17,7 @@ public class XMLLoader implements DataPlugin {
         try {
             Document document = builder.build(Paths.get(fullPath).toFile());
             Element rootNode = document.getRootElement();
-            parseElement(rootNode, results);
+            results.addAll(parseElement(rootNode));
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Error reading XML file: " + fullPath);
@@ -25,39 +25,39 @@ public class XMLLoader implements DataPlugin {
         return results;
     }
 
-    private void parseElement(Element element, List<String> list) {
-        switch (element.getName()) {
-            case "Gold":
-            case "DeckCount":
-            case "ActiveDeckCount":
-            case "CurrentTurn":
-            case "NumberOfItemsInShop":
-            case "LandCardCount":
-            case "LandCardsCount":
-                list.add(element.getTextTrim());
-                break;
-            case "Item":
-                list.add(element.getAttributeValue("name") + " " + element.getAttributeValue("quantity"));
-                break;
-            case "Card":
-                // Concatenate card details
-                StringBuilder cardDetails = new StringBuilder();
-                cardDetails.append(element.getAttributeValue("location")).append(" ")
-                           .append(element.getAttributeValue("animal")).append(" ");
-                if (element.getAttributeValue("age") != null && !element.getAttributeValue("age").isEmpty()) {
-                    cardDetails.append(element.getAttributeValue("age")).append(" ");
-                }
-                if (element.getAttributeValue("items") != null && !element.getAttributeValue("items").isEmpty()) {
-                    cardDetails.append(element.getAttributeValue("items"));
-                }
-                list.add(cardDetails.toString().trim());
-                break;
-            default:
-                // Recursively parse all child elements
-                for (Element child : element.getChildren()) {
-                    parseElement(child, list);
-                }
-                break;
+    private ArrayList<String> parseElement(Element element) {
+        ArrayList<String> list = new ArrayList<>();
+        List<Element> children = element.getChildren();
+        if (!element.getTextTrim().isEmpty()) {
+            list.add(element.getTextTrim());
         }
+        // Handling specific structured elements
+        for (Element child : children) {
+            switch (child.getName()) {
+                case "Item":
+                    list.add(child.getAttributeValue("name") + " " + child.getAttributeValue("quantity"));
+                    break;
+                case "Card":
+                    list.add(buildCardDescription(child));
+                    break;
+                case "ActiveDeck":
+                case "LandCards":
+                case "ShopItems":
+                    list.addAll(parseElement(child)); 
+                    break;
+                default:
+                    list.addAll(parseElement(child)); 
+                    break;
+            }
+        }
+        return list;
+    }
+
+    private String buildCardDescription(Element cardElement) {
+        return cardElement.getAttributeValue("location") + " " +
+               cardElement.getAttributeValue("animal") + " " +
+               cardElement.getAttributeValue("age", "") + " " +
+               cardElement.getAttributeValue("items", "").replaceAll("\\s+", " ");
     }
 }
+
