@@ -132,7 +132,7 @@ public class MainController {
                     ladang.getChildren().remove(draggedPane);
                     System.out.println(draggedPane.getId());
                     String id = draggedPane.getId();
-                    ArrayList<Integer>  idx_lahan = a.get_idx_lahan(id);
+                    ArrayList<Integer>  idx_lahan = a.get_indeks_lahan(id);
                     a.add_in_lahan(row, col, a.get_card_ladang(idx_lahan.get(0), idx_lahan.get(1)));
                     a.drop_ladang(idx_lahan.get(0), idx_lahan.get(1));
                     // Tambahkan ke ladang

@@ -222,7 +222,7 @@ public class Player {
         return size;
     }
 
-    public ArrayList<Integer> get_idx_lahan (String id) {
+    public ArrayList<Integer> get_indeks_lahan (String id) {
         ArrayList<Integer> idx_lahan = new ArrayList<>();
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 5; j++) {
@@ -290,7 +290,7 @@ public class Player {
             String mahkluk = data.get(a);
             a += 1;
             int berat = Integer.valueOf(data.get(a));
-            Card card = get_card_with_berat(mahkluk, berat);
+            Card card = get_card(mahkluk, berat);
             lahan.get(idx.get(0)).remove(idx.get(1));
             lahan.get(idx.get(0)).add(idx.get(1), card);
             a += 1;
@@ -381,7 +381,7 @@ public class Player {
         return indeks;
     }
 
-    public String get_idx (int x, int y) {
+    public String get_indeks (int x, int y) {
         if (x == 0 && y == 0) {
             return "A01";
         }
@@ -528,6 +528,46 @@ public class Player {
         return null;
     }
 
+    public Card get_card(String mahkluk, int berat) {
+        if(mahkluk.equals("AYAM")) {
+            Ayam a = new Ayam(berat);
+            return a;
+        }
+        else if(mahkluk.equals("BERUANG")) {
+            Beruang b = new Beruang(berat);
+            return b;
+        }
+        else if(mahkluk.equals("DOMBA")) {
+            Domba d = new Domba(berat);
+            return d;
+        }
+        else if(mahkluk.equals("HIU_DARAT")) {
+            HiuDarat hiu = new HiuDarat(berat);
+            return hiu;
+        }
+        else if(mahkluk.equals("KUDA")) {
+            Kuda kuda = new Kuda(berat);
+            return kuda;
+        }
+        else if(mahkluk.equals("SAPI")) {
+            Sapi sapi = new Sapi(berat);
+            return sapi;
+        }
+        else if(mahkluk.equals("BIJI_JAGUNG")) {
+            BijiJagung bij = new BijiJagung(berat);
+            return bij;
+        }
+        else if(mahkluk.equals("BIJI_LABU")) {
+            BijiLabu bij = new BijiLabu(berat);
+            return bij;
+        }
+        else if(mahkluk.equals("BIJI_STROBERI")) {
+            BijiStroberi bij = new BijiStroberi(berat);
+            return bij;
+        }
+        return null;
+    }
+
     public void add_power(Card card, String power) {
         if (power.equals("ACCELERATE")) {
             Accelerate a = new Accelerate();
@@ -599,46 +639,6 @@ public class Player {
         }
     }
 
-    public Card get_card_with_berat(String mahkluk, int berat) {
-        if(mahkluk.equals("AYAM")) {
-            Ayam a = new Ayam(berat);
-            return a;
-        }
-        else if(mahkluk.equals("BERUANG")) {
-            Beruang b = new Beruang(berat);
-            return b;
-        }
-        else if(mahkluk.equals("DOMBA")) {
-            Domba d = new Domba(berat);
-            return d;
-        }
-        else if(mahkluk.equals("HIU_DARAT")) {
-            HiuDarat hiu = new HiuDarat(berat);
-            return hiu;
-        }
-        else if(mahkluk.equals("KUDA")) {
-            Kuda kuda = new Kuda(berat);
-            return kuda;
-        }
-        else if(mahkluk.equals("SAPI")) {
-            Sapi sapi = new Sapi(berat);
-            return sapi;
-        }
-        else if(mahkluk.equals("BIJI_JAGUNG")) {
-            BijiJagung bij = new BijiJagung(berat);
-            return bij;
-        }
-        else if(mahkluk.equals("BIJI_LABU")) {
-            BijiLabu bij = new BijiLabu(berat);
-            return bij;
-        }
-        else if(mahkluk.equals("BIJI_STROBERI")) {
-            BijiStroberi bij = new BijiStroberi(berat);
-            return bij;
-        }
-        return null;
-    }
-
     public int get_ladang () {
         int size = 0;
         for (int i = 0; i < 4; i++) {
@@ -668,7 +668,7 @@ public class Player {
         data.add(Integer.toString(get_deck_aktif_size()));
         for(int i = 0; i < 6; i++) {
             if(deck_aktif.get(i) != null) {
-                String indeks = get_idx(0, i);
+                String indeks = get_indeks(0, i);
                 String mahkluk = get_mahkluk(deck_aktif.get(i));
                 data.add(indeks+ " " + mahkluk);
             }
@@ -678,7 +678,7 @@ public class Player {
             for(int j = 0; j < 5; j++) {
                 if(lahan.get(i).get(j) != null) {
                     String umur = "";
-                    String indeks = get_idx(i, j);
+                    String indeks = get_indeks(i, j);
                     String mahkluk = get_mahkluk(lahan.get(i).get(j));
                     if(lahan.get(i).get(j) instanceof Hewan) {
                         Hewan hewan = (Hewan) lahan.get(i).get(j);
