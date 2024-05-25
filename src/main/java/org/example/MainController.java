@@ -589,7 +589,6 @@ public class MainController {
                         show_info(card, x, y);
                     });
                     ladang.add(pane, j, i);
-                    change_to_main();
                 }
             }
         }
