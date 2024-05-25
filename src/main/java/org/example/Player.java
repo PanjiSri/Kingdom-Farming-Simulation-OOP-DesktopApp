@@ -758,4 +758,29 @@ public class Player {
     public void deck_catat() {
         System.out.println(deck);
     }
+
+    public ArrayList<ArrayList<Card>> getLahan() {
+        return lahan;
+    }
+
+    public ArrayList<Card> getDeck_aktif() {
+        return deck_aktif;
+    }
+    public void add_Deck_active(Card s){
+        for(int i = 0; i < deck_aktif.size(); i++) {
+            if(deck_aktif.get(i) == null) {
+                deck_aktif.set(i, s);
+            }
+        }
+    }
+
+    public void serangan(int tinggi, int lebar, int xawal, int yawal) {
+        for(int i = yawal; i < tinggi; i++) {
+            for(int j = xawal; j < lebar; j++) {
+                if(lahan.get(i).get(j) != null) {
+                    lahan.get(i).set(j, null);
+                }
+            }
+        }
+    }
 }
