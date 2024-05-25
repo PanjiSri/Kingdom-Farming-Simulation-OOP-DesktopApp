@@ -1,5 +1,7 @@
 package org.example;
 
+import java.awt.SystemTray;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -8,11 +10,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
-import javafx.scene.layout.AnchorPane;
 //import javafx.scene.shape.Path;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import org.example.card.BisaPanen;
 import org.example.card.Card;
 import org.example.card.Hewan.Hewan;
@@ -20,6 +22,8 @@ import org.example.card.Item.Item;
 import org.example.card.Item.Protect;
 import org.example.card.Produk.*;
 import org.example.card.Tumbuhan.Tumbuhan;
+
+import plugin.DataPlugin;
 import plugin.PluginLoader;
 import plugin.TXTLoader;
 import plugin.TXTSaver;
@@ -30,14 +34,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+
+import java.util.Map;
+import java.util.jar.JarFile;
+import java.util.jar.JarEntry;
+import java.util.Enumeration;
 
 public class MainController {
 
     private Stage primary;
     private File nama_file;
-    private boolean isXMLloaded = false;
+    private Map<String, DataPlugin> plugins = new HashMap<>();
+    private ArrayList<String> classFromPlguin;
+
 
     @FXML
     private GridPane ladang, shuffle_panel, deck_aktif;
@@ -169,6 +183,8 @@ public class MainController {
 
         // toko
         board.getChildren().remove(toko);
+        format_load.getItems().add("TXT");
+        format_save.getItems().add("TXT");
 
         // Initialize the action buttons
         initialize_click();
@@ -294,16 +310,12 @@ public class MainController {
         save.setOnAction(e -> show_save());
         load_progress.setOnAction(e -> {
             String path = folder_load.getText();
-            loadTXT(path);
-            if (format_load.getValue() == "XAML") {
-                System.out.println("XAML");
-                System.out.println(path);
-            }
-            if (format_load.getValue() == "JSON") {
-                System.out.println("JSON");
-            }
-            else {
+            if(format_load.getValue() == "TXT"){
                 System.out.println("TXT");
+                loadTXT(path);
+            }
+            else{
+                loadPlugin(format_load.getValue(), path);
             }
         });
         save_to_main.setOnAction(e -> change_to_main());
@@ -313,15 +325,13 @@ public class MainController {
             player1save = p1.get_save();
             player2save = p2.get_save();
             gameStatesave = getstatesave();
-            saveTXT(gameStatesave, player1save, player2save, folder_save.getText());
-            if (format_save.getValue() == "XAML") {
-                System.out.println("XAML");
-            }
-            if (format_save.getValue() == "JSON") {
-                System.out.println("JSON");
+            if (format_save.getValue() == "TXT") {
+
+                saveTXT(gameStatesave, player1save, player2save, folder_save.getText());
             }
             else {
-                System.out.println("TXT");
+                // saveTXT(gameStatesave, player1save, player2save, folder_save.getText());
+                System.out.println("format save tidak ditemukan");
             }
         });
         save11.setOnAction(e -> show_plugin());
@@ -344,19 +354,62 @@ public class MainController {
         submit_file.setOnAction(e -> {
             PluginLoader pluginLoader = new PluginLoader();
             try {
-                pluginLoader.loadPlugin(nama_file.getAbsolutePath(), "plugin.XMLPlugin");
-                isXMLloaded = true;
-                System.out.println("Berhasil load plugin");
-                if (isXMLloaded == true) {
-                    change_format();
+
+                int i = 0;
+
+                while(i < 2) {
+                
+                    String classPluginName = getClassNamesFromJar(nama_file.getAbsolutePath());
+
+                    String modified = classPluginName.replace("/", ".");
+
+
+                    System.out.println("====================================");
+                    System.out.println(modified);
+
+                    DataPlugin pluginEksternal = pluginLoader.loadPlugin(nama_file.getAbsolutePath(), modified);
+
+                    System.out.println("====================================");
+                    System.out.println(classPluginName);
+
+                    if(!classFromPlguin.contains(classPluginName)){
+                        plugins.put(classPluginName, pluginEksternal);
+                        System.out.println("Berhasil load plugin");
+                        change_format();
+                        break;
+                    }
+
+                    i+= 1;
                 }
             }
             catch (Exception ex) {
-                System.out.println("Failed load plugin");
+                System.out.println("Gagal load plugin");
             }
         });
         plugin_to_main.setOnAction(e -> change_to_main());
         save11.setOnAction(e -> main_to_plugin());
+    }
+
+    public static String getClassNamesFromJar(String jarPath) throws Exception {
+        StringBuilder classNames = new StringBuilder();
+        try (JarFile jarFile = new JarFile(jarPath)) {
+            Enumeration<JarEntry> entries = jarFile.entries();
+
+            while (entries.hasMoreElements()) {
+                JarEntry entry = entries.nextElement();
+                String entryName = entry.getName();
+
+                if (entryName.endsWith(".class")) {
+                    String className = entryName.substring(0, entryName.length() - 6);
+                    if (classNames.length() > 0) {
+                        classNames.append(", ");
+                    }
+                    classNames.append(className);
+                }
+            }
+        }
+
+        return classNames.toString();
     }
 
     public ArrayList<String> getstatesave() {
@@ -804,6 +857,26 @@ public class MainController {
         p2.player_load(b);
     }
 
+    public void loadPlugin(String jenis_plugin, String folder){
+        
+        this.gameState = tokenizeLines(plugins.get(jenis_plugin).readFromFile(folder, "gamestate.xml"));
+        this.player1 = tokenizeLines(plugins.get(jenis_plugin).readFromFile(folder, "player1.xml"));
+        this.player2 = tokenizeLines(plugins.get(jenis_plugin).readFromFile(folder, "player2.xml"));
+
+        
+        Player p1 = main.getP1();
+        Player p2 = main.getP2();
+
+        ArrayList<String> game = (ArrayList<String>) gameState;
+        ArrayList<String> a = (ArrayList<String>) player1;
+        ArrayList<String> b = (ArrayList<String>) player2;
+
+        game_state_load(game);
+        p1.player_load(a);
+        p2.player_load(b);
+    }
+
+
     public void game_state_load(ArrayList<String> game) {
         int a = 0;
         main.set_totalturn(Integer.valueOf(game.get(a)));
@@ -973,13 +1046,23 @@ public class MainController {
     }
 
     public void change_format() {
-        format_save.getItems().addAll("XML");
-        format_save.getItems().addAll("JSON");
-        format_load.getItems().addAll("TXT","XML","JSON");
+        plugins.forEach((option, plugin) -> {
+            format_load.getItems().addAll("CSV");
+        });
     }
 
     public void main_to_plugin() {
         board.getChildren().clear();
         board.getChildren().add(pane_plugin);
     }
+
+    public List<String> tokenizeLines(List<String> lines) {
+        List<String> tokens = new ArrayList<>();
+        for (String line : lines) {
+            String[] lineTokens = line.split("\\s+");
+            tokens.addAll(Arrays.asList(lineTokens));
+        }
+        return tokens;
+    }
+
 }
