@@ -19,31 +19,6 @@
 <StackPane fx:id="board" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController">
 <!-- <StackPane fx:id="board" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="700.0" style="-fx-pref-width: 700; -fx-pref-height: 600;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.MainController"> -->
    <children>
-      <Pane fx:id="save_load" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: green; -fx-opacity: 1;">
-         <children>
-            <Label layoutX="271.0" layoutY="306.0" text="Format" />
-            <Label layoutX="273.0" layoutY="344.0" text="Folder" />
-            <TextField layoutX="323.0" layoutY="302.0" />
-            <TextField fx:id="folder_save" layoutX="323.0" layoutY="340.0" />
-            <Button fx:id="save_progress" layoutX="372.0" layoutY="401.0" mnemonicParsing="false" text="Save" />
-            <Label layoutX="378.0" layoutY="209.0" text="SAVE">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="664.0" layoutY="209.0" text="LOAD">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Label layoutX="559.0" layoutY="306.0" text="Format" />
-            <TextField layoutX="611.0" layoutY="302.0" />
-            <TextField fx:id="folder_load" layoutX="611.0" layoutY="349.0" />
-            <Label layoutX="561.0" layoutY="353.0" text="Folder" />
-            <Button fx:id="load_progress" layoutX="664.0" layoutY="401.0" mnemonicParsing="false" text="Load" />
-            <Button fx:id="save_to_main" layoutX="493.0" layoutY="519.0" mnemonicParsing="false" text="Close" />
-         </children>
-      </Pane>
        <AnchorPane fx:id="info_pane" opacity="1" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/21">
            <children>
                <ButtonBar layoutX="257.0" layoutY="276.0" prefHeight="40.0" prefWidth="80.0">
