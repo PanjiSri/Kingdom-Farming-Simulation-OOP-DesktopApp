@@ -80,7 +80,6 @@ public class Player {
             if(deck_aktif.get(x) != null && id_card_aktif.equals(id_card)) {
                 deck_aktif.remove(x);
                 deck_aktif.add(x, null);
-                print_deck_aktif();
                 break;
             }
         }
@@ -159,10 +158,6 @@ public class Player {
         }
     }
 
-    public Card get_kartu(int idx) {
-        return deck.get(idx);
-    }
-
     public void shuffle() {
         Collections.shuffle(deck);
     }
@@ -217,41 +212,6 @@ public class Player {
         lahan.get(x).set(y, null);
     }
 
-    public void print_lahan() {
-        for (int i = 0; i < lahan.size(); i++) {
-            for (int j = 0; j < lahan.get(i).size(); j++) {
-                if (lahan.get(i).get(j) == null) {
-                    System.out.print("null ");
-                } else {
-                    System.out.print(lahan.get(i).get(j).getId() + " ");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println();
-    }
-
-    public void print_deck_aktif() {
-        for (int i = 0; i < deck_aktif.size(); i++) {
-            if (deck_aktif.get(i) == null) {
-                System.out.println("null ");
-            } else {
-                System.out.println(deck_aktif.get(i).getId() + " ");
-            }
-        }
-        System.out.println();
-    }
-
-    public void print_deck() {
-        for (int i = 0; i < deck.size(); i++) {
-            if (deck.get(i) == null) {
-                System.out.println("null ");
-            } else {
-                System.out.println(deck.get(i).getId() + " " + deck.get(i).getName());
-            }
-        }
-    }
-
     public int get_deck_aktif_size() {
         int size = 0;
         for (int i = 0; i < 6; i++) {
@@ -262,7 +222,7 @@ public class Player {
         return size;
     }
 
-    public ArrayList<Integer> get_idx_lahan(String id) {
+    public ArrayList<Integer> get_idx_lahan (String id) {
         ArrayList<Integer> idx_lahan = new ArrayList<>();
         for(int i = 0; i < 4; i++) {
             for(int j = 0; j < 5; j++) {
@@ -288,13 +248,12 @@ public class Player {
             deck.remove(i);
             deck.add(i,null);
         }
-        System.out.println(deck_size());
         int a = 0;
         coin = Integer.valueOf(data.get(a));
         a += 1;
         int deck_size = Integer.valueOf(data.get(a));
-        System.out.println(deck_size);
         a += 1;
+
         for(int i = 0; i < deck_size; i++) {
             try {
                 Class<?> clazz = Class.forName(StaticCard.getRandomCardName());
@@ -306,7 +265,7 @@ public class Player {
                 e.printStackTrace();
             }
         }
-        System.out.println(deck_size());
+
         int deck_aktif_size = Integer.valueOf(data.get(a));
         a += 1;
         for(int i = 0; i < deck_aktif_size; i++) {

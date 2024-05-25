@@ -2,7 +2,6 @@ package org.example.card.Hewan;
 
 import org.example.card.BisaPanen;
 import org.example.card.Card;
-import org.example.card.Item.Item;
 import org.example.card.Produk.Produk;
 
 import java.util.HashMap;
@@ -40,8 +39,6 @@ public abstract class Hewan extends Card implements BisaPanen {
     }
 
     public void addBerat(int berat) {
-        System.out.println("Test: " + this.berat);
-        System.out.println("Test: " + berat);
         this.berat += berat;
         if (this.berat < 0) this.berat = 0;
     }

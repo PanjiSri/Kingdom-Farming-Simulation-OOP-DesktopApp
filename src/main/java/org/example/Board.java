@@ -3,9 +3,9 @@ package org.example;
 public class Board {
     private  Player p1;
     private  Player p2;
-    int turn;
-    int totalturn;
     private Toko toko;
+    private int turn;
+    private int totalturn;
 
     public Board(Player _p1, Player _p2, Toko toko) {
         p1 = _p1;
@@ -30,6 +30,11 @@ public class Board {
     }
 
     public void add_turn() {
+        if (turn == 1) {
+            turn = 2;
+        } else {
+            turn = 1;
+        }
         totalturn++;
     }
 

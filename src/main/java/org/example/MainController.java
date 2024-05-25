@@ -9,11 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Circle;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import org.example.card.BisaPanen;
 import org.example.card.Card;
 import org.example.card.Hewan.Hewan;
@@ -28,8 +24,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class MainController {
-
-    private Stage primary;
 
     @FXML
     private GridPane ladang, shuffle_panel, deck_aktif;
@@ -131,7 +125,6 @@ public class MainController {
 
                     // Tambahkan ke ladang
                     ladang.add(draggedPane, col, row);
-                    a.print_lahan();
                     success = true;
                 }
 
@@ -143,7 +136,6 @@ public class MainController {
                     a.add_in_lahan(row, col, a.get_card_ladang(idx_lahan.get(0), idx_lahan.get(1)));
                     a.drop_ladang(idx_lahan.get(0), idx_lahan.get(1));
                     // Tambahkan ke ladang
-                    a.print_lahan();
                     success = true;
                     ladang.getChildren().remove(draggedPane);
                     ladang.add(draggedPane, col, row);
@@ -218,12 +210,14 @@ public class MainController {
                                         enemi.delete_from_ladang(x_koordinat, y_koordinat);
                                         currPlayer.drop_deck_aktif(currPlayer.get_card_aktif(idx_card_deck_aktif));
                                         change_to_main();
+                                        ladang_lawan();
                                     }
                                     if (card_dragged instanceof Delay) {
                                         deck_aktif.getChildren().remove(draggedPane);
                                         ((Item) card_dragged).aksi((BisaPanen) card);
                                         currPlayer.drop_deck_aktif(currPlayer.get_card_aktif(idx_card_deck_aktif));
                                         change_to_main();
+                                        ladang_lawan();
                                     }
 
                                 }
@@ -304,7 +298,6 @@ public class MainController {
             saveTXT(gameStatesave, player1save, player2save, folder_save.getText());
         });
         save11.setOnAction(e -> show_plugin());
-
     }
 
     public ArrayList<String> getstatesave() {
@@ -358,6 +351,7 @@ public class MainController {
         board.getChildren().clear();
         board.getChildren().add(plugin_pane);
     }
+
     // Shuffle kartu
     public void shuffle_kartu() {
         Player a = main.getPlayernow();
@@ -620,13 +614,11 @@ public class MainController {
         Player a = main.getPlayernow();
         jumlah_turn.getChildren().clear();
         player_saat_ini.getChildren().clear();
-        a.print_deck_aktif();
         set_turn();
         set_player();
         init();
         add_to_deck_aktif();
         add_to_ladang();
-        a.print_lahan();
         board.getChildren().clear();
         board.getChildren().setAll(ambil_kartu, pane_ladang);
         Player p1 = main.getP1();
@@ -706,7 +698,7 @@ public class MainController {
                 Card beruang = a.get_deck(idx);
                 String kata = beruang.getName();
                 VBox card_shuffle = new VBox();
-                // System.out.println(beruang.getImgPath());
+
                 Image image = new Image(this.getClass().getResource(beruang.getImgPath()).toExternalForm());
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(width);
@@ -736,10 +728,8 @@ public class MainController {
             player.add_ciot();
             player.remove_deck(Integer.toString(id));
             shuffle_panel.getChildren().remove(vBox);
-            player.print_deck_aktif();
         }
     }
-
 
     public void set_turn() {
         jumlah_turn.getChildren().addAll(new Label("Turn: " + main.getTotalturn()));

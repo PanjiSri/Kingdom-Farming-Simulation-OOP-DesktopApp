@@ -13,7 +13,6 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        TXTSaver saver = new TXTSaver();
         // Add ke Board
         Player p1 = new Player("player1", 0);
         Player p2 = new Player("player2", 0);
@@ -30,8 +29,7 @@ public class MainApp extends Application {
         controller.add_kartu_ke_shuffle_field();
         controller.initialize_click();
         controller.init();
-//        controller.add_to_deck_aktif();
-
+        
         Scene scene = new Scene(root, 1000, 800);
         primaryStage.setScene(scene);
         primaryStage.setTitle("My JavaFX Application");
