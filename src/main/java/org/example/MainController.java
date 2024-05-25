@@ -945,7 +945,7 @@ public class MainController {
         // Menentukan serangan beruang
         if (randomSeranganBeruang.nextInt(5) == 0) {
             pane_ladang.getChildren().add(container_waktu_serangan);
-            SeranganBeruang seranganBeruang = new SeranganBeruang(this, 3000, 10000);
+            SeranganBeruang seranganBeruang = new SeranganBeruang(this, 30000, 60000);
             Timer timer = new Timer(seranganBeruang.getTime(), this);
             timer.start();
             seranganBeruang.start();
@@ -959,12 +959,7 @@ public class MainController {
     }
 
     private void markSeranganBeruang(int[] ukuran, int[] firstIdx) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Warning Woy!");
-        alert.setHeaderText("Baca Nih!!!");
-        alert.setContentText("Serangan beruang, ukuran: " + ukuran[0] + " " + ukuran[1] + " firstIdx: " + firstIdx[0] + " " + firstIdx[1]);
-        // Show the alert and wait for the user to close it
-        alert.showAndWait();
+        System.out.println("Serangan beruang, ukuran: " + ukuran[0] + " " + ukuran[1] + " firstIdx: " + firstIdx[0] + " " + firstIdx[1]);
         for (int i = 0; i < ukuran[0]; i++) {
             for (int j = 0; j < ukuran[1]; j++) {
                 Node node = getNodeFromGridPane(ladang, firstIdx[0] + i, firstIdx[1] + j);
