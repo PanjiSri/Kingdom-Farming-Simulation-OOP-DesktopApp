@@ -352,6 +352,19 @@
             </ButtonBar>
          </children>
       </Pane>
+      <Pane fx:id="pane_plugin" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: white;">
+         <children>
+            <Button fx:id="upload_file" layoutX="289.0" layoutY="198.0" mnemonicParsing="false" text="Upload File" />
+            <Button fx:id="plugin_to_main" layoutX="62.0" layoutY="67.0" mnemonicParsing="false" text="Kembali" />
+            <Label layoutX="428.0" layoutY="45.0" text="Plugin">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Label>
+            <Button fx:id="submit_file" layoutX="290.0" layoutY="265.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="400.0" text="Submit" />
+            <Label layoutX="388.0" layoutY="202.0" text="Nama File: " />
+         </children>
+      </Pane>
       <Pane fx:id="pane_ladang" prefHeight="750.0" prefWidth="1000.0" style="-fx-background-color: pink;">
          <children>
             <GridPane layoutX="778.0" layoutY="36.0" prefHeight="230.0" prefWidth="186.0" vgap="10.0">
@@ -455,19 +468,6 @@
             <Button fx:id="save_to_main" layoutX="493.0" layoutY="519.0" mnemonicParsing="false" text="Close" />
             <ComboBox fx:id="format_save" layoutX="324.0" layoutY="302.0" prefWidth="150.0" promptText="TXT" />
             <ComboBox fx:id="format_load" layoutX="610.0" layoutY="302.0" prefWidth="150.0" promptText="TXT" />
-         </children>
-      </Pane>
-      <Pane fx:id="pane_plugin" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: white;">
-         <children>
-            <Button fx:id="upload_file" layoutX="289.0" layoutY="198.0" mnemonicParsing="false" text="Upload File" />
-            <Button fx:id="plugin_to_main" layoutX="62.0" layoutY="67.0" mnemonicParsing="false" text="Kembali" />
-            <Label layoutX="428.0" layoutY="45.0" text="Plugin">
-               <font>
-                  <Font size="48.0" />
-               </font>
-            </Label>
-            <Button fx:id="submit_file" layoutX="290.0" layoutY="265.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="400.0" text="Submit" />
-            <Label layoutX="388.0" layoutY="202.0" text="Nama File: " />
          </children>
       </Pane>
    </children>

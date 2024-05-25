@@ -9,6 +9,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.layout.AnchorPane;
+//import javafx.scene.shape.Path;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -24,6 +25,10 @@ import plugin.TXTLoader;
 import plugin.TXTSaver;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +46,7 @@ public class MainController {
     private AnchorPane info_pane;
 
     @FXML
-    private Pane plugin_pane, pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini, save_load;
+    private Pane pane_plugin, pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini, save_load;
 
     @FXML
     private Button upload, save11, next_turn, shuffle_card, close_button, ladang_lawan, ladang_sendiri, panen, tutup_info, save, load_progress, save_to_main, save_progress, plugin_to_main;
@@ -322,14 +327,23 @@ public class MainController {
         upload_file.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
             nama_file = fileChooser.showOpenDialog(primary);
-            if (nama_file != null) {
-                System.out.println("Selected file: " + nama_file.getAbsolutePath());
+            try {
+                Path targetDir = Paths.get("plugin_jar");
+                // Membuat direktori jika belum ada
+                if (!Files.exists(targetDir)) {
+                    Files.createDirectory(targetDir);
+                }
+                Path targetPath = targetDir.resolve(nama_file.getName());
+                Files.copy(nama_file.toPath(), targetPath);
+                System.out.println("File copied to: " + targetPath.toString());
+            } catch (IOException ex) {
+                System.err.println("Error copying file: " + ex.getMessage());
             }
         });
         submit_file.setOnAction(e -> {
             PluginLoader pluginLoader = new PluginLoader();
             try {
-                pluginLoader.loadPlugin("plugin_jar/XMLPlugin.jar", "plugin.XMLPlugin");
+                pluginLoader.loadPlugin(nama_file.getAbsolutePath(), "plugin.XMLPlugin");
                 isXMLloaded = true;
                 System.out.println("Berhasil load plugin");
                 if (isXMLloaded == true) {
@@ -341,6 +355,7 @@ public class MainController {
             }
         });
         plugin_to_main.setOnAction(e -> change_to_main());
+        save11.setOnAction(e -> main_to_plugin());
     }
 
     public ArrayList<String> getstatesave() {
@@ -392,7 +407,7 @@ public class MainController {
 
     public void show_plugin() {
         board.getChildren().clear();
-        board.getChildren().add(plugin_pane);
+        board.getChildren().add(pane_plugin);
     }
     // Shuffle kartu
     public void shuffle_kartu() {
@@ -959,5 +974,10 @@ public class MainController {
     public void change_format() {
         format_save.getItems().addAll("TXT","XAML","JSON");
         format_load.getItems().addAll("TXT","XAML","JSON");
+    }
+
+    public void main_to_plugin() {
+        board.getChildren().clear();
+        board.getChildren().add(pane_plugin);
     }
 }
