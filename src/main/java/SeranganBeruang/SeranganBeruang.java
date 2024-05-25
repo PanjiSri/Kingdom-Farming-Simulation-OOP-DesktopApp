@@ -1,13 +1,10 @@
 package SeranganBeruang;
 
 import javafx.application.Platform;
-import org.example.Board;
 import org.example.MainController;
-import org.example.Player;
 import org.example.card.Hewan.Beruang;
-
-import java.util.ArrayList;
 import java.util.Random;
+
 public class SeranganBeruang extends Thread{
     private final int time;
     private final int[] ukuran = new int[2];
@@ -74,28 +71,5 @@ public class SeranganBeruang extends Thread{
             }
         }
         return false;
-    }
-
-    public static void main(String[] args) {
-        // Player p = new Player("A", 100);
-        // SeranganBeruang a = new SeranganBeruang(p);
-        // Timer t = new Timer(a.time);
-        // t.start();
-        // System.out.println(t.getMiliSecond()*1000);
-        // for (int i = 0; i < 100; i++) {
-        //     try {
-        //         Thread.sleep(100);
-        //         System.out.println(t.getMiliSecond());
-        //     } catch (Exception e){
-        //         System.out.println(e.getMessage());
-        //     }
-        // }
-        // try {
-        //     Thread.sleep(a.time + 5000);
-        // } catch (Exception e) {
-        //     System.out.println(e.getMessage());
-        // }
-        // a.start();
-        // System.out.println("Success");
     }
 }
