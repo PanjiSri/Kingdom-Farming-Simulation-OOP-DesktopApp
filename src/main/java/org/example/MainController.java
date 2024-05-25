@@ -17,8 +17,7 @@ import javafx.stage.Stage;
 import org.example.card.BisaPanen;
 import org.example.card.Card;
 import org.example.card.Hewan.Hewan;
-import org.example.card.Item.Item;
-import org.example.card.Item.Protect;
+import org.example.card.Item.*;
 import org.example.card.Produk.*;
 import org.example.card.Tumbuhan.Tumbuhan;
 import plugin.TXTLoader;
@@ -165,11 +164,15 @@ public class MainController {
     public void ladang_lawan() {
         ladang.getChildren().clear();
         init();
-        Player a = main.getEnemyNow();
+        Player enemi = main.getEnemyNow();
+        Player currPlayer = main.getPlayernow();
+        
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
-                if (a.get_card_ladang(i, j) != null) {
-                    Card card = a.get_card_ladang(i, j);
+                if (enemi.get_card_ladang(i, j) != null) {
+                    Card card = enemi.get_card_ladang(i, j);
+                    int x_koordinat = i;
+                    int y_koordinat = j;
 
                     VBox pane = new VBox();
                     pane.setStyle(style);
@@ -178,14 +181,14 @@ public class MainController {
                     ImageView imageView = new ImageView(image);
                     imageView.setFitWidth(width);
                     imageView.setFitHeight(height);
-                    pane.setId(a.get_card_ladang(i, j).getName()); // Menggunakan ID unik berdasarkan posisi
+                    pane.setId(enemi.get_card_ladang(i, j).getName()); // Menggunakan ID unik berdasarkan posisi
 
                     Label label = new Label(card.getName());
                     label.setStyle(font);
                     pane.getChildren().add(label);
                     pane.getChildren().add(imageView);
 
-                    int id = a.get_card_ladang(i, j).getId();
+                    int id = enemi.get_card_ladang(i, j).getId();
 
                     pane.setId(Integer.toString(id));pane.setOnDragOver(event -> {
                         if (event.getGestureSource() != ladang && event.getDragboard().hasString()) {
@@ -202,20 +205,28 @@ public class MainController {
 
                             // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
                             if (deck_aktif.getChildren().contains(draggedPane)) {
-                                deck_aktif.getChildren().remove(draggedPane);
-
                                 // Pastikan tidak ada elemen pada posisi tersebut
                                 System.out.println(draggedPane.getId());
                                 String id_dragged = draggedPane.getId();
-                                int idx_card_deck_aktif = a.get_card_aktif_idx(id_dragged);
-                                Card card_dragged = a.get_card_aktif(idx_card_deck_aktif);
+                                int idx_card_deck_aktif = currPlayer.get_card_aktif_idx(id_dragged);
+                                Card card_dragged = currPlayer.get_card_aktif(idx_card_deck_aktif);
+
                                 if (card_dragged instanceof Item) {
-                                    ((Item) card_dragged).aksi((BisaPanen) card);
+
+                                    if (card_dragged instanceof Destroy) {
+                                        deck_aktif.getChildren().remove(draggedPane);
+                                        enemi.delete_from_ladang(x_koordinat, y_koordinat);
+                                        currPlayer.drop_deck_aktif(currPlayer.get_card_aktif(idx_card_deck_aktif));
+                                        change_to_main();
+                                    }
+                                    if (card_dragged instanceof Delay) {
+                                        deck_aktif.getChildren().remove(draggedPane);
+                                        ((Item) card_dragged).aksi((BisaPanen) card);
+                                        currPlayer.drop_deck_aktif(currPlayer.get_card_aktif(idx_card_deck_aktif));
+                                        change_to_main();
+                                    }
+
                                 }
-                                if (card_dragged instanceof Produk) {
-                                    ((Produk) card_dragged).aksi((BisaPanen) card);
-                                }
-                                a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
                             }
                             success = true;
                         }
@@ -392,8 +403,11 @@ public class MainController {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 5; j++) {
                 Card card = a.get_card_ladang(i, j);
-                // Pastikan kartu tidak null atau tidak valid
+                // Pastikan kartu tidak null
                 if (card != null) {
+                    final int x_koordinat = i;
+                    final int y_koordinat = j;
+
                     VBox pane = new VBox();
                     pane.setStyle(style);
 
@@ -426,26 +440,49 @@ public class MainController {
                     pane.setOnDragDropped(event -> {
                         Dragboard db = event.getDragboard();
                         boolean success = false;
+
                         if (db.hasString() && db.getString().equals("pane")) {
                             Pane draggedPane = (Pane) event.getGestureSource();
                             draggedPane.setStyle(style);
 
                             // Hapus dari deck_aktif hanya jika Pane berasal dari deck_aktif
                             if (deck_aktif.getChildren().contains(draggedPane)) {
-                                deck_aktif.getChildren().remove(draggedPane);
-
                                 // Pastikan tidak ada elemen pada posisi tersebut
                                 System.out.println(draggedPane.getId());
                                 String id_dragged = draggedPane.getId();
                                 int idx_card_deck_aktif = a.get_card_aktif_idx(id_dragged);
                                 Card card_dragged = a.get_card_aktif(idx_card_deck_aktif);
                                 if (card_dragged instanceof Item) {
-                                    ((Item) card_dragged).aksi((BisaPanen) card);
+                                    if (card_dragged instanceof InstantHarvest) {
+                                        deck_aktif.getChildren().remove(draggedPane);
+
+                                        ((Item) card_dragged).aksi((BisaPanen) card);
+                                        Produk produk = ((BisaPanen) card).panen();
+                                        a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
+                                        a.add_into_deck_aktiv(produk);
+                                        a.delete_from_ladang(x_koordinat, y_koordinat);                                        
+                                        change_to_main();
+                                    }
+                                    if (card_dragged instanceof Trap || card_dragged instanceof Accelerate || card_dragged instanceof Protect) {
+                                        deck_aktif.getChildren().remove(draggedPane);
+                                        
+                                        ((Item) card_dragged).aksi((BisaPanen) card);
+                                        a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
+                                        change_to_main();
+                                    }
+
                                 }
                                 if (card_dragged instanceof Produk) {
-                                    ((Produk) card_dragged).aksi((BisaPanen) card);
+                                    if (card instanceof Hewan) {
+                                        deck_aktif.getChildren().remove(draggedPane);
+                                        ((Produk) card_dragged).aksi((BisaPanen) card);
+                                        a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
+                                        change_to_main();
+                                    }
                                 }
-                                a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
+                                if (card instanceof BisaPanen) {
+                                    // do nothing
+                                }
                             }
                             success = true;
                         }
@@ -457,10 +494,11 @@ public class MainController {
                     pane.setOnMouseClicked(event -> {
                         show_info(card, x, y);
                     });
-                        ladang.add(pane, j, i);
+                    ladang.add(pane, j, i);
                 }
             }
         }
+
     }
 
     public void show_info(Card card, int x, int y) {

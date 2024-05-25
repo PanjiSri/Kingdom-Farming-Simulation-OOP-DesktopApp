@@ -30,13 +30,7 @@ public class Board {
     }
 
     public void add_turn() {
-        if (turn == 1) {
-            turn = 2;
-        }
-        else {
-            turn = 1;
-            totalturn += 1;
-        }
+        totalturn++;
     }
 
     public int getTotalturn() {
