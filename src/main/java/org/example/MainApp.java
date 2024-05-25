@@ -13,7 +13,6 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        TXTSaver saver = new TXTSaver();
         // Add ke Board
         Player p1 = new Player("player1", 0);
         Player p2 = new Player("player2", 0);

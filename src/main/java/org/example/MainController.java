@@ -297,6 +297,7 @@ public class MainController {
             loadTXT(path);
             if (format_load.getValue() == "XAML") {
                 System.out.println("XAML");
+                System.out.println(path);
             }
             if (format_load.getValue() == "JSON") {
                 System.out.println("JSON");
@@ -972,8 +973,9 @@ public class MainController {
     }
 
     public void change_format() {
-        format_save.getItems().addAll("TXT","XAML","JSON");
-        format_load.getItems().addAll("TXT","XAML","JSON");
+        format_save.getItems().addAll("XML");
+        format_save.getItems().addAll("JSON");
+        format_load.getItems().addAll("TXT","XML","JSON");
     }
 
     public void main_to_plugin() {
