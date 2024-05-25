@@ -561,7 +561,7 @@ public class MainController {
 
                                 }
                                 if (card_dragged instanceof Produk) {
-                                    if (card instanceof Hewan) {
+                                    if (card instanceof Hewan || card instanceof Tumbuhan) {
                                         deck_aktif.getChildren().remove(draggedPane);
                                         ((Produk) card_dragged).aksi((BisaPanen) card);
                                         a.drop_deck_aktif(a.get_card_aktif(idx_card_deck_aktif));
