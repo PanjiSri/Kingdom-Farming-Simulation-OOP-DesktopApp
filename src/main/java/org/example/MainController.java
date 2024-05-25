@@ -1,6 +1,9 @@
 package org.example;
 
+import SeranganBeruang.SeranganBeruang;
+import SeranganBeruang.Timer;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -22,6 +25,7 @@ import plugin.TXTSaver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 public class MainController {
 
@@ -59,6 +63,11 @@ public class MainController {
     @FXML
     private Label uang_player1, uang_player2;
 
+    @FXML
+    private Label waktu_serangan;
+    @FXML
+    private Pane container_waktu_serangan;
+
     private Board main;
     List<String> gameState;
     List<String> player1;
@@ -84,6 +93,8 @@ public class MainController {
                            "-fx-font-family: 'Comic Sans MS';");
 
     private int width = 90, height = 90;
+
+    private Random randomSeranganBeruang;
 
     // Menyediakan ladang kosong
     public void init() {
@@ -140,6 +151,9 @@ public class MainController {
                     ladang.getChildren().remove(draggedPane);
                     ladang.add(draggedPane, col, row);
                 }
+
+                // Hapus border, untuk menghilangkan border saat serangan beruang
+                draggedPane.setStyle("-fx-border-color: #000000; -fx-border-width: 0;");
             }
             event.setDropCompleted(success);
             event.consume();
@@ -148,8 +162,24 @@ public class MainController {
         // toko
         board.getChildren().remove(toko);
 
+        // serangan beruang
+        pane_ladang.getChildren().remove(container_waktu_serangan);
+        randomSeranganBeruang = new Random();
+
         // Initialize the action buttons
         initialize_click();
+    }
+
+    public Pane get_pane_ladang() {
+        return pane_ladang;
+    }
+
+    public Pane get_container_waktu_serangan() {
+        return container_waktu_serangan;
+    }
+
+    public Board getBoard() {
+        return main;
     }
 
     // Cek ladang lawan
@@ -273,7 +303,7 @@ public class MainController {
             change_to_shuffle();
         });
         shuffle_card.setOnAction(e -> shuffle_kartu());
-        close_button.setOnAction(e -> change_to_main());
+        close_button.setOnAction(e -> handleCloseShuffleMenu());
         ladang_lawan.setOnAction(e -> ladang_lawan());
         ladang_sendiri.setOnAction(e -> change_to_main());
         // panen.setOnAction(e -> panen());
@@ -830,7 +860,7 @@ public class MainController {
         }
     }
 
-    public void handleSellEventDragOver(DragEvent event, AnchorPane anchorPane) {
+    private void handleSellEventDragOver(DragEvent event, AnchorPane anchorPane) {
         if (event.getGestureSource() != anchorPane && event.getDragboard().hasString()) {
             event.acceptTransferModes(TransferMode.MOVE);
         }
@@ -838,7 +868,7 @@ public class MainController {
     }
 
     // format nama produk: SIRIP_HIU
-    public void handleSellEvent(DragEvent event, String namaProduk) {
+    private void handleSellEvent(DragEvent event, String namaProduk) {
         Player currentPlayer = main.getPlayernow();
         Dragboard db = event.getDragboard();
         boolean success = false;
@@ -890,7 +920,7 @@ public class MainController {
     }
 
     // format nama produk: SIRIP_HIU
-    public void handleBuyEvent(MouseEvent event, String namaProduk) {
+    private void handleBuyEvent(MouseEvent event, String namaProduk) {
         if (event.getClickCount() != 2) {
             return;
         }
@@ -935,5 +965,57 @@ public class MainController {
         currentPlayer.add_into_deck_aktiv(Objects.requireNonNull(newCard));
         updateUangPlayer();
         add_to_deck_aktif();
+    }
+
+    private void handleCloseShuffleMenu() {
+        change_to_main();
+
+        // Menentukan serangan beruang
+        if (randomSeranganBeruang.nextInt(5) == 0) {
+            pane_ladang.getChildren().add(container_waktu_serangan);
+            SeranganBeruang seranganBeruang = new SeranganBeruang(this, 30000, 60000);
+            Timer timer = new Timer(seranganBeruang.getTime(), this);
+            timer.start();
+            seranganBeruang.start();
+            markSeranganBeruang(seranganBeruang.getUkuran(), seranganBeruang.getFirstIdx());
+        }
+    }
+
+    public void updateTimerSeranganBeruang(int milliseconds) {
+        float seconds = (float) milliseconds / 1000;
+        waktu_serangan.setText(String.format("%.1f", seconds));
+    }
+
+    private void markSeranganBeruang(int[] ukuran, int[] firstIdx) {
+        System.out.println("Serangan beruang, ukuran: " + ukuran[0] + " " + ukuran[1] + " firstIdx: " + firstIdx[0] + " " + firstIdx[1]);
+        for (int i = 0; i < ukuran[0]; i++) {
+            for (int j = 0; j < ukuran[1]; j++) {
+                Node node = getNodeFromGridPane(ladang, firstIdx[0] + i, firstIdx[1] + j);
+                if (node != null) {
+                    node.setStyle("-fx-border-color: #FF0000; -fx-border-width: 2;");
+                }
+            }
+        }
+    }
+
+     public void unmarkSeranganBeruang(int[] ukuran, int[] firstIdx) {
+        for (int i = 0; i < ukuran[0]; i++) {
+            for (int j = 0; j < ukuran[1]; j++) {
+                Node node = getNodeFromGridPane(ladang, firstIdx[0] + i, firstIdx[1] + j);
+                if (node != null) {
+                    node.setStyle("-fx-border-color: #000000; -fx-border-width: 0;");
+                }
+            }
+        }
+    }
+
+    private Node getNodeFromGridPane(GridPane gridPane, int row, int column) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getRowIndex(node) != null && GridPane.getRowIndex(node) == row &&
+                    GridPane.getColumnIndex(node) != null && GridPane.getColumnIndex(node) == column) {
+                return node;
+            }
+        }
+        return null;
     }
 }
