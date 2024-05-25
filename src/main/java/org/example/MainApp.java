@@ -5,12 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import plugin.TXTSaver;
 
 public class MainApp extends Application {
-
-
-
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Add ke Board

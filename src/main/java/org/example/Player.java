@@ -2,9 +2,7 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
 
-import org.example.card.BisaPanen;
 import org.example.card.Card;
 import org.example.card.Hewan.*;
 import org.example.card.Item.*;
@@ -244,7 +242,7 @@ public class Player {
     }
 
     public void player_load(ArrayList<String> data) {
-        for(int i = 0; i < 40; i++) {
+        for(int i = 0; i < deck.size(); i++) {
             deck.remove(i);
             deck.add(i,null);
         }
@@ -725,6 +723,7 @@ public class Player {
     public ArrayList<Card> getDeck_aktif() {
         return deck_aktif;
     }
+    
     public void add_Deck_active(Card s){
         for(int i = 0; i < deck_aktif.size(); i++) {
             if(deck_aktif.get(i) == null) {

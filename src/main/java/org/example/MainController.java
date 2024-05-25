@@ -2,32 +2,44 @@ package org.example;
 
 import SeranganBeruang.SeranganBeruang;
 import SeranganBeruang.Timer;
-import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.*;
-import javafx.scene.layout.*;
-import javafx.scene.layout.AnchorPane;
+
+import plugin.PluginLoader;
+import plugin.TXTLoader;
+import plugin.TXTSaver;
+
 import org.example.card.BisaPanen;
 import org.example.card.Card;
 import org.example.card.Hewan.Hewan;
 import org.example.card.Item.*;
 import org.example.card.Produk.*;
 import org.example.card.Tumbuhan.Tumbuhan;
-import plugin.TXTLoader;
-import plugin.TXTSaver;
 
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
+import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
 public class MainController {
+
+    private Stage primary;
+    private File nama_file;
+    private boolean isXMLloaded = false;
 
     @FXML
     private GridPane ladang, shuffle_panel, deck_aktif;
@@ -36,7 +48,7 @@ public class MainController {
     private AnchorPane info_pane;
 
     @FXML
-    private Pane plugin_pane, pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini, save_load;
+    private Pane pane_plugin, pane_ladang, ambil_kartu, jumlah_turn, player_saat_ini, save_load;
 
     @FXML
     private Button upload, save11, next_turn, shuffle_card, close_button, ladang_lawan, ladang_sendiri, panen, tutup_info, save, load_progress, save_to_main, save_progress, plugin_to_main;
@@ -45,10 +57,16 @@ public class MainController {
     private StackPane board;
 
     @FXML
+    private ComboBox<String> format_save, format_load;
+
+    @FXML
     private VBox info_hewan;
 
     @FXML
     private TextField folder_load, folder_save;
+
+    @FXML
+    private Button upload_file, submit_file; 
 
     // Toko
     @FXML
@@ -317,6 +335,17 @@ public class MainController {
         load_progress.setOnAction(e -> {
             String path = folder_load.getText();
             loadTXT(path);
+            if (format_load != null) {
+                if (format_load.getValue() == "XAML") {
+                    System.out.println("XAML");
+                }
+                if (format_load.getValue() == "JSON") {
+                    System.out.println("JSON");
+                }
+                else {
+                    System.out.println("TXT");
+                }
+            }
         });
         save_to_main.setOnAction(e -> change_to_main());
         save_progress.setOnAction(e -> {
@@ -326,8 +355,49 @@ public class MainController {
             player2save = p2.get_save();
             gameStatesave = getstatesave();
             saveTXT(gameStatesave, player1save, player2save, folder_save.getText());
+            if (format_save.getValue() == "XAML") {
+                System.out.println("XAML");
+            }
+            if (format_save.getValue() == "JSON") {
+                System.out.println("JSON");
+            }
+            else {
+                System.out.println("TXT");
+            }
         });
         save11.setOnAction(e -> show_plugin());
+        upload_file.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+            nama_file = fileChooser.showOpenDialog(primary);
+            try {
+                Path targetDir = Paths.get("plugin_jar");
+                // Membuat direktori jika belum ada
+                if (!Files.exists(targetDir)) {
+                    Files.createDirectory(targetDir);
+                }
+                Path targetPath = targetDir.resolve(nama_file.getName());
+                Files.copy(nama_file.toPath(), targetPath);
+                System.out.println("File copied to: " + targetPath.toString());
+            } catch (IOException ex) {
+                System.err.println("Error copying file: " + ex.getMessage());
+            }
+        });
+        submit_file.setOnAction(e -> {
+            PluginLoader pluginLoader = new PluginLoader();
+            try {
+                pluginLoader.loadPlugin(nama_file.getAbsolutePath(), "plugin.XMLPlugin");
+                isXMLloaded = true;
+                System.out.println("Berhasil load plugin");
+                if (isXMLloaded == true) {
+                    change_format();
+                }
+            }
+            catch (Exception ex) {
+                System.out.println("Failed load plugin");
+            }
+        });
+        plugin_to_main.setOnAction(e -> change_to_main());
+        save11.setOnAction(e -> main_to_plugin());
     }
 
     public ArrayList<String> getstatesave() {
@@ -379,7 +449,7 @@ public class MainController {
 
     public void show_plugin() {
         board.getChildren().clear();
-        board.getChildren().add(plugin_pane);
+        board.getChildren().add(pane_plugin);
     }
 
     // Shuffle kartu
@@ -519,6 +589,7 @@ public class MainController {
                         show_info(card, x, y);
                     });
                     ladang.add(pane, j, i);
+                    change_to_main();
                 }
             }
         }
@@ -728,6 +799,7 @@ public class MainController {
                 Card beruang = a.get_deck(idx);
                 String kata = beruang.getName();
                 VBox card_shuffle = new VBox();
+                card_shuffle.setStyle(style);
 
                 Image image = new Image(this.getClass().getResource(beruang.getImgPath()).toExternalForm());
                 ImageView imageView = new ImageView(image);
@@ -772,7 +844,7 @@ public class MainController {
 
     public void saveTXT(ArrayList<String> gameState, ArrayList<String> player1, ArrayList<String> player2, String directory){
         TXTSaver saver = new TXTSaver();
-        saver.saveFormattedData(directory, "gamestate,txt", gameState);
+        saver.saveFormattedData(directory, "gamestate.txt", gameState);
         saver.saveFormattedData(directory, "player1.txt", player1);
         saver.saveFormattedData(directory, "player2.txt", player2);
 
@@ -1017,5 +1089,15 @@ public class MainController {
             }
         }
         return null;
+    }
+
+    public void change_format() {
+        format_save.getItems().addAll("TXT","XAML","JSON");
+        format_load.getItems().addAll("TXT","XAML","JSON");
+    }
+
+    public void main_to_plugin() {
+        board.getChildren().clear();
+        board.getChildren().add(pane_plugin);
     }
 }
