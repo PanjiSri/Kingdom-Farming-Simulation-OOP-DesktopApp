@@ -336,11 +336,8 @@ public class MainController {
             String path = folder_load.getText();
             loadTXT(path);
             if (format_load != null) {
-                if (format_load.getValue() == "XAML") {
-                    System.out.println("XAML");
-                }
-                if (format_load.getValue() == "JSON") {
-                    System.out.println("JSON");
+                if (format_load.getValue() == "XML") {
+                    System.out.println("XML");
                 }
                 else {
                     System.out.println("TXT");
@@ -355,11 +352,8 @@ public class MainController {
             player2save = p2.get_save();
             gameStatesave = getstatesave();
             saveTXT(gameStatesave, player1save, player2save, folder_save.getText());
-            if (format_save.getValue() == "XAML") {
-                System.out.println("XAML");
-            }
-            if (format_save.getValue() == "JSON") {
-                System.out.println("JSON");
+            if (format_save.getValue() == "XML") {
+                System.out.println("XML");
             }
             else {
                 System.out.println("TXT");
@@ -589,7 +583,6 @@ public class MainController {
                         show_info(card, x, y);
                     });
                     ladang.add(pane, j, i);
-                    change_to_main();
                 }
             }
         }
@@ -1092,8 +1085,8 @@ public class MainController {
     }
 
     public void change_format() {
-        format_save.getItems().addAll("TXT","XAML","JSON");
-        format_load.getItems().addAll("TXT","XAML","JSON");
+        format_save.getItems().addAll("TXT","XML");
+        format_load.getItems().addAll("TXT","XML");
     }
 
     public void main_to_plugin() {
