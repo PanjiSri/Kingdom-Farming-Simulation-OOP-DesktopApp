@@ -2,10 +2,7 @@ package org.example;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -51,6 +48,9 @@ public class MainController {
 
     @FXML
     private StackPane board;
+
+    @FXML
+    private ComboBox<String> format_save, format_load;
 
     @FXML
     private VBox info_hewan;
@@ -290,6 +290,15 @@ public class MainController {
         load_progress.setOnAction(e -> {
             String path = folder_load.getText();
             loadTXT(path);
+            if (format_load.getValue() == "XAML") {
+                System.out.println("XAML");
+            }
+            if (format_load.getValue() == "JSON") {
+                System.out.println("JSON");
+            }
+            else {
+                System.out.println("TXT");
+            }
         });
         save_to_main.setOnAction(e -> change_to_main());
         save_progress.setOnAction(e -> {
@@ -299,6 +308,15 @@ public class MainController {
             player2save = p2.get_save();
             gameStatesave = getstatesave();
             saveTXT(gameStatesave, player1save, player2save, folder_save.getText());
+            if (format_save.getValue() == "XAML") {
+                System.out.println("XAML");
+            }
+            if (format_save.getValue() == "JSON") {
+                System.out.println("JSON");
+            }
+            else {
+                System.out.println("TXT");
+            }
         });
         save11.setOnAction(e -> show_plugin());
         upload_file.setOnAction(e -> {
@@ -311,15 +329,18 @@ public class MainController {
         submit_file.setOnAction(e -> {
             PluginLoader pluginLoader = new PluginLoader();
             try {
-                pluginLoader.loadPlugin("plugin_jar/XMLPlugin.jar", "plugin.implementasi.XMLPlugin");
+                pluginLoader.loadPlugin("plugin_jar/XMLPlugin.jar", "plugin.XMLPlugin");
                 isXMLloaded = true;
                 System.out.println("Berhasil load plugin");
+                if (isXMLloaded == true) {
+                    change_format();
+                }
             }
             catch (Exception ex) {
                 System.out.println("Failed load plugin");
             }
-
         });
+        plugin_to_main.setOnAction(e -> change_to_main());
     }
 
     public ArrayList<String> getstatesave() {
@@ -933,5 +954,10 @@ public class MainController {
         currentPlayer.add_into_deck_aktiv(Objects.requireNonNull(newCard));
         updateUangPlayer();
         add_to_deck_aktif();
+    }
+
+    public void change_format() {
+        format_save.getItems().addAll("TXT","XAML","JSON");
+        format_load.getItems().addAll("TXT","XAML","JSON");
     }
 }
