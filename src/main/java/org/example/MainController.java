@@ -289,7 +289,7 @@ public class MainController {
     // Set fungsi pda button
     public void initialize_click() {
         next_turn.setOnAction(e -> {
-            if (main.getTotalturn() > 20) {
+            if (main.getTotalturn() >= 20) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 Player player_1 = main.getP1();
                 Player player_2 = main.getP2();
