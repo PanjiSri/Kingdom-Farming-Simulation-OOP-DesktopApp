@@ -1,0 +1,11 @@
+<GameState>
+    <CurrentTurn>1</CurrentTurn>
+    <NumberOfItemsInShop>5</NumberOfItemsInShop>
+    <ShopItems>
+        <Item name="SIRIP_HIU" quantity="5"/>
+        <Item name="SUSU" quantity="2"/>
+        <Item name="DAGING_DOMBA" quantity="3"/>
+        <Item name="DAGING_KUDA" quantity="10"/>
+        <Item name="DAGING_BERUANG" quantity="1"/>
+    </ShopItems>
+</GameState>

@@ -1,0 +1,13 @@
+<PlayerData>
+    <Gold>300</Gold>
+    <DeckCount>38</DeckCount>
+    <ActiveDeckCount>2</ActiveDeckCount>
+    <ActiveDeck>
+        <Card location="A01" animal="BERUANG"/>
+        <Card location="B01" animal="BERUANG"/>
+    </ActiveDeck>
+    <LandCardCount>1</LandCardCount>
+    <LandCards>
+        <Card location="B02" animal="AYAM" age="0" items="0"/>
+    </LandCards>
+</PlayerData>
